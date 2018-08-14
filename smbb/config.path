@@ -1,6 +1,8 @@
 root = "./"
-luaservice = root.."service/?.lua;"..root.."smbb/service/?.lua;"..root.."smbb/logic/world/?.lua;"..root.."smbb/?.lua"
+project_root = "smbb_skynet/smbb/"
+luaservice = root.."service/?.lua;"..project_root.."service/?.lua;"..project_root.."logic/world/?.lua;"..project_root.."?.lua"
 lualoader = root .. "lualib/loader.lua"
-lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..root.."smbb/?.lua;"..root.."smbb/lualib/?.lua"
+lua_path = root.."lualib/?.lua;"..root.."lualib/?/init.lua;"..project_root.."?.lua;"..project_root.."lualib/?.lua"
 lua_cpath = root .. "luaclib/?.so"
 
+preload = project_root.."preload.lua"
