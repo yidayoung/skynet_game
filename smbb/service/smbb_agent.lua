@@ -85,7 +85,7 @@ function CMD.start(conf)
     state.fd = conf.client
     logger.debug("smbb_agent start addr", conf.addr)
     skynet.call(state.gate, "lua", "forward", fd)
-    protobuf.register_file("smbb/proto/smbb.pb")
+    protobuf.register_file("smbb_skynet/smbb/proto/smbb.pb")
 end
 
 function CMD.send_client(protouumber, protodata)
