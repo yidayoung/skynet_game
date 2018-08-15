@@ -9,7 +9,7 @@
 local mod_send_mail = {}
 
 local setting = require("config.setting.setting")
-local json = require("json")
+local json = require("lualib.json")
 
 local smbb_mongo = require("logic.db.smbb_mongo")
 local smbb_id = require("logic.tool.smbb_id")

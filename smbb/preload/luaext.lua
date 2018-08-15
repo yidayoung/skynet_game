@@ -322,7 +322,7 @@ function max(a, b)
 end
 
 function spent(table)
-    return (require "serpent").block(table)
+    return (require "lualib.serpent").block(table)
 end
 
 function spent_print(prev_str, table, suffix)

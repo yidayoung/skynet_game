@@ -1,5 +1,4 @@
 local skynet = require "skynet"
-local protobuf = require "protobuf"
 local service = require("lualib.service")
 
 local queue = require "skynet.queue"
@@ -85,7 +84,7 @@ function CMD.start(conf)
     state.fd = conf.client
     logger.debug("smbb_agent start addr", conf.addr)
     skynet.call(state.gate, "lua", "forward", fd)
-    protobuf.register_file("smbb_skynet/smbb/proto/smbb.pb")
+    smbb_pb.registe()
 end
 
 function CMD.send_client(protouumber, protodata)

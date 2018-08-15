@@ -6,7 +6,7 @@
 -- @end
 -- Created : 12. 七月 2018 11:35
 ---------------------------------------------------------------------
-local protobuf = require "protobuf"
+local protobuf = require "lualib.protobuf"
 local smbb_proto = require("skymoons.proto")
 local skynet = require("smbb_skynet")
 --require("logic.tool.smbb_misc")
@@ -50,6 +50,10 @@ function smbb_pb.encode(protonumber, protodata)
     else
         skynet.err(string.format("proto_encode err protonumber = %s protodata = %s", protonumber, spent(protodata)))
     end
+end
+
+function smbb_pb.registe()
+    protobuf.register_file("smbb_skynet/smbb/proto/smbb.pb")
 end
 
 return smbb_pb

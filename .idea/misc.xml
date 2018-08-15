@@ -10,5 +10,5 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" project-jdk-name="Erlang 18" project-jdk-type="Erlang SDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" default="false" project-jdk-name="Lua" project-jdk-type="Lua SDK" />
 </project>
