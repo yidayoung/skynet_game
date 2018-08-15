@@ -11,6 +11,8 @@ local smbb_proto = require("skymoons.proto")
 local skynet = require("smbb_skynet")
 --require("logic.tool.smbb_misc")
 local logger = require("lualib.logger")
+local smbb_util = smbb_util
+local string = string
 
 local smbb_pb = {}
 

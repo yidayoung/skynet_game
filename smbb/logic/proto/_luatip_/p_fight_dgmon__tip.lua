@@ -1,0 +1,27 @@
+
+---@class p_fight_dgmon
+---@field pos sint64 @ 数码兽站位
+---@field typeid sint64 @ 原始模板ID
+---@field kind string @ 克制类别
+---@field level sint64 @ 数码兽等级
+---@field rank sint64 @ 数码兽品阶
+---@field star sint64 @ 数码兽星级
+---@field attr p_fight_attr @ 数码兽属性
+---@field hp sint64 @ 数码兽血量
+---@field battle_power sint64 @ 数码兽战力
+---@field enter_skills p_fight_skill[] @ 登场技能
+---@field fight_skills p_fight_skill[] @ 战斗技能
+---@field condi_skills p_fight_skill[] @ 条件技能
+---@field super_enter_skills p_fight_skill[] @ 进化登场技能
+---@field super_fight_skills p_fight_skill[] @ 进化战斗技能
+---@field super_condi_skills p_fight_skill[] @ 进化条件技能
+---@field transform_skill p_fight_skill @ 变身技能
+---@field transform_max_round sint64 @ 最大变身回合数
+---@field transform_type_id sint64 @ 变身形态
+---@field is_boss bool @ 是否是BOSS
+---@field base_evolve_level sint64 @ 常驻形态
+---@field boom_skill sint64 @ 曝气技能ID
+---@field show_stage sint64 @ 装逼显示特效的阶段
+---@field clothes sint64 @时装状态 0 = > 默认 1 = > 激活特效
+---@field is_coward bool @ 是否是胆小鬼
+local m={}

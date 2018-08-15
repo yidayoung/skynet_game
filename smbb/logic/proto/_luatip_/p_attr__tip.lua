@@ -1,0 +1,27 @@
+
+---@class p_attr
+---@field attack uint64 @ 攻击力
+---@field maxhp uint64 @ 满血量
+---@field phydef uint64 @ 物理防御
+---@field magdef uint64 @ 魔法防御
+---@field critp uint64 @ 暴击
+---@field critp_reduce uint64 @ 抗暴
+---@field critv uint64 @ 暴击程度
+---@field critv_reduce uint64 @ 暴击减免
+---@field blockp uint64 @ 格挡率
+---@field blockp_reduce uint64 @ 格挡减免程度
+---@field blockv uint64 @ 格挡程度
+---@field hitp uint64 @ 命中
+---@field miss uint64 @ 闪避
+---@field damage_deepen uint64 @ 伤害加深
+---@field damage_reduce uint64 @ 伤害减免
+---@field backhpv uint64 @ 回血程度
+---@field absorbp uint64 @ 吸血概率
+---@field absorbv uint64 @ 吸血程度
+---@field bouncep uint64 @ 反弹率
+---@field bouncev uint64 @ 反弹程度
+---@field attackaddn uint64 @ 基础攻击加成
+---@field maxhpaddn uint64 @ 基础血量加成
+---@field atktohp uint64 @ 普通攻击回血固定值
+---@field speed uint64 @ 速度
+local m={}

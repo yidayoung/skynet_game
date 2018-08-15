@@ -1,0 +1,23 @@
+
+---@class p_role_info
+---@field roleid uint64 @ 角色ID
+---@field rolename string @ 角色名
+---@field raccid uint64 @ 账号ID
+---@field accname string @ 账号名
+---@field familyid uint64 @ 公会ID
+---@field familyname string @ 公会名
+---@field icon uint64 @ 头像ID
+---@field rolelv uint64 @ 角色等级
+---@field roleexp uint64 @ 角色经验
+---@field viplv uint64 @ VIP等级
+---@field vipexp uint64 @ VIP经验
+---@field atkpower uint64 @ 进攻战斗力
+---@field defpower uint64 @ 防御战斗力
+---@field lastlogin uint64 @ 最近登录时间
+---@field lastlogout uint64 @ 最近下线时间
+---@field srctype uint64 @ 来源渠道
+---@field subtype string @ 子渠道名
+---@field totalpaid uint64 @ 累积付费
+---@field frame uint64 @ 头像框
+---@field regtime uint64 @ 注册时间
+local m={}

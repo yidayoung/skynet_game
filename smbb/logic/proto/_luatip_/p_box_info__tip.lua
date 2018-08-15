@@ -1,0 +1,24 @@
+
+---@class p_box_info
+---@field one_item uint64 @ 数码币单扭价格
+---@field ten_item uint64 @ 数码币十扭价格
+---@field hun_item uint64 @ 数码币百扭价格
+---@field gold_free_cool uint64 @ 钻石免费单扭冷却时间
+---@field item_free_times uint64 @ 数码币单扭免费次数
+---@field item_free_cool uint64 @ 数码币免费单扭冷却时间
+---@field one_gold uint64 @ 钻石单扭价格
+---@field ten_gold uint64 @ 钻石十扭价格
+---@field gold_ten_dis uint64 @ 钻石十扭打折
+---@field gold_free_times uint64 @ 钻石单扭免费次数
+---@field gold_one_dis uint64 @ 钻石单扭打折
+---@field mystery_gold uint64 @ 神秘扭蛋价格
+---@field mystery_dis uint64 @ 神秘扭蛋打折
+---@field one_dis_start uint64 @ 钻石单扭打折起始时间
+---@field one_dis_end uint64 @ 钻石单扭打折结束时间
+---@field ten_dis_start uint64 @ 钻石十扭打折起始时间
+---@field ten_dis_end uint64 @ 钻石十扭打折结束时间
+---@field mys_dis_start uint64 @ 神秘扭蛋打折起始时间
+---@field mys_dis_end uint64 @ 神秘扭蛋打折结束时间
+---@field mys_hot_id uint64[] @ 神秘扭蛋热点宝贝ID列表
+---@field bide_lefttimes uint64 @ 必得宝贝剩余次数
+local m={}

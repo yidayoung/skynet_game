@@ -1,0 +1,26 @@
+
+---@class p_fight_attr
+---@field inithp sint64
+---@field attack sint64
+---@field phydef sint64
+---@field magdef sint64
+---@field critp sint64
+---@field critp_reduce sint64
+---@field critv sint64
+---@field critv_reduce sint64
+---@field blockp sint64
+---@field blockp_reduce sint64
+---@field blockv sint64
+---@field hitp sint64
+---@field miss sint64
+---@field damage_deepen sint64
+---@field damage_reduce sint64
+---@field backhpv sint64
+---@field atktohp sint64
+---@field absorbp sint64
+---@field absorbv sint64
+---@field bouncep sint64
+---@field bouncev sint64
+---@field restrainv sint64
+---@field speed sint64
+local m={}
