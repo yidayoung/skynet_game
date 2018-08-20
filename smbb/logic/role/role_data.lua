@@ -127,4 +127,16 @@ function role_data.set_rmail_info(info, is_dirty)
     set_info(ROLE_DATA_LIST.rmail_info.key, info, is_dirty)
 end
 
+---@return role_extra
+function role_data.get_role_extra()
+    return get_info(ROLE_DATA_LIST.role_extra.key)
+end
+
+---set_role_extra
+---@param info role_extra
+---@param is_dirty boolean
+function role_data.set_role_extra(info, is_dirty)
+    set_info(ROLE_DATA_LIST.role_extra.key, info, is_dirty)
+end
+
 return role_data

@@ -316,10 +316,6 @@ function table.merge2(dest, src)
     return tbl
 end
 
-function max(a, b)
-    if a > b then return a end
-    return b
-end
 
 function spent(table)
     return (require "lualib.serpent").block(table)
@@ -337,7 +333,7 @@ function bin2hex(s)
     return s
 end
 
-function read_only(inputTable)
+function table.read_only(inputTable)
     local travelled_tables = {}
     local function __read_only(tbl)
         if not travelled_tables[tbl] then

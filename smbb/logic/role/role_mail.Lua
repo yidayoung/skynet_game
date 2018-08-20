@@ -38,7 +38,7 @@ local function update_rmail(unrcvnum, recv_mid)
         rmail.recv_mid = recv_mid
         rmail.unrcvnum = unrcvnum
         --@todo notify client newmail
-        print("receive new mail unrcvnum",unrcvnum)
+        print("receive new mail unrcvnum", unrcvnum)
         role_data.set_rmail_info(rmail)
     end
 end
@@ -60,7 +60,7 @@ function role_mail.draw_mails(reward, readmailids)
     local reward_return = reward_lib.reward(reward)
     reward_lib.log(role_data.get_role_id(), reward_return, 1, 0, "")
     reward_lib.notify(reward_return)
-    smbb_misc.send_client(SC_MAIL_DRAW, { result = 1, mailidlist = readmailids, reward = {reward_lib.p_reward(reward)}})
+    smbb_misc.send_client(SC_MAIL_DRAW, { result = 1, mailidlist = readmailids, reward = { reward_lib.p_reward(reward) } })
 end
 
 return role_mail

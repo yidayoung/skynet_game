@@ -12,7 +12,8 @@ DATABASE_TABLES = {
     money_info = "role_money",
     rmail_info = "role_mail",
     mail_info = "mail_info",
-    ger_info = "role_ger"
+    ger_info = "role_ger",
+    role_extra = "role_extra",
 }
 
 SHARE_TABLES = {

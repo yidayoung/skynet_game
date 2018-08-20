@@ -14,7 +14,7 @@
 
 -- 如果需要类型检查，可以调用定义在smbb_util中的is_record(table, RECORD), RECORD字段可以是函数也可以是调用后的值
 
-
+local table = table
 RECORD = {}
 ---@class role_info
 local role_info_t = { _t = "role_info"
@@ -118,7 +118,7 @@ table.map(RECORD, function(record)
     end
 end)
 
-read_only(RECORD)
+table.read_only(RECORD)
 
 
 

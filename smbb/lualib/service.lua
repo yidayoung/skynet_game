@@ -18,11 +18,7 @@ local function preload()
     require = function(file)
         local names = string.split(file, ".")
         if names[1] == "config." then
-            if package.loaded["logic.lib.config_lib"] then
-                return old_require("logic.lib.config_lib").get_res(file)
-            else
-                return old_require(file)
-            end
+            return old_require("logic.lib.config_lib").get_res(file)
         else
             return old_require(file)
         end

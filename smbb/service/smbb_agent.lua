@@ -18,7 +18,7 @@ local logger = require("lualib.logger")
 require("logic.define.roledata_define")
 
 
-local smbb_pb = require("logic.proto.smbb_pb")
+local smbb_pb = require("logic.tool.smbb_pb")
 local role_account = require("logic.role.role_account")
 
 
