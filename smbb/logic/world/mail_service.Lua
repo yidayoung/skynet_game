@@ -59,15 +59,15 @@ end
 local function p_mail(mail)
     return {
         mailid = mail.mailid or 0
-    , tempid = mail.tempid or 0
-    , subtype = mail.subtype or 0
-    , title = mail.title or ""
-    , content = mail.content or ""
-    , reward = reward_lib.p_reward(mail.reward) or {}
-    , isread = mail.isread or 0
-    , drawed = mail.drawed or 0
-    , timestamp = mail.timestamp or 0
-    , autoget = mail.autoget or 0
+    ,tempid    = mail.tempid or 0
+    ,subtype   = mail.subtype or 0
+    ,title     = mail.title or ""
+    ,content   = mail.content or ""
+    ,reward    = reward_lib.p_reward(mail.reward) or {}
+    ,isread    = mail.isread or 0
+    ,drawed    = mail.drawed or 0
+    ,timestamp = mail.timestamp or 0
+    ,autoget   = mail.autoget or 0
     }
 end
 
@@ -77,7 +77,7 @@ local function do_cs_mail_info(roleid)
     for _, mail in ipairs(rmails) do
         table.insert(pmails, p_mail(mail))
     end
-    smbb_misc.ex_send(roleid, SC_MAIL_INFO, { mail_list = pmails, unrecv_num = 0 })
+    smbb_misc.ex_send(roleid, SC_MAIL_INFO, { mail_list = pmails,unrecv_num = 0 })
 end
 
 local function do_persist()
@@ -95,11 +95,13 @@ local function do_persist()
         del_dict = {}
     end
     if not table.empty(read_dict) then
-        smbb_mongo.update(DATABASE_TABLES.mail_info, { mailid = { ["$in"] = table.keys(read_dict) } }, { ["$set"] = { isread = 1 } })
+        smbb_mongo.update(DATABASE_TABLES.mail_info, { mailid = { ["$in"] = table.keys(read_dict) } },
+                { ["$set"] = { isread = 1 } })
         read_dict = {}
     end
     if not table.empty(draw_dict) then
-        smbb_mongo.update(DATABASE_TABLES.mail_info, { mailid = { ["$in"] = table.keys(draw_dict) } }, { ["$set"] = { drawed = 1 } })
+        smbb_mongo.update(DATABASE_TABLES.mail_info, { mailid = { ["$in"] = table.keys(draw_dict) } },
+                { ["$set"] = { drawed = 1 } })
         draw_dict = {}
     end
 end

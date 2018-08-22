@@ -1,0 +1,52 @@
+// 模块=ghandrwd
+// 编号=11600
+
+// 累计登录活动相关协议,应该做成通用活动的-_-
+// 请求累计登录信息
+message cs_ghandrwd_login_info[id=11607] {
+}
+message sc_ghandrwd_login_info[id=11608] {
+    required        int32           start_time       =1; // 活动开始时间
+    required        int32           end_time         =2; // 活动结束时间
+    required        int32           login_days       =3; // 累计登录天数
+    repeated        int32           drawlist         =4; // 已领取奖励的天数列表
+    required        string          desc             =5; // 活动描述
+    required        string          title            =6; // 活动名称
+    repeated        p_view          reward           =7; // 奖励预览
+    optional        uint32          openlv           =8; // vip等级限制
+    optional        uint32          openviplv        =9; // 角色等级限制
+}
+
+// 请求领取累计登录奖励
+message cs_ghandrwd_login_draw[id=11609] {
+    required        int32           tar_day          =1; // 待领取的目标天,例如领取第1天的目标天为1
+    optional        uint32          selectnum        =2; // 奖励可选个数(0:全部领取1.领取一个)
+    repeated        uint64          rewardidlist     =3; // 奖励id数组(玩家自己选择的奖励id)
+}
+message sc_ghandrwd_login_draw[id=11610] {
+    required        int32           result           =1; // 结果
+    // 1 =: 成功
+    // 2 =: 失败-已领取
+    // 3 =: 失败-不可领取
+    // 4 =: 失败-活动未开启/活动已结束
+    // 5 =: 失败-奖励未配置
+    optional        p_reward        reward           =2; // 奖励
+}
+
+// 更新累计登录信息
+message sc_ghandrwd_login_update[id=11611] {
+    required        int32           login_days       =1; // 累计登录天数
+    repeated        int32           new_drawlist     =2; // 新增的已领奖天数
+}
+
+// 预览的奖励结构
+message p_view[id=11612] {
+    required        int32            day             =1; // 天数
+    required        p_reward         reward          =2; // 奖励
+    required        uint32           selectnum       =3; // 奖励可选个数(0:全部领取1.领取一个)
+}
+
+//// 累计登录活动结束通知
+//message sc_ghandrwd_login_done[id=11618] {
+//    required        int32            done            =1; // 累计登录活动是否结束(1:是,2:否)
+//}

@@ -1,0 +1,408 @@
+// 模块 - 工会跨服战
+// 编号 - 15000
+
+// 报名
+message cs_fcross_enrol[id=15001] {
+}
+
+// 报名
+message sc_fcross_enrol[id=15002] {
+	optional 		uint64 				result					=1;
+	// 1 := 成功
+	// 2 := 没有公会
+	// 3 := 公会总人数不足
+	// 4 := 权限不够
+	// 5 := 已经报名过
+	// 6 := 注册失败(主服原因)
+	// 7 := 现在不是报名时间
+	// 8 := 主服从服阶段不同步
+	// 9 := 主服数据错误
+	// 10 := 活动开启时间没有到
+}
+
+// 鼓舞
+message cs_fcross_inspire[id=15003] {
+	optional 		int32 				inspire_type		    =1;
+}
+
+// 鼓舞
+message sc_fcross_inspire[id=15004] {
+	optional 		uint64 				result					= 1;  
+	// 0 := 未知错误    
+	// 1 := 成功
+	// 2 := 货币不足
+	// 3 := 鼓舞次数不足
+	// 4 := 阶段不对
+	// 5 := 工会不存在
+	// 6 := inspire_type错误
+	// 7 := 现在不是鼓舞时间
+	// 8 := 没有报名
+	// 9 := 不是参战人员
+	// 10 := 鼓舞总次数不足
+	optional		p_inspire_info		inspire_info            = 2;
+}
+
+// 普通布阵
+message cs_fcross_disposal[id=15005] {
+	optional 		int32       		battack    	    		= 1;
+	repeated 		p_warger_info 		warger_lists    	    = 2;
+}
+
+// 普通布阵
+message sc_fcross_disposal[id=15006] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 工会不存在
+	// 3 := 阶段不对
+	// 4 := gerid重复
+	// 7 := gerid没发现
+	// 8 := sets值错误
+	// 9 := pos值错误
+	// 10 := 不是战士
+	repeated    	p_warger_info    	warger_lists      		= 2;
+	optional 		int32       		battack    	    		= 3;
+}
+
+// 查看战场
+message cs_fcross_battlefield[id=15007] {
+	optional 		int32 				benemy					= 1;
+}
+
+// 查看战场
+message sc_fcross_battlefield[id=15008] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 本公会没有报名
+	// 3 := 没有加入公会
+	// 4 := 阶段不对
+	// 5 := 敌人信息不存在
+	// 6 := 没有参战
+	optional 		uint64 				selfleftatttimes	    = 2; //自己剩余攻击次数
+	optional 		uint64 				selfstars		    	= 3; //自己得星
+	optional 		uint64 				fstars 					= 4; //本公会得星
+	optional 		uint64 				enemy_fstars	    	= 5; //敌方公会得星
+	repeated 		p_warrior_info 		warrior_list	    	= 6; //英雄列表
+	optional 		int32 				benemy					= 7;
+	optional 		uint64 				allatttimes	    		= 8; //工会总的攻击次数
+	optional 		int32 				fullsets	    		= 9; //有多少玩家上满三套阵容
+}
+
+// 一个战士信息
+message p_warrior_info[id=15009] {
+	optional 		uint32 				lost_stars				= 1; //丢失星星
+	optional        uint64              roleid       			= 2; //这个英雄的roleid
+	optional        uint64              mark_roleid    			= 3; //标记这个英雄的roleid
+	optional        uint64              power_rank    			= 4; //战力排名
+	optional        string              rolename       			= 5; //这个英雄的名字
+}
+
+// 查看阵容
+message cs_fcross_team[id=15010] {
+	optional 		int32 				battack					= 1;
+	optional 		int32 				benemy					= 2;
+	optional 		uint64 				selroleid				= 3;
+}
+
+// 查看阵容
+message sc_fcross_team[id=15011] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 没有加入公会
+	optional 		int32 				battack					= 2;
+	repeated        p_warger_info       warger_list             = 3;
+	optional 		int32 				benemy					= 4;
+	optional 		uint64 				selroleid				= 5;
+	optional 		uint64 				team_speed				= 6;
+}
+
+// 查看鼓舞次数
+message cs_fcross_inspireinfo[id=15012] {
+}
+
+// 查看鼓舞次数
+message sc_fcross_inspireinfo[id=15013] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 没有加入公会
+	// 3 := 不存在工会信息
+	repeated        p_role_inspire        inspire_list            = 2;
+}
+
+message p_role_inspire[id=15014] {
+	optional 		uint32 				times				    = 1; // 鼓舞次数
+    optional        p_role_public       role_public             = 2;
+}
+
+// 查看得星
+message cs_fcross_getstars[id=15015] {
+}
+
+// 查看得星
+message sc_fcross_getstars[id=15016] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 没有加入公会
+	// 3 := 不存在工会信息
+	repeated        stars_info          stars_list              = 2;
+}
+
+message stars_info[id=15017] {
+	optional 		uint32 				stars				    = 1; // 得星
+	optional        p_role_public       role_public             = 2;
+	optional        uint32       		power  		            = 3;
+}
+
+// 查看挑战次数
+message cs_fcross_challtimes[id=15018] {
+}
+
+// 查看挑战次数
+message sc_fcross_challtimes[id=15019] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 没有加入公会
+	// 3 := 不存在工会信息
+	repeated        challtimes_info     challtimes_list         = 2;
+}
+
+message challtimes_info[id=15020] {
+	optional 		uint32 				times				    = 1;
+	optional        p_role_public       role_public             = 2;
+}
+
+// 积分排行榜
+message cs_fcross_scorerank[id=15021] {
+	optional 		uint32 				rankbeg				        = 1;
+	optional 		uint32 				rankend				        = 2;
+}
+
+// 积分排行榜
+message sc_fcross_scorerank[id=15022] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 请求范围错误
+	repeated        p_scorerank_info    scorerank_list          = 2;
+	optional        p_scorerank_info    self_rankinfo           = 3;
+}
+
+message p_scorerank_info[id=15023] {
+	optional 		uint32 				score				    = 1;
+	optional        uint64              familyid    			= 2;
+	optional        string              familyname    			= 3;
+	optional        uint32              svrid        		    = 4;
+	optional        string              chairname    			= 5;
+	optional        int32               rank        			= 6;
+	optional        int32               allstars        		= 7;
+	optional        uint64              chairicon 	        	= 8;
+}
+
+// 查看公会战报
+message cs_fcross_familyreplay[id=15024] {
+}
+
+// 查看公会战报
+message sc_fcross_familyreplay[id=15025] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 没有工会信息
+	repeated 		p_fight_replay_info fight_replay_list	    = 2; //战报
+}
+
+// 重播战报
+message cs_fcross_replay[id=15028] {
+	optional 		uint64 				histid	     	    	= 1; //战报id
+}
+
+// 重播战报
+message sc_fcross_replay[id=15029] {
+	optional 		uint64 				result						  = 1;
+	// 1 := 成功
+	// 2 := 战报不存在
+	// 3 := 工会不存在
+	repeated        p_fight_struct_info fight_struct_info_lists       = 2; // 战斗
+	optional 		p_fight_replay_info fight_replay	  	    	  = 3; //战报
+}
+
+// 标记
+message cs_fcross_markenemy[id=15030] {
+	optional 		uint64 				markroleid				= 1;
+}
+
+// 标记
+message sc_fcross_markenemy[id=15031] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := roleid不存在
+	// 3 := 敌方工会不存在
+	// 4 := 工会不存在
+	// 5 := 标记玩家不存在
+	// 6 := 玩家已被标记
+	// 7 := 我已经标记过敌人了
+	optional 		uint64 				roleid					= 2;
+	optional 		uint64 				markroleid				= 3;
+}
+
+// 阵容中一个上阵宝贝信息
+message p_warger_info[id=15032] {
+	optional 		uint64 				gerid					= 1; //
+	optional 		uint64 				sets					= 2; //第几套阵容
+	optional 		uint64 				pos 					= 3; //每套阵容的位置
+	optional 		p_ger_summary 		summary_ger 			= 4; //
+	optional 		uint64				speed 					= 5; //
+	optional 		uint64				fightpower 				= 6; //
+}
+
+// 查看个人战报
+message cs_fcross_fightreplay[id=15033] {
+}
+
+// 查看个人战报
+message sc_fcross_fightreplay[id=15034] {
+	optional 		uint64 					result					= 1;
+	// 1 := 成功
+	// 2 := 没有公会
+	repeated 		p_fight_replay_info 	fight_replay_list	    = 2; //战报
+}
+
+// 战斗
+message cs_fcross_fight[id=15035] {
+	optional 		uint64 				enemy_roleid				= 1;
+}
+
+// 战斗
+message sc_fcross_fight[id=15036] {
+	optional 		uint64 						 result					= 1;
+	// 1 := 成功
+	// 2 := 没有加入公会
+	// 3 := 活动没有开战
+	// 4 := 不是作战成员
+	// 5 := 信息不存在
+	// 6 := 没有敌方
+	// 7 := 攻击阵容为空
+	// 8 := 攻击次数不够
+	// 9 := 上阵不全
+    repeated        p_fight_struct_info          fight_struct_info_lists      = 2; // 战斗
+	optional 		p_fight_replay_info 		 fight_replay	  	    	  = 3; //战报
+}
+
+message p_fight_replay_info[id=15037] {
+    optional 		uint64 				histid            		= 1;
+    optional 		uint64 				atkroleid         		= 2;
+    optional 		uint64 				atkfamilyid       		= 3;
+    optional 		uint64 				defroleid         		= 4;
+    optional 		uint64 				deffamilyid       		= 5;
+    optional 		string 				atkrolename         	= 6;
+    optional 		string 				defrolename         	= 7;
+    optional 		string 				atkfamilyname         	= 8;
+    optional 		string 				deffamilyname         	= 9;
+    optional 		int32 				allstars   		      	= 10;
+    optional 		uint64 				serverid   		      	= 11;
+    optional 		uint64 				eserverid   		    = 12;
+}
+
+// 信息
+message cs_fcross_info[id=15038] {
+}
+
+// 信息
+message sc_fcross_info[id=15039] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 没有加入公会
+	// 3 := 主服没连上
+	optional 		int32 				stage					= 2; //当前阶段
+	optional 		family_info	  	 	family 					= 3; //我方公会
+	optional 		family_info	  	 	efamily 				= 4; //敌方工会
+	optional 		uint64 				inspire					= 5; //鼓舞次数
+	optional 		uint64 				allinspire				= 6; //鼓舞总次数
+	optional 		uint64 				goldadd	    			= 7; //金币加成
+	optional 		uint64 				diaadd  				= 8; //钻石加成
+	optional 		int32 				benrol				    = 9;
+	optional 		int32 				total_addbuf			= 10;
+	optional 		uint64 				countdown				= 11; //倒计时
+	optional        p_season_settlement season_settlement 		= 12;
+	optional        int32 				last_benrol 			= 13;
+	optional        uint64 				begin_time 				= 14;
+}
+
+//工会信息
+message family_info[id=15040] {
+	optional 		string 				familyname				= 1;
+	optional 		uint64 				serverid				= 2;
+	optional 		uint64 				score					= 3;
+	optional 		int32 				score_change			= 4;
+	optional 		uint64 				stars					= 5;
+	optional 		uint64 				fightpower  			= 6; //工会战斗力
+}
+
+//鼓舞信息
+message p_inspire_info[id=15041] {
+	optional 		uint64 				inspire					= 1; //鼓舞次数
+	optional 		uint64 				allinspire				= 2; //鼓舞总次数
+	optional 		int32 				total_addbuf			= 3; //总加成
+}
+
+// 查看防守情况
+message cs_fcross_definfo[id=15044] {
+}
+
+// 查看防守情况
+message sc_fcross_definfo[id=15045] {
+	optional 		uint64 				result					= 1;
+	repeated 		p_definfo 			definfo_lists    	    = 2;
+	// 1 := 成功
+	// 2 := 没有加入公会
+}
+
+// 防守情况
+message p_definfo[id=15046] {
+	optional 		uint32 				num						= 1; //上阵个数
+	optional        uint64              power       			= 2; //战斗力
+    optional        p_role_public       role_public             = 3;
+}
+
+message p_fight_struct_info[id=15047] {
+	optional 		int32 				place					= 1; //第几场
+	optional        bool                iswin       			= 2; //
+    optional        p_fight_struct      fight_struct            = 3;
+}
+
+//
+message p_season_settlement[id=15048] {
+	optional		uint64				begin_time              = 1;
+	repeated		p_scorerank_info	scorerank_info			= 2;
+}
+
+message sc_fcross_bcfight[id=15049] {
+	optional		uint64				roleid                 = 1;
+	optional		int32 				stars           	   = 2;
+	optional		int32 				challtimes             = 3;
+	optional		int32 				benemy         		   = 4;
+	optional		int32 				allstars         	   = 5;
+	optional		int32 				self_challtime         = 6;
+	optional		uint64				enemyroleid            = 7;
+}
+
+message cs_fcross_open_bfield[id=15050] {
+	optional 		int32 				benemy					= 1;
+	optional 		int32 				open					= 2;
+}
+
+message sc_fcross_open_bfield[id=15051] {
+	optional 		uint64 				result					= 1;
+	// 1 := 成功
+	// 2 := 公会不存在
+	optional 		int32 				open					= 2;
+	optional		int32 				benemy         		    = 3;
+}
+
+// 通知报名
+message sc_fcross_notify_enrol[id=15052] {
+	optional 		uint64 				result					=1;
+	// 1 := 已经报名
+}
+
+// 阶段变更通知
+message sc_fcross_notify_stage[id=15053] {
+	optional 		int32 				stage					=1;
+}

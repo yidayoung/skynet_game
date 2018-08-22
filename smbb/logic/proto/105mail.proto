@@ -1,0 +1,61 @@
+// 模块=mail
+// 编号=10500
+
+message p_mail[id=10501] {
+    optional uint64 mailid = 1; // 邮件ID
+    optional uint64 tempid = 2; // 模板ID(也是类型ID)
+    optional string content = 3; // 邮件内容
+    optional p_reward reward = 4; // 附加奖励
+    optional uint64 isread = 5; // 是否已读(0:=未读,1:=已读)
+    optional uint64 drawed = 6; // 是否领取(0:=未领,1:=已领)
+    optional uint64 timestamp = 7; // 生成时间戳
+    optional uint64 subtype = 8; // 子类型(主要用于表现区分)
+    optional string title = 9; // 邮件标题
+    optional uint64 autoget = 10; // 是否能一键读取 0:不能,1:能
+}
+
+message cs_mail_info[id=10502] {
+}
+message sc_mail_info[id=10503] {
+    repeated p_mail mail_list = 1; // 邮件列表
+    optional uint64 unrecv_num = 2; // 未接收数量
+}
+
+message cs_mail_more[id=10504] {
+}
+message sc_mail_more[id=10505] {
+    repeated p_mail mail_list = 1; // 邮件列表
+    optional uint64 unrecv_num = 2; // 未接收数量
+}
+
+message cs_mail_read[id=10506] {
+    repeated uint64 mailid_list = 1; // 需要标记已读的邮件ID列表
+    optional uint64 bonekey = 2; // 是否一键读
+}
+message sc_mail_read[id=10507] {
+    repeated uint64 mailid_list = 1; // 成功标记已读的邮件ID列表
+}
+
+message cs_mail_draw[id=10508] {
+    repeated uint64 mailidlist = 1; // 准备领取的邮件ID
+    optional uint64 bonekey = 2; // 是否一键领取
+}
+message sc_mail_draw[id=10509] {
+    optional uint64 result = 1; // 领取结果
+    // 1 := 成功
+    // 2 := 失败
+    repeated uint64 mailidlist = 2; // 成功领取的邮件ID列表
+    repeated p_reward reward = 3; // 领取得到的奖励
+}
+
+message cs_mail_delete[id=10510] {
+    repeated uint64 mailid_list = 1; // 需要删除的邮件ID列表
+}
+message sc_mail_delete[id=10511] {
+    repeated uint64 mailid_list = 1; // 成功删除的邮件ID列表
+}
+
+message sc_mail_new[id=10512] {
+    repeated p_mail mail_list = 1; // 新增的邮件列表
+}
+

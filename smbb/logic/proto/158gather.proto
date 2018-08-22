@@ -1,0 +1,149 @@
+// 合体模块
+// 编号=158
+
+message cs_gather_info[id=15801] {
+}
+
+message sc_gather_info[id=15802] {
+    repeated        p_gather             gatherlist            = 1; // 激活合体列表
+    repeated 		p_npc                npclist               = 2; // 激活材料npc列表
+    optional        uint64               dun_lv                = 3; // 关卡当前等级，有了就只能直接挑战没才能选
+    optional        uint64               today_harm            = 4; // 今天的伤害
+    optional        bool                 is_complete           = 5; // 今天是否已经完成副本
+    optional        uint64               max_lv                = 6; // 当前可选择的关卡最大等级
+    optional        uint64               dun_id                = 7; // 关卡ID
+}
+
+
+message cs_gather_npc_uplevel[id=15803] {
+	optional        uint64               npcid                   = 1; // id
+}
+
+message sc_gather_npc_uplevel[id=15804] {
+	optional        uint64               result                  = 1; 
+	// 1:升级成功
+	// 2:npc不存在
+	// 3:暂未解锁
+	// 4:已是最大等级
+	// 5:请先突破
+	// 6:消耗不足
+	// 7:未达到开放等级
+}
+
+message cs_gather_npc_through[id=15805] { //突破
+	optional        uint64               npcid                   = 1; // id
+}
+
+message sc_gather_npc_through[id=15806] {
+	optional        uint64               result                  = 1; 
+	// 1:突破成功
+	// 2:npc不存在
+	// 3:未解锁
+	// 4:请先升级
+	// 5:消耗不足
+	// 6:已达最大突破点
+	// 7:未达到开放等级
+}
+
+message cs_gather_enhance[id=15807] { //强化
+	optional        uint64               gatherid                = 1; // id
+	optional        uint64               enhanceid               = 2; //enhanceid
+}
+
+message sc_gather_enhance[id=15808] {
+	optional        uint64               result                  = 1; 
+	// 1:强化成功
+	// 2:该合体未激活
+	// 3:强化id不存在
+	// 4:消耗不足
+	// 5:已达最大等级
+	// 6:未达到开放等级
+}
+
+message cs_gather_npc_unlock[id=15809] { //解锁
+	optional        uint64               npcid                   = 1; // id
+}
+
+message sc_gather_npc_unlock[id=15810] {
+	optional        uint64               result                  = 1; 
+	// 1:解锁成功
+	// 2:已解锁
+	// 3:该npc不存在
+	// 4:消耗不足
+	// 5:未达到开放等级
+
+}
+
+message cs_gather_enhance_reset[id=15811] { //重置
+	optional        uint64               gatherid                = 1; // id
+}
+
+message sc_gather_enhance_reset[id=15812] {
+	optional        uint64               result                  = 1; 
+	// 1:重置成功
+	// 2:该合体未激活或不存在
+	// 3:未强化过，无需重置 
+	// 4:消耗不足
+	// 5:未达到开放等级
+}
+
+message sc_gather_notify[id=15813] {
+	repeated        p_gather               newlist                 =1; // 新增列表
+    repeated        p_gather               updatelist              =2; // 更新列表
+    repeated        p_gather               deletelist              =3; // 删除列表
+}
+
+message sc_gather_npc_notify[id=15814] {
+	repeated        p_npc               newlist                 =1; // 新增列表
+    repeated        p_npc               updatelist              =2; // 更新列表
+    repeated        p_npc               deletelist              =3; // 删除列表
+}
+
+message p_gather[id=15815] {
+    optional        p_ger                 gather               = 1; // 合体
+    optional        uint64                costpoint            = 2; // 已消耗能力点数
+    repeated 		p_gather_extra        extra                = 3; // 合体的额外属性
+}
+
+message p_npc[id=15816] {
+    optional        uint64               npcid                  = 1; // id
+    optional 		uint64               level                  = 2; // 等级
+    optional		uint64				 point                  = 3; // 能力点
+    optional        uint64               count                  = 4; // 突破次数
+}
+
+message p_gather_extra[id=15817] {
+    optional        uint64               id                     = 1; // id
+    optional 		uint64               level                  = 2; // 等级
+}
+
+
+message cs_gather_fight_request[id=15818]{
+    optional        uint64               gatherid               = 1; //选择的合体宝贝
+    optional        uint64               pos                    = 2; //宝贝所在位置
+    optional        uint64               level                  = 3; //选择的战斗难度
+}
+
+message sc_gather_fight_request[id=15819]{
+    optional        uint64               result                 = 1; //操作结果
+    // 1:ok
+    // 2:合体宝贝不存在
+    // 3:位置不合法
+    // 4:今天已经通关
+    // 5:和今天选择的以选择的关卡难度不符
+    // 6:难度未解锁
+    optional        p_fight_struct       fight_struct           = 2; // 战斗结构
+}
+
+message cs_gather_fight_report[id=15820]{
+    optional        p_fight_struct       fight_struct           = 1; // 战斗结构
+}
+
+message sc_gather_fight_report[id=15821]{
+    optional        uint64               result                 = 1; //操作结果
+    // 1:成功
+    // 2:校验不通过
+    // 3:今天已经通关无需再次挑战
+    optional        uint64               harm_val               = 2; //造成的伤害
+    optional        bool                 is_win                 = 3; //是否获胜
+}

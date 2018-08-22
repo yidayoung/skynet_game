@@ -1,0 +1,134 @@
+// 145 领域
+
+message cs_field_info[id=14501]{
+}
+
+message sc_field_info[id=14502]{
+    repeated            p_field_stone   stones      = 1; //
+}
+
+message p_field_stone[id=14503] {
+    optional            int64           stone_id    = 1; // 领域石id
+    optional            int64           initid      = 2;
+    optional            int64           ger_id      = 3; // 该领域石携带者ger id
+    optional            int32           stage       = 4; // 初中高三个阶段
+    optional            int64           level       = 5;
+    optional            int64           pos         = 6;
+}
+
+//升级
+message cs_field_uplv[id=14504]{
+    optional            uint32          b_mutil     = 1; //是否是多个升级
+    repeated            int64           initids     = 2; //
+    optional            uint32          lv          = 3; //
+}
+
+message sc_field_uplv[id=14505]{
+    optional            uint32          result      = 1; //升级结果
+    //0:系统错误
+    //1:成功
+    //2:消耗不足
+    //3:等级范围错误
+    repeated            p_field_stone   stones      = 2; //升级后的石头
+}
+
+//分解
+message cs_field_decompose[id=14506]{
+    repeated            int64           initids     = 1; //
+}
+
+//分解
+message sc_field_decompose[id=14507]{
+    optional            uint32          result      = 1; //分解结果
+    //0:系统错误
+    //1:成功
+    //2:不能存在已经装备的领域石
+    optional            p_reward        reward      = 2; //分解物品
+    repeated            p_field_stone   stones      = 3; //分解后的领域石列表
+}
+
+//更换
+message cs_field_change[id=14508]{
+    optional            int64           equip_initid    = 1; //
+    optional            int64           un_initid       = 2; //
+    optional            int64           ger_id          = 3; //
+    optional            int32           stage           = 4; // 初中高三个阶段
+    optional            int64           pos             = 5;
+}
+
+//更换
+message sc_field_change[id=14509]{
+    optional            uint32          result      = 1; //更换结果
+    //0:系统错误
+    //1:成功
+    //2:不能装备Stone
+    //3:没有从装备中发现Stone
+    //4:InitId error
+    //5:ger_id stage error
+    //6:特殊石头满了
+    //7:普通石头满了
+    //8:equip_initid and un_initid == 0
+    //9:pos设置不正确
+    optional            p_field_stone   euqip_stone = 2; //
+    optional            p_field_stone   unstone     = 3; //
+}
+
+//镶嵌
+message cs_field_set[id=14510]{
+    optional            int64           suit_id     = 1; //
+    repeated            int64           initids     = 2; // 
+    optional            int64           ger_id      = 3; // 该领域石携带者ger id
+    optional            int32           stage       = 4; // 初中高三个阶段
+}
+
+//镶嵌
+message sc_field_set[id=14511]{
+    optional            uint32          result      = 1; //更换结果
+    //0:系统错误
+    //1:成功
+    //2:不能装备改套装
+    //3:InitIds error
+    //4:ger_id error
+    //5:stage error
+    //6:suit_id error
+    //7:initids length error
+    //8:initids 存在重复
+    //9:stoneid 存在重复
+    repeated            p_field_stone   stones       = 2; //穿上
+    repeated            p_field_stone   unstones     = 3; //卸下
+}
+
+//一键卸下
+message cs_field_allun[id=14512]{
+    repeated            int64           initids      = 1; // 
+}
+
+//一键卸下
+message sc_field_allun[id=14513]{
+    optional            uint32          result       = 1; //结果
+    //0:系统错误
+    //1:成功
+    repeated            p_field_stone   unstones     = 2; //卸下
+}
+
+//更换
+message cs_field_equip_change[id=14514]{
+    optional            int64           equip_initid1   = 1; //
+    optional            int64           equip_initid2   = 2; //
+    optional            int64           ger_id          = 3; //
+    optional            int32           stage           = 4; // 初中高三个阶段
+    optional            int32           postar1         = 5; //
+    optional            int32           postar2         = 6; //
+}
+
+//更换
+message sc_field_equip_change[id=14515]{
+    optional            uint32          result      = 1; //更换结果
+    //0:系统错误
+    //1:成功
+    //2:位置错误
+    //3:initid错误
+    //4:客户端请求的石头不存在
+    optional            p_field_stone   stone1      = 2; //
+    optional            p_field_stone   stone2      = 3; //
+}

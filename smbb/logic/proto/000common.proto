@@ -1,0 +1,171 @@
+// 通用协议
+// 编号=000
+// 服务器端通用返回错误：
+    // 0 := 未知错误
+    // 254 := 失败-背包精灵列表长度超出
+    // 255 := 失败-背包装备列表长度超出
+
+
+// 握手协议(最先发送) y = (a*x + b) % m
+// 这里仍然有一个潜在风险，那就是玩家可以截包分析返回的协议
+// 如果以后真遇见这种问题那么可以考虑对返回的参数进行RSA加密
+message cs_handshake[id=00020] {
+}
+message sc_handshake[id=00021] {
+    repeated uint64 mix_1 = 1; // 混淆1
+    optional uint64 arg_a = 2; // 系数a
+    repeated uint64 mix_2 = 3; // 混淆2
+    optional uint64 arg_b = 4; // 常数b
+    repeated uint64 mix_3 = 5; // 混淆3
+    optional uint64 arg_m = 6; // 模数m
+    repeated uint64 mix_4 = 7; // 混淆4
+    optional uint64 arg_x = 8; // 初始x
+    repeated uint64 mix_5 = 9; // 混淆5
+}
+
+
+// 心跳包
+message cs_heart[id=00001] {
+}
+message sc_heart[id=00002] {
+    optional uint64 unixtime = 1; // 时间戳
+}
+
+
+// 版本号
+message cs_version[id=00003] {
+    optional string version = 1; // 版本号
+}
+message sc_version[id=00004] {
+    optional uint64 result = 1; // 返回码
+    // 1 := 版本号正确
+    // 2 := 版本号错误
+}
+
+
+// 配置项
+message     cs_config[id=00005] {
+}
+message     sc_config[id=00006] {
+    repeated    p_config            cfglist             =1; // 配置列表
+}
+message     p_config[id=00037] {
+    required    int32               key                 =1; // 配置类型
+    required    int64               value               =2; // 配置数值
+}
+
+
+// 零点时客户端重置数据
+message sc_reset_zero[id=00036] {
+}
+
+
+// 通用奖励定义
+message p_reward[id=00010] {
+    repeated p_reward_money moneylist = 1; // 货币列表
+}
+// 奖励货币定义
+message p_reward_money[id=00011] {
+    optional uint64 typeid = 1; // 货币类型
+    optional uint64 number = 2; // 货币数值
+}
+
+
+// 客户端请求作弊命令
+message cs_gm_test[id=00017] {
+    optional string command = 1; // 命令
+}
+message sc_gm_test[id=00018] {
+    optional uint64 result = 1; // 结果
+    // 1 := 成功
+    // 2 := 失败
+}
+
+
+// 属性通用结构
+message p_attr[id=00019] {
+    optional        uint64           attack                  =1; // 攻击力
+    optional        uint64           maxhp                   =2; // 满血量
+    optional        uint64           phydef                  =3; // 物理防御
+    optional        uint64           magdef                  =4; // 魔法防御
+    optional        uint64           critp                   =5; // 暴击
+    optional        uint64           critp_reduce            =6; // 抗暴
+    optional        uint64           critv                   =7; // 暴击程度
+    optional        uint64           critv_reduce            =8; // 暴击减免
+    optional        uint64           blockp                  =9; // 格挡率
+    optional        uint64           blockp_reduce           =10;// 格挡减免程度
+    optional        uint64           blockv                  =11;// 格挡程度
+    optional        uint64           hitp                    =12;// 命中
+    optional        uint64           miss                    =13;// 闪避
+    optional        uint64           damage_deepen           =14;// 伤害加深
+    optional        uint64           damage_reduce           =15;// 伤害减免
+    optional        uint64           backhpv                 =16;// 回血程度
+    optional        uint64           absorbp                 =17;// 吸血概率
+    optional        uint64           absorbv                 =18;// 吸血程度
+    optional        uint64           bouncep                 =19;// 反弹率
+    optional        uint64           bouncev                 =20;// 反弹程度
+    optional        uint64           attackaddn              =21;// 基础攻击加成
+    optional        uint64           maxhpaddn               =22;// 基础血量加成
+    optional        uint64           atktohp                 =23;// 普通攻击回血固定值
+    optional        uint64           speed                   =24;// 速度
+}
+
+message p_evolve[id=00042]{
+    optional    uint64      stage           =1;         //宝贝进化的阶段
+    optional    uint64      rank            =2;         //宝贝进化的阶数
+    optional    bool        ischose         =3;         //该阶段是否被选用
+    optional    uint64      clothes         =4;         //时装状态
+    optional    sint64      expiresec       =5;         //时装的到期时间
+    // -1表示永久，其他和当前时间算差值算过期时间
+}
+
+message p_skill[id=00043]{
+    optional    uint64      pos             =1;         //技能的位置
+    optional    uint64      level           =2;         //技能的等级
+    optional    uint64      stage           =3;         //技能的阶段
+    optional    uint64      extralevel      =4;         //因为进化信息获得的等级加成
+}
+
+
+// 公告相关协议
+message cs_notice_msg[id=00044] { 
+}
+message sc_notice_msg[id=00045] {
+    repeated p_notice notice_list = 1; // 公告列表
+}
+message p_notice[id=00046]{
+    optional uint64 notice_id=1; // ID
+    optional string notice_title=2; // 活动标题
+    optional string notice_content=3; // 活动内容
+    optional string notice_pic=4; // 前端活动图片路径
+    optional uint64 notice_start_time=5; // 活动开启时间
+    optional uint64 notice_end_time=6; // 活动结束时间
+}
+
+
+// 请求领取礼品码奖励
+message cs_gift_draw[id=00047]{
+    required            string              code                =1; // 礼品码
+}
+message sc_gift_draw[id=00048]{
+    required            int32                result              =1; // 请求结果
+    // 1 := 成功
+    // 2 := 失败-礼品码已被使用
+    // 3 := 失败-礼品码格式错误
+    // 4 := 失败-重复领取同类型礼品码
+    // 5 := 失败-礼品码已过期
+    // 0 := 失败-未知错误
+    optional            p_reward            reward              =2; // 奖励信息
+}
+
+// 推送跑马灯消息
+message list_broadcast_msg[id=00032] {
+    required            int32               id                  =1; // 消息ID
+    required            int32               type                =2; // 消息类型
+    repeated            string              args                =3; // 众参数
+    optional            uint64              timestamp           =4; // 发送时间戳
+}
+
+message sc_broadcast_msg[id=00049] {
+    repeated            list_broadcast_msg  list_msg            =1; // 
+}

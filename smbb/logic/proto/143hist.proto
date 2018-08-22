@@ -1,0 +1,41 @@
+// 模块 = 战报
+// 编号 = 143
+
+// 分享战报
+message cs_hist_share[id=14301]{
+	optional      uint64        type  = 1; // 战报类型
+	// 1 := 竞技场战报
+	// 2 := 争霸战报
+	optional      uint64        histid = 2; // 战报ID
+	optional      uint64        tarroleid = 3; // 对方ID
+}
+
+message sc_hist_share[id=14302]{
+	optional      uint64        result = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-分享冷却时间还未结束
+	// 3 := 失败-该战报已分享过
+}
+
+// 观看录像
+message cs_hist_watch[id=14303]{
+	optional      uint64       histid  = 1; // 战报ID
+}
+
+message sc_hist_watch[id=14304]{
+	optional      uint64       result  =1; // 结果
+	// 1 := 成功
+	// 2 := 失败-战报已过期
+	optional      p_fight_struct fight_struct = 2; // 战斗结构
+	optional      p_role_hist    atkpvp = 3; // 攻击方信息
+	optional      p_role_hist    defpvp = 4; // 防守方信息
+}
+
+// 玩家战报结构
+message p_role_hist[id=14305]{
+	optional        uint64       roleid    = 1; // 角色ID
+	optional        uint64       icon      = 2; // 角色头像ID
+	optional        string       rolename  = 3; // 角色名
+	optional        uint64       rank      = 4; // 角色排名  
+	optional        uint64       viplv     = 5; // 角色viplv 
+}

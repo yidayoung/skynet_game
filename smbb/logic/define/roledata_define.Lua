@@ -23,13 +23,14 @@ ROLE_DATA_LIST = {
     rmail_info = "role_mail",
     ger_info   = "role_ger",
     role_extra = "role_extra",
+    sign_info = "role_sign",
 }
 
 --[[
  {xx_info = handle_module} => {xx_info = {key = "xx_info", module = handle_module}}
 ]]
 table.map(ROLE_DATA_LIST, function(module, key)
-    return { key = add_key(key), module = module }
+    return { key = add_key(key),module = module }
 end)
 
 table.read_only(ROLE_DATA_LIST)

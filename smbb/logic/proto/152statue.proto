@@ -1,0 +1,90 @@
+// 模块 - statue
+// 编号 - 编号 15200
+
+// 请求statue信息
+message cs_statue_info[id=15201]{
+}
+
+message sc_statue_info[id=15202]{
+    optional      uint64               result        = 1;
+    //1:成功
+    //2:失败-等级不够
+    repeated      p_statue             unlocklist    = 2; //已解锁列表
+}
+
+message cs_statue_active[id=15203]{
+    optional    p_statue               statue         =   1; // 需激活的对应雕像信息
+}
+
+message sc_statue_active[id=15204]{
+	optional    uint64   			result		=	1;
+    // 1 := 成功
+    // 2 := 失败-不存在该雕像
+    // 3 := 失败-该雕像已被激活
+    // 4 := 失败-基础消耗不足
+    // 5 := 失败-概率性激活失败
+    // 6 := 失败-未达到区域开发等级
+    // 7 := 失败-此区域无此品阶雕像
+    // 8 := 失败-角色等级未达到该雕像的等级
+    // 9 := 失败-无对应皮肤
+    // 10 := 失败-消耗材料不足
+    // 11 := 失败-此区域无对应此等级的雕像
+    optional      p_statue                active     = 2; //已激活雕像列表
+    repeated      p_statue             maxstatuelist = 3; //各区域品阶 对应的最高激活列表 
+    optional      p_activerate         rateinfo      = 4;
+}
+
+message p_statue[id=15205]{
+    optional    uint64   			area		=	1; // 区域
+    optional    uint64              pos         =   2; // 位置（对应皮肤）
+    optional    uint64              stage       =   3; // 品阶
+    optional    uint64              level       =   4; // 等级
+
+}
+
+message p_activerate[id=15206]{
+    optional    p_statue   			statue		=	1; // statue基础信息
+    optional    uint64              luckpoint   =   2; // 祝福值
+}
+
+message cs_statue_unlock[id=15207]{
+    optional      p_statue               statue        = 1; 
+    // 解锁区域：区域值，其它值均为0
+    // 解锁品阶：需填写区域值与品阶值，其它均为0
+}
+
+message sc_statue_unlock[id=15208]{
+    optional      uint64                 result          =   1;
+    // 1: 成功
+    // 2: 失败-之前已解锁
+    // 3: 失败-不存在的区域
+    // 4: 失败-未达到解锁区域等级
+    // 5: 失败-该区域无此对应品阶雕像
+    // 6: 失败-未达到解锁该品阶的等级
+    optional      p_statue               unlock          =   2; 
+}
+
+message cs_statue_rateinfo[id=15209]{
+    optional      p_statue               statue        = 1; 
+}
+
+message sc_statue_rateinfo[id=15210]{
+    optional      uint64                 result          =   1;
+    // 1: 成功
+    optional      p_activerate           rateinfo        =   2; 
+}
+
+
+
+message cs_statue_areainfo[id=15211]{
+    optional      uint64          area        =   1; 
+}
+
+message sc_statue_areainfo[id=15212]{
+    optional      uint64               result        = 1;
+    //1:成功
+    //2:失败-无该区域
+    repeated      p_statue             activelist    = 2; //已激活雕像列表
+    repeated      p_statue             maxstatuelist = 3; //各区域品阶 对应的最高激活列表 
+}
+

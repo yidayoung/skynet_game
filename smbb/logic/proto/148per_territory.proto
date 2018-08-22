@@ -1,0 +1,320 @@
+// 模块 - 个人领域
+// 编号 - 14800
+
+//技能突破
+message cs_perterr_tupo[id=14804]{
+}
+
+//技能突破
+message sc_perterr_tupo[id=14805]{
+	optional            uint32                      result                 = 1;
+    optional            p_production_skill          production_skill       = 2; //生产技能
+	//0:系统错误
+    //1:成功
+    //2:材料不足
+	//3:逻辑错误
+    //4:已经满级
+    //5:等级不足
+}
+
+//修改技能称号
+message cs_perterr_switch_title[id=14806]{
+	optional            int64           prod_id      = 1;
+}
+
+//修改技能称号
+message sc_perterr_switch_title[id=14807]{
+	optional            uint32                      result                 = 1;
+    optional            p_production_skill          production_skill       = 2; //生产技能
+	//0:系统错误
+    //1:成功
+    //2:冷却
+    //3:逻辑错误
+    //4:prod_id错误
+    //5:生成器未解锁
+}
+
+//回收物品
+message cs_perterr_recycle[id=14808]{
+    optional            int64               id                     = 1;
+    optional            uint64              num                    = 2;
+}
+
+//回收物品
+message sc_perterr_recycle[id=14809]{
+	optional            uint32          result       = 1;
+	//0:系统错误
+    //1:成功
+    //2:道具错误
+    //3:vip等级不足
+    //4:reward错误
+    //5:没有开启任何生成器和回收站
+    //6:没有开启回收站
+    //7:超过回收最大限制
+    optional            p_reward        reward       = 2; //奖励内容
+    optional            p_recycle_shop  rcle_shop    = 3; //回收站
+}
+
+//修改通告牌内容
+message cs_perterr_announce[id=14810]{
+    optional            string          announce     = 1;
+}
+
+//修改通告牌内容
+message sc_perterr_announce[id=14811]{
+	optional            uint32          result       = 1;
+	//0:系统错误
+    //1:成功
+    //2:长度限制
+    //3:没有开启个人领地
+    //4:存在关键字
+}
+
+//个人领地完整信息
+message cs_perterr_info[id=14812]{
+	optional            uint64           			roleid      		   = 1; //玩家ID
+}
+
+//个人领地完整信息
+message sc_perterr_info[id=14813]{
+	optional            uint32          result       = 1;
+	//0:系统错误
+    //1:成功
+    //2:没有发现roleid
+    //3:等级不足等原因导致的未开启
+	optional            p_perterr_info  perterr_info = 2;
+    optional            p_role_public   role_public  = 3;
+}
+
+message p_perterr_info[id=14814] {
+    optional            uint64           			roleid      		   = 1; //玩家ID
+    optional            p_foster        			foster     			   = 2; //寄样宝贝信息
+    repeated            p_production_shop           production_shops       = 3; //生产器
+    optional            p_recycle_shop           	recycle_shop           = 4; //回收器
+    optional            p_production_skill          production_skill       = 5; //生产技能
+    optional            string          			announce               = 6; //告示牌信息
+    optional            int32                       bfdraw                 = 7; //是否可以领寄养奖励
+}
+
+message p_foster[id=14815] {
+    optional            uint64           			roleid      		   = 1; //玩家ID
+    optional            uint64           			type_id      		   = 2; //宝贝type_id
+    optional            int64            			surplus_time     	   = 3; //宝贝寄养剩余时间
+    optional            p_ger_summary               ger                    = 4;
+    optional            string                      frolename              = 5;
+    //字段从072版本后废弃，展示的形态直接从p_ger_summary里抓取
+    optional            uint64                      stage                  = 6; // 展示某进化阶段的形象
+}
+
+message p_production_shop[id=14816] {
+    optional			int32 						prod_id           	   = 1; //生产器id
+    optional            int32                       is_open                = 2; //生产器是否开放
+    optional			int32 						level             	   = 3; //生产器等级
+    optional			int64						exp               	   = 4; //生产器当前等级的经验值
+    optional			int64						stor_material     	   = 5; //生产器当前存储的材料数量
+    optional			int64						stor_exp          	   = 6; //生产器当前存储的经验数量
+    optional			int64						stor_gold         	   = 7; //生产器当前存储的金币数量
+    optional			int64						col_num           	   = 8; //当前累计收集的材料数量
+    optional            int64                       prod_time              = 9; //当前生产还剩余时间
+}
+
+message p_recycle_shop[id=14817] {
+    optional			int32 						level           	   = 1; //回收站等级
+    optional            int32                       is_open                = 2; //回收器是否开放
+    optional            int32                       acc_num                = 3; //当前回收数量
+}
+
+message p_production_skill[id=14818] {
+    optional            int32					    level            	   = 1; //生产技能等级
+    optional            int32					    exp_times        	   = 2; //生产技能当前等级的累计游戏次数
+    optional            int32                       tupo_lv                = 3; //突破等级
+    optional            int32                       prod_id                = 4; //当前技能对应的生成器id
+    optional            int64                       cd                     = 5; //技能切换cd
+}
+
+//打开生成器和回收器 生成器id:2 3 4 5 ，回收器:1
+message cs_perterr_openshop[id=14819]{
+	optional            int32           prod_id      = 1;
+}
+
+//打开生成器和回收器
+message sc_perterr_openshop[id=14820]{
+	optional            uint32          result       = 1;
+	//0:系统错误
+    //1:成功
+    //2:等级不足
+    //3:prod_id错误
+    //4:开启失败
+}
+
+//收集
+message cs_perterr_collect[id=14822]{
+	optional            int64           prod_id      = 1; //生成器id
+}
+
+//收集
+message sc_perterr_collect[id=14823]{
+	optional            uint32              result                 = 1;
+    optional            int32               bcrit                  = 2; //是否暴击 1暴击 0没暴击
+    optional            p_reward            normalreward           = 3; //普通奖励
+    optional            int64               roleexp                = 4; //普通奖励(人物经验)
+    optional            p_reward            colreward              = 5; //暴击奖励
+    optional            p_production_shop   production_shop        = 6; //生产器
+	//0:系统错误
+    //1:成功
+    //2:当前生成器未开放
+    //4:prod_id错误
+    //5:存量为空或者生产器为打开
+    //6:未找到生产器配置
+    //7:未找到生产器对应等级配置或者存量不足
+}
+
+//寄养
+message cs_perterr_foster[id=14824]{
+	optional            uint64          type_id      = 1;
+    optional            uint64          froleid      = 2;
+    optional            uint64          stage        = 3; // 展示某进化阶段的形象
+}
+
+//寄养
+message sc_perterr_foster[id=14825]{
+	optional            uint32          result       = 1;
+    optional            p_foster        foster       = 2; //被寄养信息
+	//0:系统错误
+    //1:成功
+    //2:坑已经被使用
+    //3:没有该玩家的生成器
+    //4:不存在type_id
+    //5:不能自己寄养自己
+    //6:已经存在寄养
+    //7:之前寄养奖励没有领取
+    //8:没有开启个人领地
+}
+
+//生成器升级
+message cs_perterr_prod_uplv[id=14826]{
+    optional            int64           prod_id      = 1; //生成器id
+}
+
+//生成器升级
+message sc_perterr_prod_uplv[id=14827]{
+    optional            uint32              result          = 1;
+    optional            p_production_shop   prod_shop       = 2; //生产器
+    //0:系统错误
+    //1:成功
+    //2:材料不足
+    //3:prod_id错误
+    //4:逻辑错误
+    //5:经验不足
+    //6:不存在等级
+}
+
+//获取好友列表
+message cs_perterr_friend[id=14828]{
+}
+
+//获取好友列表
+message sc_perterr_friend[id=14829]{
+    optional            uint32                  result          = 1;
+    repeated            p_perterr_friendinfo    finfo           = 2; //好友信息
+    optional            int32                   bdraw           = 3; //是否可以领奖
+    optional            uint64                  surtime         = 4; //剩余寄养时间
+    optional            uint64                  froleid         = 5; //被寄养的玩家id
+    //0:系统错误
+    //1:成功
+    //2:没有领域信息
+}
+
+message p_perterr_friendinfo[id=14830] {
+    optional            p_role_public           role_public     = 1;
+    optional            uint64                  flag            = 2; // 1:自己使用 2:空闲 3:已有寄养
+    optional            int32                   bfriend         = 3; // 1:是好友 0:不是好友 2:公会成员
+}
+
+//寄养完成领奖
+message cs_perterr_fosterdraw[id=14831]{
+}
+
+//寄养完成领奖
+message sc_perterr_fosterdraw[id=14832]{
+    optional            uint32                  result          = 1;
+    optional            p_reward                reward          = 2; //奖励内容
+    //0:系统错误
+    //1:成功
+    //2:不能领奖
+}
+
+//回收站升级
+message cs_perterr_rcle_uplv[id=14833]{
+}
+
+//回收站升级
+message sc_perterr_rcle_uplv[id=14834]{
+    optional            uint32              result          = 1;
+    optional            p_recycle_shop      rcle_shop       = 2; //回收站
+    //0:系统错误
+    //1:成功
+    //2:材料不足
+    //3:回收站没有开启
+    //4:已经达到最大等级
+}
+
+//获得指定的生成器
+message cs_perterr_getprod[id=14835]{
+    optional            uint64              froleid                = 1;
+    optional            int64               prod_id                = 2; //生成器id
+}
+
+//获得指定的生成器
+message sc_perterr_getprod[id=14836]{
+    optional            uint32              result                 = 1;
+    optional            p_production_shop   production_shop        = 2; //生产器
+    optional            uint64              roleid                 = 3;
+    //0:系统错误
+    //1:成功
+    //2:prod_id 错误
+    //3:prod_id 对应的生成器不存在
+}
+
+//技能升级
+message cs_perterr_skilluplv[id=14837]{
+}
+
+//技能升级
+message sc_perterr_skilluplv[id=14838]{
+    optional            uint32                      result                 = 1;
+    optional            p_production_skill          production_skill       = 2; //生产技能
+    //0:系统错误
+    //1:成功
+    //2:等级最大值
+    //3:等级达到突破要求等级
+    //4:没开通任意生成器和回收站
+    //5:小游戏次数不足
+}
+
+//请求指定玩家技能信息
+message cs_perterr_getskill[id=14839]{
+    optional            uint64                      roleid         = 1;
+}
+
+//请求指定玩家技能信息
+message sc_perterr_getskill[id=14840]{
+    optional            uint32                      result                 = 1;
+    optional            p_production_skill          production_skill       = 2; //生产技能
+    //0:系统错误
+    //1:成功
+    //2:没开通任意生成器和回收站
+}
+
+// 邀请好友寄养
+message cs_perterr_invite_foster[id=14841] {
+    optional        uint64                   tar_id                  =1; // 好友ID
+    optional        string                   content                 =2; // 聊天内容
+}
+message sc_perterr_invite_foster[id=14842] {
+    optional        uint64                    result                  =1; // 发送结果
+    // 0 := 系统错误
+    // 1 := 成功-消息已成功发送给对方
+    // 3 := 失败-对方消息队列已满不能继续发送
+    // 4 := 失败-发送时间cd没到
+}

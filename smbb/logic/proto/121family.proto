@@ -1,0 +1,687 @@
+// 模块=family
+// 编号=121
+// 已使用协议号
+//    01,02,03,04,05,06,07,08,09,
+// 10,11,12,13,14,15,16,17,18,19,
+// 20,21,22,23,24,25,26,27,28,29,
+// 30,31,32,33,34,35,36,37,38,39,
+// 40,41,42,43,44,45,46,47,48,49,
+// 50,51,52,53,54,55,56,57,58,59,
+// 60,61,62,63,64,65,66,67,68,69
+
+// 公会结构
+message p_family[id=12101] {
+	optional		uint64				familyid				=1; // 公会ID
+	optional		string				familyname				=2; // 公会名
+	optional		uint64				familylv				=3; // 公会等级
+	optional		uint64				familycons				=4; // 公会建设度
+	repeated		p_ftech				techlist				=5; // 科技列表
+	optional		uint64				techpoints				=6; // 科技点数
+	optional 		string 				notice					=7; // 公会公告(对内)
+	optional 		string				whatup					=8; // 公会宣言(对外)
+	optional 		uint64				create_time				=9; // 创建时间
+	optional 		string				chairname				=10; // 会长名字
+	optional		uint64				active					=11; // 活跃点数
+	repeated 		p_flog				floglist				=12; // 日志列表
+	optional 		uint64				donate_times			=13; // 已捐献次数
+	optional        uint64              joinneedlv              =14; // 加入需要的等级
+    optional        bool                joinneedagree           =15; // 加入是否需要审批
+    optional        uint64              rank                    =16; // 公会排行
+    optional        uint64              lastrecruitsec          =17; // 上次招募的时间点
+}
+message p_ftech[id=12145] {
+	optional 		uint64 				type					=1; // 科技类型
+	optional 		uint64 				level 					=2; // 科技等级
+}
+message p_flog[id=12150] {
+	optional 		uint64 				type 					=1; // 日志类型
+	optional 		string				content 				=2; // 日志内容
+	optional 		uint64 				timestamp 				=3; // 生成时间戳
+}
+
+// 公会简要结构
+message p_family_summary[id=12102] {
+	optional		uint64				familyid				=1; // 公会ID
+	optional		string				familyname				=2; // 公会名
+	optional		uint64				familylv				=3; // 公会等级
+	optional 		string				whatup					=4; // 公会宣言
+	optional 		uint64				membernum				=5; // 成员数量
+	optional 		string				chairname				=6; // 会长名字
+	optional 		uint64 				chairid 				=7; // 会长ID
+	optional 		uint64				totalpower				=8; // 总战斗力
+	optional        uint64              joinneedlv              =9; // 加入需要的等级
+	optional        bool                joinneedagree           =10;// 加入是否需要审批
+	optional        uint64              rank                    =11;// 联盟排行
+}
+
+
+// 成员结构
+message p_fmember_public[id=12103] {
+	optional 		p_role_public		baseinfo				=1; // 基本信息
+	optional 		uint64				title					=2; // 权限(0:=成员;1:=副会长;2:=会长)
+	optional 		uint64 				totalcons				=3; // 个人累计贡献度
+	optional        uint64              todaycons               =4; // 个人当天的贡献
+	optional        p_line_summary      atkline                 =5; // 阵容信息（进攻阵容）
+	optional        p_line_summary      defline                 =6; // 阵容信息（防守阵容）
+}
+
+// 请求公会相关数据
+message cs_family_info[id=12104] {
+}
+message sc_family_info[id=12105] {
+	optional 		uint64 				result					=1; // 请求结果
+	// 1 := 已有公会
+	// 2 := 没有公会
+	repeated 		p_family 			familyinfo 				=2; // 公会信息
+	repeated 		p_fmember_public 	members					=3; // 成员列表
+	optional 		uint64				lastquit				=4; // 最后一次退出公会的时间
+	repeated 		uint64				applylist    			=5; // 已申请公会ID列表
+	optional 		uint64 				donate_times 			=6; // 今日已捐献次数
+}
+
+// 请求公会信息列表
+message cs_family_list[id=12106,route=family_mng_server] {
+	optional 		uint64				pagenum					=1; // 页码(从1开始)
+}
+message sc_family_list[id=12107] {
+	repeated 		p_family_summary 	familylist 				=1; // 公会信息列表
+}
+
+// 请求搜索公会列表
+message cs_family_search[id=12122,route=family_search_server] {
+	optional 		string				name					=1; // 字符串
+}
+message sc_family_search[id=12123] {
+	repeated 		p_family_summary 	familylist 				=1; // 公会信息列表
+}
+
+// 请求创建公会
+message cs_family_create[id=12108] {
+	optional 		string 				familyname				=1; // 公会名
+	optional 		string 				notice					=2; // 公会公告
+	optional 		string				whatup					=3; // 公会宣言
+}
+message sc_family_create[id=12109] {
+	optional 		uint64 				result					=1; // 创建结果
+	// 1 := 创建成功
+	// 2 := 失败-货币不足
+	// 3 := 失败-冷却中
+	// 4 := 失败-公会名包含非法字符
+	// 5 := 失败-公会名冲突
+	// 6 := 失败-已加入公会
+	// 7 := 失败-角色等级和NONO等级都不满足
+	// 8 := 失败-公会名超长
+	// 9 := 失败-公会名含有敏感词
+	// 10 := 失败-公告字数限制
+	// 11 := 失败-宣言字数限制
+	repeated 		p_family 			familyinfo 				=2; // 公会信息
+	repeated 		p_fmember_public 	members					=3; // 成员列表
+}
+
+// 请求发送加入公会申请
+message cs_family_send_apply[id=12110] {
+	optional 		uint64				familyid				=1; // 公会ID
+}
+message cs_family_send_apply_fast[id=12162] {
+	optional 		uint64				tarroleid				=1; // 对方角色ID
+}
+message sc_family_send_apply[id=12111] {
+	optional 		uint64 				result 					=1; // 请求结果
+	// 1 := 请求成功
+	// 2 := 失败-冷却中，不能加入
+	// 3 := 失败-公会的申请消息已满
+	// 4 := 失败-申请加入的公会数量太多
+	// 5 := 失败-公会人数已满，请申请其它公会
+	// 6 := 失败-该公会已被您申请，不能重复申请
+	// 7 := 失败-您已经加入了公会，不能再申请加入
+	// 8 := 失败-申请的公会不存在
+	// 9 := 失败-角色等级和NONO等级都不满足
+	// 10 := 失败-该玩家并未加入公会
+}
+// 通知公会管理员有新申请
+message sc_family_apply_notify[id=12112] {
+	optional 		p_family_apply		newapply				=1; // 新申请
+}
+message p_family_apply[id=12113] {
+	optional 		uint64				roleid					=1; // 申请人ID
+	optional 		uint64				timestamp				=2; // 申请时间戳
+	optional 		string				rname					=3; // 申请人名字
+	optional 		uint64				level 					=4; // 申请人等级
+	optional 		uint64 				nonolv					=5; // Nono等级
+	optional 		uint64				power 					=6; // 申请人战力
+	optional 		uint64				icon					=7; // 申请人头像
+}
+// 公会管理员登录请求所有申请列表
+message cs_family_apply_list[id=12114] {
+}
+message sc_family_apply_list[id=12115] {
+	optional 		uint64				result					=1; // 请求结果
+	// 1 := 请求成功
+	// 2 := 失败-您未加入公会
+	// 3 := 失败-您的权限不足
+	repeated 		p_family_apply		applylist				=2; // 所有申请列表
+}
+// 公会管理员处理某个申请
+message cs_family_handle_apply[id=12116] {
+	optional 		uint64 				applyid 	            =1; // 申请人ID
+	// 如果applyid 填0  则表示全部拒绝
+	optional 		uint64 				option					=2; // 具体选项
+	// 1 := 同意申请
+	// 2 := 拒绝申请
+}
+message sc_family_handle_apply[id=12117] {
+	optional 		uint64 				result 					=1; // 处理结果
+	// 1 := 成功(同意/拒绝)
+	// 2 := 失败-该申请已处理/没有该申请(同意/拒绝)
+	// 3 := 失败-公会人数已满(同意)
+	// 4 := 失败-没有管理员权限(同意/拒绝)
+	// 5 := 失败-该玩家已加入别的公会(同意)
+	// 6 := 失败-您未加入公会(同意/拒绝)
+	// 7 := 失败-公会战期间禁止操作
+	optional 		uint64 				option					=2; // 具体选项
+}
+// 玩家请求撤回某个申请
+message cs_family_cancel_apply[id=12118,route=family_mng_server] {
+	optional 		uint64				familyid 				=1; // 申请公会ID
+}
+message sc_family_cancel_apply[id=12119] {
+	optional 		uint64 				result 					=1; // 撤回结果
+	// 1 := 成功撤回
+	// 2 := 失败-该申请已处理/没有该申请
+}
+// 玩家撤回某个申请时通知相应管理员
+message sc_family_cancel_notify[id=12120] {
+	optional 		uint64				roleid					=1; // 申请人ID
+}
+// 管理员处理申请时通知其他管理员
+message sc_family_handle_notify[id=12121] {
+	optional 		uint64				roleid   				=1; // 申请人ID
+	// roleid 填0 表示申请列表被清空了，也就是全部拒绝
+}
+// 玩家加入某个公会时如果他还有别的申请，则通知相应管理员
+message sc_family_join_notify[id=12141] {
+	optional 		uint64 				roleid					=1; // 申请人ID
+}
+// 玩家被同意加入公会时如果在线则收到通知
+message sc_family_agreed_notify[id=12142] {
+	optional 		p_family 			familyinfo 				=1; // 公会信息
+	repeated 		p_fmember_public 	members					=2; // 成员列表
+}
+// 玩家被拒绝加入公会时如果在线则收到通知
+message sc_family_refused_notify[id=12144] {
+	optional 		uint64 				familyid 				=1; // 公会ID
+}
+
+// 管理员请求踢人
+message cs_family_kick[id=12124] {
+	optional 		uint64 				roleid 					=1; // 准备踢的人的ID
+}
+message sc_family_kick[id=12125] {
+	optional 		uint64 				result 					=1; // 踢人结果
+	// 1 := 成功
+	// 2 := 失败-您没有管理员权限
+	// 3 := 失败-只能踢权限小于您的人
+	// 4 := 失败-该玩家并不存在
+	// 5 := 失败-公会战期间禁止操作
+	// 6 := 失败-公会跨服战期间禁止操作
+}
+// 玩家被踢出公会时如果在线则收到通知
+message sc_family_kicked_notify[id=12158] {
+}
+
+// 申请退出公会
+message cs_family_quit[id=12126] {
+}
+message sc_family_quit[id=12127] {
+	optional 		uint64 				result 					=1; // 退出结果
+	// 1 := 成功
+	// 2 := 失败-您并没有加入公会
+	// 3 := 失败-您是会长不能退出
+	// 4 := 失败-公会战期间禁止操作
+	// 5 := 失败-公会跨服战期间禁止操作
+}
+
+// 公会信息变更通知
+message sc_family_update_notify[id=12128] {
+	optional 		p_family 			familyinfo 				=1; // 公会新信息
+}
+// 公会成员新增通知
+message sc_fmember_new_notify[id=12129] {
+	repeated 		p_fmember_public	newlist 				=1; // 新增成员列表
+}
+// 公会成员删除通知
+message sc_fmember_del_notify[id=12130] {
+	repeated 		uint64				dellist 				=1; // 删除成员ID列表
+}
+// 公会成员变更通知
+message sc_fmember_update_notify[id=12159] {
+	repeated 		p_fmember_public	updatelist 				=1; // 更新成员列表
+}
+
+// 会长任命/下任管理员/转让会长
+message cs_family_manage[id=12131] {
+	optional 		uint64 				option					=1; // 选项
+	// 1 := 任命管理员
+	// 2 := 下任管理员
+	// 3 := 转让会长身份
+	optional 		uint64 				roleid					=2; // 被操作者ID
+}
+message sc_family_manage[id=12132] {
+	optional 		uint64				result 					=1; // 管理结果
+	// 1 := 成功
+	// 2 := 失败-您未加入公会
+	// 3 := 失败-您的权限不足
+	// 4 := 失败-被操作者不存在
+	// 5 := 失败-被操作者身份不符
+	// 6 := 失败-副会长数量限制
+}
+// 通知其它成员管理员变更
+message sc_family_manage_notify[id=12135] {
+	optional 		uint64 				option					=1; // 选项
+	// 1 := 任命管理员
+	// 2 := 下任管理员
+	// 3 := 转让会长身份
+	optional 		uint64 				roleid					=2; // 被操作者ID
+	optional 		uint64				ctrlid					=3; // 操作者ID
+}
+
+// 会长请求解散公会
+message cs_family_dissolve[id=12133] {
+}
+message sc_family_dissolve[id=12134] {
+	optional 		uint64				result 					=1; // 解散结果
+	// 1 := 成功
+	// 2 := 失败-您未加入公会
+	// 3 := 失败-您的权限不足
+	// 4 := 失败-还有其它成员
+	// 5 := 失败-公会战期间禁止操作
+	// 6 := 最近还有玩家加入
+	// 7 := 失败-公会跨服战期间禁止操作
+}
+// 通知成员公会解散
+message sc_family_dissolve_notify[id=12136] {
+	optional 		uint64 				familyid 				=1; // 公会ID
+}
+
+
+// 编辑公会公告和宣言
+message cs_family_edit[id=12139] {
+	optional 		string 				notice 					=1; // 公会公告
+	optional 		string 				whatup					=2; // 公会宣言
+}
+message sc_family_edit[id=12140] {
+	optional 		uint64 				result 					=1; // 编辑结果
+	// 1 := 成功
+	// 2 := 失败-公告字数限制
+	// 3 := 失败-宣言字数限制
+	// 4 := 失败-您未加入公会
+	// 5 := 失败-您的权限不足
+}
+// 公会公告或宣言变更时通知在线成员
+message sc_family_edit_notify[id=12160] {
+	optional 		string 				notice 					=1; // 公会公告
+	optional 		string 				whatup					=2; // 公会宣言
+}
+
+
+// 公会成员上线/下线提醒
+message sc_fmember_state_trans_notify[id=12143] {
+	optional 		uint64				roleid					=1; // 角色ID
+	optional 		uint64 				lastlogout				=2; // 新状态
+	// 该字段为0表示在线，否则表示下线时间
+}
+
+// 请求为本公会捐献
+message cs_family_donate[id=12137] {
+	optional 		uint64				type					=1; // 捐献类型
+	// 1 := 消耗银两
+	// 2 := 消耗小额钻石
+	// 3 := 消耗大额钻石
+}
+message sc_family_donate[id=12138] {
+	optional 		uint64				result 					=1; // 捐献结果
+	// 1 := 捐献成功
+	// 2 := 失败-没有加入公会
+	// 3 := 失败-消耗货币不足
+	// 4 := 失败-您的贡献度已满
+	// 5 := 失败-玩家捐献次数限制
+	// 6 := 失败-公会捐献次数限制
+	optional 		uint64 				type 					=2; // 捐献类型
+	optional 		p_reward			reward 					=3; // 获得奖励
+}
+// 公会建设度变更提醒
+message sc_family_cons_notify[id=12146] {
+	optional 		uint64				newlv					=1; // 新等级
+	optional 		uint64 				newcons 				=2; // 新建设度
+	optional 		uint64				donate_times			=3; // 新的捐献次数
+}
+
+// 管理员请求为公会升级科技
+message cs_family_upgrade_techlv[id=12147] {
+	optional 		uint64 				type 					=1; // 科技类型
+}
+message sc_family_upgrade_techlv[id=12148] {
+	optional 		uint64 				result 					=1; // 升级结果
+	// 1 := 升级成功
+	// 2 := 失败-没有加入公会
+	// 3 := 失败-没有管理权限
+	// 4 := 失败-科技点数不足
+	// 5 := 失败-科技等级上限
+}
+// 公会科技变更提醒
+message sc_family_tech_notify[id=12149] {
+	repeated 		p_ftech 			changelist 				=1; // 改变的科技列表
+	optional 		uint64 				techpoints 				=2; // 最新的科技点数
+}
+
+// 公会日志新增提醒
+message sc_family_log_notify[id=12151] {
+	repeated 		p_flog 				addloglist				=1; // 新增的日志列表
+}
+
+
+
+//%% 公会日志类型定义
+//-define(FAMILY_LOG_TYPE_DONATE, 			1). 		% 公会捐献
+//-define(FAMILY_LOG_TYPE_JOIN, 				2). 		% 加入公会
+//-define(FAMILY_LOG_TYPE_QUIT, 				3). 		% 退出公会
+//-define(FAMILY_LOG_TYPE_KICK, 				4). 		% 踢出公会
+//-define(FAMILY_LOG_TYPE_APPOINT_VICE, 		5). 		% 任命副会长
+//-define(FAMILY_LOG_TYPE_DISMISS_VICE, 		6). 		% 辞退副会长
+//-define(FAMILY_LOG_TYPE_TRANSFER_AUTH, 		7). 		% 会长转移权限
+//-define(FAMILY_LOG_TYPE_BOSS_DEAD, 			8). 		% BOSS死亡
+//-define(FAMILY_LOG_TYPE_BOSS_OPEN, 			9). 		% BOSS开启
+//-define(FAMILY_LOG_TYPE_BOSS_RESET, 		10). 		% BOSS重置
+//-define(FAMILY_LOG_TYPE_LEVEL_UPGRADE, 		11). 		% 公会等级提升
+//-define(FAMILY_LOG_TYPE_TECHLV_UPGRADE, 	12). 		% 科技等级提升
+//-define(FAMILY_LOG_TYPE_CREATE,  	        13). 		% 公会创建
+
+
+//%% 公会消息类型定义
+//-define(FAMILY_MSG_TYPE_CHAT, 				0). 		% 普通聊天消息
+//-define(FAMILY_MSG_TYPE_DONATE, 			1). 		% 公会捐献
+//-define(FAMILY_MSG_TYPE_JOIN, 				2). 		% 加入公会
+//-define(FAMILY_MSG_TYPE_QUIT, 				3). 		% 退出公会
+//-define(FAMILY_MSG_TYPE_KICK, 				4). 		% 踢出公会
+//-define(FAMILY_MSG_TYPE_APPOINT_VICE, 		5). 		% 任命副会长
+//-define(FAMILY_MSG_TYPE_DISMISS_VICE, 		6). 		% 辞退副会长
+//-define(FAMILY_MSG_TYPE_TRANSFER_AUTH, 		7). 		% 会长转移权限
+//-define(FAMILY_MSG_TYPE_BOSS_DEAD, 			8). 		% BOSS死亡
+//-define(FAMILY_MSG_TYPE_BOSS_OPEN, 			9). 		% BOSS开启
+//-define(FAMILY_MSG_TYPE_BOSS_RESET, 		10). 		% BOSS重置
+//-define(FAMILY_MSG_TYPE_LEVEL_UPGRADE, 		11). 		% 公会等级提升
+//-define(FAMILY_MSG_TYPE_TECHLV_UPGRADE, 	12). 		% 科技等级提升
+//-define(FAMILY_MSG_TYPE_INVADE_OPEN, 		13).		% 公会入侵开放
+//-define(FAMILY_MSG_TYPE_RECRUIT,            13).        % 公会招募
+//-define(FAMILY_MSG_TYPE_MINE,               14).        % 公会挖矿招募
+
+// 公会群聊消息结构
+message p_family_msg[id=12152] {
+    optional        uint64                    type                    =1; // 消息类型
+    // 0 := 常规聊天消息
+    // _ := 系统通知消息
+    optional        uint64                   uid                     =2; // 消息UID
+    optional        uint64                   time                    =3; // 时间戳
+    optional        uint64                   src_id                  =4; // 发送者ID
+    optional        string                  src_name                =5; // 发送者名字
+    optional        string                  content                 =6; // 消息内容
+    optional        uint64                   icon                    =7; // 发送者头像
+    optional        uint64                  vip                      =8;// 发送者的vip等级
+}
+
+// 登录请求群聊消息
+message cs_family_msg_list[id=12153] {
+}
+message sc_family_msg_list[id=12154] {
+	optional 		uint64 					result 					=1; // 请求结果
+	// 1 := 请求成功
+	// 2 := 失败-没有加入公会
+	repeated 		p_family_msg 			chatlist 				=2; // 普通消息
+	repeated 		p_family_msg 			sysmlist 				=3; // 系统消息
+}
+// 群聊消息新增提醒
+message sc_family_msg_notify[id=12155] {
+	repeated 		p_family_msg 			chatlist 				=2; // 新增消息
+}
+
+// 请求发送群聊消息
+message cs_family_send_msg[id=12156] {
+	optional 		string 					content 				=1; // 发送内容
+}
+message sc_family_send_msg[id=12157] {
+	optional 		uint64 					result 					=1; // 发送结果
+	// 1 := 发送成功
+	// 2 := 失败-没有加入公会
+	// 3 := 失败-字数长度限制
+}
+
+// 公会活跃度变化通知
+message sc_family_activepoints_notify[id=12161] {
+	optional 		uint64 					activepoints 			=1; // 最新活跃度
+}
+
+// 请求弹劾相关数据
+message cs_family_impeach_info[id=12163] {
+}
+message sc_family_impeach_info[id=12164] {
+	optional 		uint64					result 					=1; // 请求结果
+	// 1 := 请求成功; 2 := 失败-未加入公会
+	optional 		uint64					deadline				=2; // 结束倒计时(0表示没有弹劾)
+	optional 		uint64					vote_num				=3; // 投票人数
+	optional 		uint64					is_voted				=4; // 自己是否参与投票(1 := 参与; 2 := 未参与)
+}
+
+// 请求发起弹劾
+message cs_family_impeach_start[id=12165] {
+}
+message sc_family_impeach_start[id=12166] {
+	optional 		uint64					result 					=1; // 请求结果
+	// 1 := 请求成功; 2 := 失败-弹劾已发起; 3 := 失败-会长很勤劳; 4 := 失败-你是会长啊; 5 := 失败-未加入公会
+}
+
+// 请求同意投票
+message cs_family_impeach_vote[id=12167] {
+}
+message sc_family_impeach_vote[id=12168] {
+	optional 		uint64 					result 					=1; // 请求结果
+	// 1 := 投票成功; 2 := 失败-弹劾未发起; 3 := 失败-不能重复投票; 4 := 失败-未加入公会
+}
+
+// 弹劾信息变更通知
+message sc_family_impeach_notify[id=12169] {
+	optional 		uint64					deadline				=1; // 结束倒计时(0表示没有弹劾)
+	optional 		uint64					vote_num				=2; // 投票人数
+	optional 		uint64					is_voted				=3; // 自己是否参与投票(1 := 参与; 2 := 未参与)
+}
+
+// 弹劾成功通知
+message sc_family_impeach_success[id=12170] {
+	optional 		uint64					oldchairid 				=1; // 老会长ID
+	optional 		uint64					newchairid 				=2; // 新会长ID
+}
+
+message cs_family_setarg[id=12187]{
+    optional        uint64                  joinneedlv              =1; // 加入需要的战队等级
+    optional        bool                    join_needagree          =2; // 加入是否需要审批
+}
+
+message sc_family_setarg[id=12188]{
+    optional        uint64                  result                  =1; //操作结果
+    // 1 := 成功
+    // 2 := 没有联盟
+    // 3 := 权限不够
+    // 4 := 参数或者值错误
+    // 0 := 未知错误
+    optional        uint64                  joinneedlv              =2; // 加入需要的战队等级
+    optional        bool                    join_needagree          =3; // 加入是否需要审批
+
+}
+
+message cs_family_quick_join[id=12189]{
+
+}
+
+message sc_family_quick_join[id=12190]{
+    optional        uint64                  result                  =1; //操作结果
+    // 1 := 成功
+    // 2 := 没有符合条件的公会
+}
+
+message cs_family_recruit[id=12191]{
+
+}
+
+message sc_family_recruit[id=12192]{
+    optional        uint64                  result                  =1; //操作结果
+    // 1 := 成功
+    // 2 := 没有公会
+    // 3 := 发送的太频繁了
+    // 4 := 权限不够
+    optional        uint64                  lastrecruitsec          =2; //如果成功了就是成功的时间点，失败就是上次的时间点
+}
+
+message cs_family_view_other[id=12193]{
+    optional        uint64                  tar_roleid              =1; //目标角色ID
+}
+
+message sc_family_view_other[id=12194]{
+    optional        uint64                  result                  =1; //操作结果
+    // 1 := 成功
+    // 2 := 失败 - 你没有工会
+    // 3 := 失败 - 这个人已经不是工会成员了
+    optional        p_fmember_public        tar                     =2; //目标信息
+}
+
+//给公会成员发邮件
+message cs_family_send_member_mail[id=12195]{
+    optional        string                  chat_msg                =1; //聊天内容
+}
+
+message sc_family_send_member_mail[id=12196]{
+    optional        uint64                  result                  =1; //操作结果
+    // 1 := 成功
+    // 2 := 没有公会
+    // 3 := 到了今日使用次数上限
+    // 4 := 权限不够
+    // 5 := 内容太长了
+}
+
+
+//----------------------------------公会红包系统分割线---------------------------------------------
+
+message p_family_role_packet[id=12171]{
+    optional        uint64                  typeid                  =1; //红包的typeid
+    optional        string                  rolename                =2; //发红包的角色名
+    optional        uint64                  packetid                =3; //红包的唯一ID
+    optional        uint64                  leftnum                 =4; //已经开启的红包个数
+    optional        bool                    isdraw                  =5; //是否已经领取了这个红包
+}
+
+// 玩家抢到的红包的描述
+message p_family_get_packet[id=12172]{
+    optional        string                  rolename                =1; //抢到的红包发送者的名字
+    optional        p_reward                reward                  =2; //抢到的内容
+}
+
+message p_family_sent_packet[id=12173]{
+    optional        uint64                  typeid                  =1; //红包的类型
+    optional        uint64                  sentnum                 =2; //已经发送的个数
+}
+
+message p_family_packet[id=12186]{
+    optional        uint64                  type                    =1; //红包的类型
+    optional        uint64                  packettimes             =2; //红包的可抢次数
+    optional        uint64                  packetgold              =3; //红包的总量
+    optional        uint64                  packetnums              =4; //红包的数量
+    optional        string                  packetbestRole          =5; //红包最高获得者
+    optional        bool                    isdraw                  =6; //当天是否已经领取过该类型的红包
+}
+
+message cs_family_packet_info[id=12174]{
+
+}
+
+message sc_family_packet_info[id=12185]{
+    repeated        p_family_packet         family_packet           =1; //联盟每天的免费红包
+    repeated        p_family_sent_packet    sent_pakcet             =2; //自己已经发送的公会红包信息
+    //这里只会有发送的数据，未发送的不会记录也不会回复给客户端，如果可以发送N个红包这里的数量可能是 0~N组数据
+    repeated        p_family_role_packet    role_send_packet        =3; //公会玩家发送出来的红包
+    repeated        p_family_get_packet     role_get_packet         =4; //玩家自己抢到的红包信息
+}
+
+// 领取公会的红包
+message cs_family_packet_drawfamily[id=12175]{
+    optional        uint64                  type                    =1; //要领取的红包类型
+    // 1 ：= 金币红包
+    // 2 ：= 钻石红包
+}
+
+message sc_family_packet_drawfamily[id=12176]{
+    optional        uint64                  result                  =1; //操作返回码
+    // 1 := 领取成功;
+    // 2 := 未加入联盟;
+    // 3 := 领取类型错误;
+    // 4 := 红包已经被抢完了;
+    // 5 := 今天已经抢过这个红包了
+    // 0 := 失败未知错误;
+    optional        p_reward                reward                  =2; //红包内的奖励
+}
+
+//发公会红包
+message cs_family_sendpacket[id=12177]{
+    optional        uint64                  typeid                  =1; //要发送的红包类型
+}
+
+message sc_family_sendpacket[id=12178]{
+    optional        uint64                  result                  =1; //操作结果
+    // 1 := 成功;
+    // 2 := 未加入联盟;
+    // 3 := vip等级不足;
+    // 4 := 发送需要的货币不足;
+    // 5 := 红包发送次数不足
+    // 0 := 失败未知错误;
+    optional        p_reward                reward                  =2; //发送后的返利内容
+}
+
+// 领取成员发送的红包
+message cs_family_packet_drawrole[id=12179]{
+    optional        uint64                  packetid                =1; //红包的id
+
+}
+
+message sc_family_packet_drawrole[id=12180]{
+    optional        uint64                  result                  =1; //操作结果
+    // 1 := 成功;
+    // 2 := 未加入联盟;
+    // 3 := 红包不存在;
+    // 4 := 红包已经被抢光了;
+    // 5 := 已经抢过这个红包了
+    // 6 := 抢红包次数已经到了上限
+    // 0 := 失败未知错误;
+    optional        p_reward                reward                  =2; //获得的奖励
+}
+
+message cs_family_packet_ranklist[id=12181]{
+
+}
+
+message sc_family_packet_ranklist[id=12182]{
+    repeated        p_family_packet_rank    ranklist                =1; //排行榜信息
+}
+
+message p_family_packet_rank[id=12183]{
+    optional        uint64                  rank                    =1; //排行
+    optional        string                  rolename                =2; //角色名字
+    optional        uint64                  sentnum                 =3; //发送红包的数量
+    optional        uint64                  costgold                =4; //花费的元宝数量
+}
+
+message sc_family_packet_notify[id=12184]{
+    repeated        p_family_packet         family_packet           =1; //联盟每天的免费红包
+    repeated        p_family_sent_packet    sent_pakcet             =2; //自己已经发送的公会红包信息
+    //这里只会有发送的数据，未发送的不会记录也不会回复给客户端，如果可以发送N个红包这里的数量可能是 0~N组数据
+    repeated        p_family_role_packet    role_send_packet        =3; //公会玩家发送出来的红包
+    repeated        p_family_get_packet     role_get_packet         =4; //玩家自己抢到的红包信息
+}
+
+//----------------------------------公会红包系统分割线---------------------------------------------

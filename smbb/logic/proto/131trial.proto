@@ -1,0 +1,274 @@
+// 模块 = 勇气试炼
+// 编号 = 13100
+
+// 由于跳关/不跳关时的挑战层级,士气等信息不同,故当玩家请求试炼信息时,分两种情况返回
+// sc_trial_info1 玩家当天第一次请求试炼信息,此时返回跳关相关的信息
+// sc_trial_info2 返回玩家当前试炼层级/士气/buff等信息
+// 返回协议由服务器判断,客户端不做判断
+// 请求试炼信息
+message cs_trial_info[id=13101]{
+}
+
+// 当天首次进入勇气试炼时,返回跳关信息
+message sc_trial_info1[id=13102]{
+	optional     uint64        result     = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-功能未开启(等级不够)
+	optional     uint64        jumpdun    = 2; // 可跳到第X层级
+}
+
+// 非首次进入试炼,返回当前试炼层级/士气/buff等信息
+message sc_trial_info2[id=13103]{
+	optional      uint64        result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-功能未开启(等级不够)
+}
+
+// 试炼结构
+message p_trial[id=13104]{
+	optional      uint64        curdun    = 1;  // 当前试炼层级
+	optional      uint64        curscore  = 2;  // 今日积分
+	optional      uint64        chatimes  = 3;  // 今日已挑战次数
+	optional      uint64        curmorale = 4;  // 今日士气
+	optional      uint64        hisscore  = 5;  // 历史积分
+	optional      p_attr        addattr   = 6;  // 普通buff
+	repeated      uint64        deadlist  = 7;  // 今日试炼挑战中已阵亡的宝贝id列表(不能再次上阵)
+	repeated      p_tbox        tbox      = 8;  // 宝箱信息
+	repeated      p_buff        bufflist  = 9;  // 若当前试炼层级为buff关卡,发送buff购买信息,反之为空
+	optional      uint64        gertypeid = 10; // 玩家购买复活buff时返回复活的宝贝typeid
+	repeated      p_mon         monlist   = 11; // 怪物关卡信息
+	optional      uint64        state     = 12; // 状态
+	// 1 := 正常状态
+	// 2 := 快速通关-buff
+	// 3 := 快速通关-宝箱
+	// 4 := 等待挑战返回状态
+	repeated     uint64         bdunids   = 13; // buff关卡id(快速通关显示进度)
+	optional     uint64         ctype     = 14; // 怪物关卡上次挑战难度
+}
+
+// 玩家试炼信息更新
+message sc_trial_update[id=13105]{
+	optional     p_trial        trial     = 1; // 更新后的试炼信息
+}
+
+// 跳关信息
+message cs_trial_jump[id=13106]{
+	optional     uint64         select    = 1; // 选择类型
+	// 1 := 确定跳关
+	// 2 := 取消跳关
+}
+
+message sc_trial_jump[id=13107]{
+	optional     uint64         result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-还未完成上次快速通关
+	// 3 := 失败-今日已跳过
+	optional     uint64         type      = 2; // 跳关类型(类型同上)
+	optional     uint64         score     = 3; // 积分奖励
+	optional     uint64         morale    = 4; // 士气奖励
+	optional     p_reward       reward    = 5; // 保底奖励
+}
+
+// 怪物关卡请求挑战,玩家未进行上阵操作时,客户端发送玩家默认的攻击阵容和训练师
+message cs_trial_challenge[id=13108]{
+	optional      uint64        dunid     = 1; // 挑战关卡ID
+	optional      uint64        ctype     = 2; // 挑战的难度类型
+	// 1 := 简单
+	// 2 := 困难
+	// 3 := 无敌
+	repeated      uint64       geridlist  = 3; // 宝贝ID列表
+    repeated      uint64       poslist    = 4; // 宝贝站位列表
+    optional      uint64       trainerid  = 5; // 训练师ID
+}
+
+message sc_trial_challenge[id=13109]{
+	optional      uint64        result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-当前层级不是怪物关卡,不能挑战
+	// 3 := 失败-上阵宝贝中存在已阵亡的宝贝,请重新选择宝贝
+	// 4 := 失败-宝贝重复上阵(前端出bug)
+	// 5 := 失败-已达最高关卡
+	optional      p_fight_struct  fight_struct  = 2; // 战斗结构
+}
+
+// 战斗结束后客户端返回,服务器接收到该消息时根据战斗结果计算玩家上阵宝贝剩余血量,并决定是否推送下一关信息
+message cs_trial_challenge_back[id=13110]{
+	optional p_fight_struct fight_struct = 1; // 战斗结构
+}
+
+message sc_trial_challenge_back[id=13111]{
+	optional       uint64       result    = 1; // 结果
+	// 1 := 成功 
+	optional       uint64       star      = 2; // 战斗得星
+	optional       uint64       isend     = 3; // 是否达到最高关卡
+	// 1 := 已达到最高关卡
+	// 2 := 未达到最高关卡
+	optional       uint64       vipadd    = 4; // 积分vip加成
+	optional       uint64       iswin     = 5; // 战斗结果
+	// 1 := 成功
+	// 2 := 失败
+}
+
+// buff关卡购买buff
+message cs_trial_buff_buy[id=13112]{
+	optional      uint64        buffid     = 1; // 要购买的buff id 
+	optional      uint64        times      = 2; // 要购买的次数
+	optional      uint64        gerid      = 3; // 复活宝贝id
+}
+
+message sc_trial_buff_buy[id=13113]{
+	optional      uint64        result     = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-当前层级不是buff关卡
+	// 3 := 失败-buff不存在
+	// 4 := 失败-buff的购买次数不足
+	// 5 := 失败-士气不足
+	// 6 := 失败-复活宝贝不在阵亡列表中
+}
+
+// buff结构
+message p_buff[id=13114]{
+	optional      uint64        buffid     = 1; // buff id
+	optional      uint64        buytimes   = 2; // 已购买次数
+}
+
+// 宝箱关卡开宝箱
+message cs_trial_tbox_open[id=13115]{
+	optional      uint64       type        = 1; // 开宝箱类型
+	// 1 := 开启1次
+	// 2 := 开启10次
+	// 3 := 快速通关所有箱子开1次
+	// 4 := 快速通关所有箱子开5次
+	// 5 := 快速通关所有箱子开10次
+	// 6 := 快速通关所有箱子开20次
+	optional      uint64       boxid       = 2; // 宝箱id
+}
+
+message sc_trial_tbox_open[id=13116]{
+	optional      uint64        result     = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-当前层级不是宝箱关卡
+	// 3 := 失败-今日开启次数不足
+	// 4 := 失败-钻石不足
+	// 5 := 失败-钻石或开启次数不足
+	optional      p_reward      reward     = 2; // 奖励
+	optional      uint64        opentimes  = 3; // 实际开启宝箱个数
+}
+
+// 客户端操作进入下一挑战层级
+message cs_trial_next_lv[id=13117]{
+}
+
+message sc_trial_next_lv[id=13118]{
+	optional      uint64       result      = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已到最高层级
+	// 3 := 失败-当前关卡已是最后一层(快速通关时buff关卡)
+}
+
+// 今日积分排行
+message cs_trial_score_rank[id=13119]{
+}
+
+message sc_trial_score_rank[id=13120]{
+	optional      uint64       result     = 1; // 结果
+	// 1 := 成功
+	optional      p_srank      rolerank   = 2; // 玩家排行
+	repeated      p_srank      ranklist   = 3; // 积分排行列表
+}
+
+// 积分排行结构
+message p_srank[id=13121]{
+	optional      uint64       rank       = 1; // 排名
+	optional      uint64       roleid     = 2; // 角色ID
+	optional      string       rolename   = 3; // 角色名
+	optional      uint64       score      = 4; // 积分
+	optional      uint64       topdun     = 5; // 最高层级
+}
+
+// 历史积分奖励信息
+message cs_trial_hsr_info[id=13122]{
+}
+
+message sc_trial_hsr_info[id=13123]{
+	optional      uint64       result     = 1; // 结果
+	// 1 := 成功     
+	repeated      p_hsreward   rewardlist = 2; // 历史积分奖励列表
+	optional      p_reward     rewardacc  = 3; // 累计获得的奖励
+}
+
+// 历史积分奖励结构
+message p_hsreward[id=13124]{
+	optional      uint64       stage      = 1; // 积分阶段ID
+	optional      uint64       state      = 2; // 积分奖励状态
+	// 0 := 未激活
+	// 1 := 可领取
+	// 2 := 已领取
+}
+
+// 历史积分奖励更新
+message sc_trial_hsr_update[id=13125]{
+	repeated      p_hsreward    rewardlist= 1; // 更新列表    
+}
+
+// 领取历史积分奖励
+message cs_trial_hsr_draw[id=13126]{
+	optional      uint64       stage      = 1; // 领取的积分阶段
+}
+
+message sc_trial_hsr_draw[id=13127]{
+	optional       uint64       result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-该积分阶段不存在
+	// 3 := 失败-积分未达到该阶段目标
+	// 4 := 失败-该阶段奖励已领取
+	optional       p_reward     reward     = 2; // 奖励
+	optional       p_reward     rewardacc  = 3; // 累计获得的奖励
+}
+
+// 复活结构
+message p_relive[id=13128]{
+	optional       uint64       reliveid  = 1; // 复活id
+	optional       uint64       num       = 2; // 拥有的复活个数
+}
+
+// buff/宝箱跳关时请求离开
+message cs_trial_fj_leave[id=13129]{
+}
+
+message sc_trial_fj_leave[id=13130]{
+	optional      uint64        result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-当前并不在快速通关界面
+}
+
+// 宝箱结构
+message p_tbox[id=13131]{
+	optional      uint64        boxid     = 1; // 宝箱id
+	optional      uint64        opentimes = 2; // 开启次数
+}
+
+// 怪物关卡信息
+message p_mon[id=13132]{
+	optional      uint64        type      = 1; // 难度类型
+	optional      uint64        monpower  = 2; // 怪物战斗力
+	optional      uint64        monid     = 3; // 怪物roleid
+}
+
+// 请求宝箱关卡保底奖励
+message cs_trial_tbox_fixreward[id=13133]{
+}
+
+message sc_trial_tbox_fixreward[id=13134]{
+	optional      uint64        result     = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-当前关卡不是宝箱关卡
+	// 3 := 失败-保底奖励已领过
+	optional      p_reward      reward     = 2; // 保底奖励 
+}
+
+// 非挑战时间段推送
+message sc_trial_curfew[id=13135]{
+	optional     uint64         result     = 1; // 试炼宵禁
+	// 1 := 宵禁
+}

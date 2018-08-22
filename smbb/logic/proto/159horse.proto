@@ -1,0 +1,232 @@
+// 刻印 15900
+
+//stage的值:
+//1). %每赛季活动开启阶段
+//2). %每轮比赛选拨阶段
+//3). %每轮比赛竞猜阶段
+//4). %每轮比赛鼓舞阶段
+//5). %每轮比赛鼓舞后比赛阶段
+//6). %每轮休息阶段
+//7). %每赛季活动结束阶段
+//8). %每赛季活动展示结束阶段
+
+message cs_horse_info[id=15901] {
+}
+
+message sc_horse_info[id=15902] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 主服不能通信
+    optional        int32                stage		             = 2; // 当前处于哪个阶段
+    optional        uint64               run_time   		     = 3; // 开跑时间
+}
+
+message p_votes_info[id=15903] {
+    optional        uint64               trainerid              = 1; // 
+    optional        int32                votes                  = 2; // 
+    optional        uint64               sec                    = 3; // 最近一次操作时间 
+}
+
+// stage=2:投票阶段
+message cs_horse_selectinfo[id=15904] {
+}
+
+message sc_horse_selectinfo[id=15905] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 阶段错误
+	// 3 := 主服不能通信
+    repeated        p_votes_info         votes_info	    	     = 2; // 所有玩家投票
+    repeated        p_votes_info         self_votes	    	     = 3; // 玩家自己的投票
+}
+
+message p_odds_info[id=15906] {
+    optional        uint64               trainerid              = 1; // 
+    optional        p_reward             money_spent            = 2; // 
+    optional        uint64               sec                    = 3; // 最近一次操作时间 
+}
+
+// stage=3:赛前竞猜阶段
+message cs_horse_guessinfo[id=15907] {
+}
+
+message sc_horse_guessinfo[id=15908] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 阶段错误
+	// 3 := 主服不能通信
+	repeated 		p_odds_info     	 odds_list   	    	 = 2;
+    optional        uint64               my_most_trainerid		 = 3; // 我投票的最多的训练师
+    optional        int32                extra_odds		         = 4; // 额外赔率
+	repeated 		p_track_ret   		 track_ret_list          = 5; // 跑道
+	repeated 		p_odds_info     	 self_odds   	    	 = 6; // 自己下注信息
+}
+
+message p_inspireinfo[id=15909] {
+    optional        uint64               trainerid              = 1; // 
+    optional        int32                inspire_num            = 2; // 
+    optional        int32                fly_num                = 3; // 起飞次数
+    optional        uint64               sec                    = 4; // 最近一次起飞cd时间 
+}
+
+// stage=4:鼓舞阶段
+message cs_horse_inspireinfo[id=15911] {
+}
+
+message sc_horse_inspireinfo[id=15912] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 阶段不对
+	// 3 := 主服不能通信
+    repeated        p_inspireinfo        inspireinfo             = 2; // 
+	repeated 		p_track_ret   		 track_ret_list          = 3; // 跑道
+	repeated 		p_odds_ret_info      odds_ret_list   	     = 4; // 最终赔率
+    repeated        p_inspireinfo        self_inspire            = 5; // 自己的鼓舞信息
+}
+
+// 通知鼓舞起飞
+message sc_horse_notify_inspire_fly[id=15913] {
+    optional        uint64               trainerid              = 1; // 
+}
+
+message p_simulat_info[id=15914] {
+    optional        int32                minute                  = 1; // 
+	repeated 		p_rank_info     	 rank_info	    	     = 2;
+}
+
+message p_rank_info[id=15915] {
+    optional        uint64               trainerid               = 1; // 
+    optional        int32                rank                    = 2; // 
+}
+
+// stage=5:鼓舞结束 比赛后半段
+message cs_horse_real_match[id=15916] {
+}
+
+message sc_horse_real_match[id=15917] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 阶段不对
+	// 3 := 主服不能通信
+	repeated 		p_simulat_info  	 simulat_list		     = 2;
+	repeated 		p_rank_info     	 real_rank	    	     = 3;
+	repeated 		p_track_ret   		 track_ret_list          = 4; // 跑道
+}
+
+message cs_horse_selection[id=15918] {
+    optional        uint64               trainerid               = 1; // 
+}
+
+message sc_horse_selection[id=15919] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 票数不足
+	// 3 := 阶段不对
+	// 4 := 次数不足
+	// 5 := trainerid错误
+    optional        uint64               my_trainerid		     = 2; // 我投票的训练师
+    optional        int32                my_votes		         = 3; // 我的投票数
+}
+
+// 赛前竞猜
+message cs_horse_precom_guess[id=15920] {
+    optional        uint64               trainerid               = 1; // 
+    optional        int32    	         count                   = 2; // 竞猜次数
+}
+
+message sc_horse_precom_guess[id=15921] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 货币不足
+	// 3 := 阶段不对
+	// 4 := 次数不足
+	// 5 := trainerid错误
+	// 6 := 不能给没有在跑道里的训练师投票
+    optional        uint64               my_trainerid		     = 2; // 我竞猜的训练师
+    optional        int32                extra_odds		         = 3; // 额外赔率
+    optional        int32    	         count                   = 4; // 竞猜次数
+    optional        p_reward             money                   = 5; // 消耗钱 
+	repeated 		p_odds_info     	 odds_list   	    	 = 6;
+}
+
+// 鼓舞
+message cs_horse_inspire[id=15922] {
+    optional        uint64               trainerid               = 1; // 
+    optional        int32    	         count                   = 2; // 鼓舞次数
+}
+
+message sc_horse_inspire[id=15923] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+	// 2 := 货币不足
+	// 3 := 玩家起飞阶段,不能鼓舞
+	// 4 := 阶段不对
+	// 5 := 次数不足
+	// 6 := trainerid错误
+	// 7 := 不能给没有在跑道里的训练师投票
+    optional        uint64               my_trainerid            = 2; // 我鼓舞的训练师
+	optional 		int32  				 inspire_count		     = 3;
+    optional        p_reward    	     money                   = 4; // 消耗的货币
+}
+
+// 通知阶段变更
+message sc_horse_notify_stage[id=15924] {
+    optional        int32                stage		             = 1; // 当前处于哪个阶段
+}
+
+// 离开
+message cs_horse_leave[id=15925] {
+}
+
+message sc_horse_leave[id=15926] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+}
+
+// record
+message cs_horse_record[id=15927] {
+}
+
+message sc_horse_record[id=15928] {
+	optional 		uint64 				 result					= 1;
+	// 0 := 未知错误
+	// 1 := 成功
+    repeated        p_record_info        record_list            = 2; // 
+}
+
+message p_record_info[id=15929] {
+    optional        uint64               time                   = 1; // 
+    optional        int32                stage                  = 2; // 
+    optional        p_reward    	     money_spent            = 3; // 投入的货币
+    optional        p_reward    	     money_gains            = 4; // 收益的货币
+}
+
+// 玩家的赔率真实结果,训练师对应的跑道
+message p_track_ret[id=15930] {
+    optional        uint64               trainerid               = 1; // 
+    optional        int32                track                   = 2; // 
+}
+
+message p_odds_ret_info[id=15931] {
+    optional        int32                rank                    = 1; // 
+    optional        uint64               trainerid               = 2; // 
+}
+
+// 进入
+message cs_horse_enter[id=15932] {
+}
+
+message sc_horse_enter[id=15933] {
+	optional 		uint64 				 result					 = 1;
+	// 0 := 未知错误
+	// 1 := 成功
+}

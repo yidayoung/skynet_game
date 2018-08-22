@@ -1,0 +1,40 @@
+// 模块=guide
+// 编号=12800
+
+
+// 请求主线任务列表
+message cs_guide_list[id=12801] {
+}
+message sc_guide_list[id=12802] {
+	repeated			p_guide				guidelist			=1; // 任务列表
+}
+
+
+// 任务结构
+message p_guide[id=12803] {
+	optional			uint64				guideid				=1; // 任务ID
+	optional			uint64				progress			=2; // 任务进度
+	optional			uint64				trigger				=3; // 是否完成(0:=未完成;1:=已完成)
+}
+
+
+// 通知前端任务变化
+message sc_guide_notify[id=12804] {
+	repeated		p_guide					newlist				=1; // 新增列表
+	repeated		p_guide					updatelist			=2; // 更新列表
+	repeated		p_guide					deletelist			=3; // 删除列表
+}
+
+
+// 请求领取任务奖励
+message cs_guide_draw[id=12805] {
+	optional			uint64				guideid				=1; // 任务ID
+}
+message sc_guide_draw[id=12806] {
+	optional			uint64				result				=1; // 领取结果
+	// 1 := 成功
+	// 2 := 无该任务
+	// 3 := 还未完成
+	repeated			p_reward			reward				=2; // 奖励内容
+}
+

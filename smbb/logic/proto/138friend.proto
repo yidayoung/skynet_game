@@ -1,0 +1,221 @@
+// 模块=friend
+// 编号=138
+
+
+// 请求好友信息
+message cs_friend_info[id=13801] {
+}
+message sc_friend_info[id=13802] {
+    repeated        p_friend_frd            friend_list             =1; // 好友列表
+    optional        uint64                   send_energy_times       =2; // 赠送体力次数
+    optional        uint64                   draw_energy_times       =3; // 领取体力次数
+}
+
+
+// 搜索可添加好友
+message cs_friend_search[id=13803] {
+    optional        string                  tar_name                =1; // 目标名字
+    // 当目标名字为空时，返回随机推荐列表
+    optional        uint64                  type                    =2; // 搜索类型
+    // 1 := 字符搜索
+    // 2 := 数字搜索
+}
+message sc_friend_search[id=13804] {
+    repeated        p_friend_stranger       stranger_list           =1; // 玩家列表
+}
+
+
+// 申请加为好友
+message cs_friend_send_apply[id=13805] {
+    repeated        uint64                   tar_id                  =1; // 被申请方ID
+}
+message sc_friend_send_apply[id=13806] {
+    optional        uint64                    result                  =1; // 申请结果
+    // 1 := 成功-已将申请消息通知对方
+    // 2 := 失败-对方已经是您的好友/不能向自己发送申请
+    // 3 := 失败-您的好友已满不能继续添加
+    // 4 := 失败-对方好友已满不能继续添加
+    // 5 := 失败-对方消息队列已满不能发送
+    // 6 := 失败-您已发过申请消息不能重复发送
+    // 7 := 失败-未知原因
+}
+
+
+// 响应好友申请
+message cs_friend_handle_apply[id=13807] {
+    repeated        uint64                   msg_uid                 =1; // 申请消息ID
+    optional        uint64                    option                  =2; // 响应选项
+    // 1 := 同意
+    // 2 := 拒绝
+}
+message sc_friend_handle_apply[id=13808] {
+    optional        uint64                    result                  =1; // 响应结果
+    // 1 := 成功-已添加对方为好友/已成功拒绝
+    // 2 := 失败-对方已经是您的好友
+    // 3 := 失败-您的好友已满不能继续添加
+    // 4 := 失败-对方好友已满不能继续添加
+    // 5 := 失败-未知原因
+    // 6 := 失败-无该消息
+}
+
+
+// 请求删除好友
+message cs_friend_delete[id=13809] {
+    repeated        uint64                   tar_id                  =1; // 好友ID
+}
+message sc_friend_delete[id=13810] {
+    optional        uint64                    result                  =1; // 删除结果
+    // 1 := 成功-已删除好友并将自己从对方好友列表删除
+    // 2 := 失败-对方不是自己好友，不能删除
+    // 3 := 失败-未知原因
+}
+
+
+// 主动推送消息(系统邮件走原来邮件流程)
+message sc_friend_msg[id=13811] {
+    repeated        p_friend_msg            msg_list                =1; // 消息列表(未读)
+}
+message cs_friend_msg[id=13812] {
+    optional        uint64                   read_uid                =1; // 已读消息最大UID
+}
+
+
+// 向好友发送聊天消息
+message cs_friend_send_msg[id=13813] {
+    optional        uint64                   tar_id                  =1; // 好友ID
+    optional        string                  content                 =2; // 聊天内容
+}
+message sc_friend_send_msg[id=13814] {
+    optional        uint64                    result                  =1; // 发送结果
+    // 1 := 成功-消息已成功发送给对方
+    // 2 := 失败-对方不是您的好友不能发送消息
+    // 3 := 失败-对方消息队列已满不能继续发送
+    // 4 := 失败-消息不符合规范(长度过长、敏感词)
+    // 5 := 失败-未知原因
+}
+
+
+// 赠送好友体力
+message cs_friend_send_energy[id=13815] {
+    optional        uint64                   tar_id                  =1; // 好友ID
+}
+message sc_friend_send_energy[id=13816] {
+    optional        uint64                    result                  =1; // 赠送结果
+    // 1 := 成功-已向对方赠送体力
+    // 2 := 失败-对方不是您的好友不能赠送体力
+    // 3 := 失败-您已向对方赠送过体力不能继续赠送
+    // 4 := 失败-未知原因
+    // 5 := 失败-对方领取上限已满
+    // 6 := 失败-您的赠送次数用完
+}
+
+
+// 领取单个体力
+message cs_friend_draw_energy[id=13817] {
+    optional        uint64                   msg_uid                 =1; // 消息UID
+}
+message sc_friend_draw_energy[id=13818] {
+    optional        uint64                    result                  =1; // 领取结果
+    // 1 := 成功-已领取对方赠送体力
+    // 2 := 失败-对方没有向您赠送体力(UID无效)
+    // 3 := 失败-您的领取上限已满不能继续领取
+    // 4 := 失败-您的体力已满暂时不能领取
+    // 5 := 失败-未知原因
+}
+
+
+// 一键领取回赠
+message cs_friend_draw_energy_and_return_onekey[id=13819] {
+}
+message sc_friend_draw_energy_and_return_onekey[id=13820] {
+    optional        uint64                    result                  =1; // 领取结果
+    // 1 := 成功-已领取对方赠送体力
+    // 2 := 失败-对方没有向您赠送体力(UID无效)
+    // 3 := 失败-您的领取上限已满不能继续领取
+    // 4 := 失败-您的体力已满暂时不能领取
+    // 5 := 失败-未知原因
+    repeated        uint64                   msg_uid_list            =2; // 领取回赠的消息UID列表
+}
+
+
+// 好友切磋
+message cs_friend_challenge[id=13821] {
+    optional        uint64                   roleid                  =1; // 对方ID
+}
+message sc_friend_challenge[id=13822] {
+    optional        uint64                    result                  =1; // 挑战结果
+    // 1 := 成功
+    // 2 := 失败
+//    repeated        p_fight_record          replay                  =2; // 战斗录像
+}
+
+
+// 一键赠送体力
+message cs_friend_send_energy_onekey[id=13823] {
+    repeated        uint64                   tar_id_list             =1; // 好友ID列表
+}
+message sc_friend_send_energy_onekey[id=13824] {
+    repeated        uint64                   succid_list             =1; // 成功ID列表
+}
+
+
+
+
+
+
+
+// 好友信息结构
+message p_friend_frd[id=13851] {
+    optional        p_role_public           base_info               =1; // 基本信息
+    optional        uint64                    send_energy             =2; // 赠送体力
+    // 1 := 未赠送
+    // 2 := 已赠送
+}
+
+
+// 陌生人信息结构
+message p_friend_stranger[id=13852] {
+    optional        p_role_public           base_info               =1; // 基本信息
+    optional        uint64                  state                   =2; // 双方状态
+    // 1 := 可以申请
+    // 2 := 已经发送了申请
+    // 3 := 已经是好友了
+}
+
+
+// 好友或陌生人消息结构
+message p_friend_msg[id=13853] {
+    optional        uint64                    type                    =1; // 消息类型
+    // 1 := 常规好友聊天消息
+    // 2 := 好友申请消息
+    // 3 := 好友同意消息
+    // 4 := 好友拒绝消息
+    // 5 := 好友赠送体力消息
+    // 6 := 好友解除关系消息
+    optional        uint64                   uid                     =2; // 消息UID
+    optional        uint64                   time                    =3; // 时间戳
+    optional        uint64                   src_id                  =4; // 发送者ID
+    optional        string                  src_name                =5; // 发送者名字
+    optional        string                  content                 =6; // 消息内容
+    optional        uint64                   icon                    =7; // 发送者头像
+    optional		string					desc					=8; // 描述
+    optional        p_role_public           role_public             =9; // 角色公共信息只有好友申请消息才有值
+}
+
+
+// 好友新增提示
+message sc_friend_add_notify[id=13857] {
+    repeated        p_friend_frd            add_list                =1; // 新增列表
+}
+
+// 好友删除提示
+message sc_friend_del_notify[id=13858] {
+    repeated        uint64                   del_list                =1; // 删除列表
+}
+
+// 好友上线/下线提醒
+message sc_friend_state_trans_notify[id=13859] {
+    optional        uint64               roleid                  =1; // 角色ID
+    optional        uint64               lastlogout              =2; // 新状态
+    // 该字段为0表示在线，否则表示下线时间
+}

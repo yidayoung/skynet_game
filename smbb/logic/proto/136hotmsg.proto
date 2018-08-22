@@ -1,0 +1,14 @@
+// 136  热点活动展示
+
+message cs_hotmsg_list[id=13601]{
+
+}
+
+message sc_hotmsg_list[id=13602]{
+    repeated        p_hotmsg            msg_list    =1;  //公告列表
+}
+
+message p_hotmsg[id=13603]{
+    required        uint64              id      = 1;     //公告ID
+    required        string              icon    = 2;     //使用的资源
+}

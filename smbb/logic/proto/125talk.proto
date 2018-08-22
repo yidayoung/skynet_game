@@ -1,0 +1,78 @@
+// 模块=talk
+// 编号=125
+
+
+// 世界群聊消息结构
+message p_talk_msg[id=12501] {
+    optional uint64 type = 1; // 消息类型
+    // 0 := 常规聊天消息
+    // _ := 系统通知消息
+    // 2 := 小喇叭
+    // 3 := 战报分享
+    // 4 := 异界追击组队
+    optional uint64 uid = 2; // 消息UID
+    optional uint64 time = 3; // 时间戳
+    optional uint64 src_id = 4; // 发送者ID
+    optional string src_name = 5; // 发送者名字
+    optional string content = 6; // 消息内容
+    optional uint64 icon = 7; // 发送者头像
+    optional uint64 frame = 8; // 发送者相框
+    optional uint32 vip = 9; // 发送者vip信息
+    repeated int64 args = 10; // 特殊消息的扩展参数
+}
+
+
+// 登录请求群聊消息
+message cs_talk_msg_list[id=12502] {
+}
+message sc_talk_msg_list[id=12503] {
+    repeated p_talk_msg chatlist = 1; // 所有消息
+    repeated uint64 shieldlist   = 2; // 屏蔽列表
+}
+
+
+// 群聊消息新增提醒
+message sc_talk_msg_notify[id=12504] {
+    repeated p_talk_msg chatlist = 1; // 新增消息
+}
+
+
+// 请求发送群聊消息
+message cs_talk_send_msg[id=12505] {
+    optional int32 type = 1;
+    // 0 := 常规聊天消息
+    // 2 := 小喇叭
+    optional string content = 2; // 发送内容
+}
+message sc_talk_send_msg[id=12506] {
+    optional int32 type = 1;
+    // 0 := 常规聊天消息
+    // 2 := 小喇叭
+    optional uint64 result = 2; // 发送结果
+    // 1 := 发送成功
+    // 2 := 失败-VIP等级限制
+    // 3 := 失败-所需货币不足
+    // 4 := 失败-内容字符超长(前端验证)
+    // 5 := 失败-含有敏感词汇(前端验证)
+    // 6 := 失败-发言速度太快
+    // 7 := 失败-type不存在
+    // 8 := 失败-角色等级限制
+    // 0 := 服务器异常
+}
+
+// 屏蔽玩家
+message cs_talk_set_shield[id=12507] {
+    optional int32  bcancel      = 1;
+    // 1:屏蔽
+    // 2:取消屏蔽
+    optional uint64 shieldroleid = 2;
+}
+message sc_talk_set_shield[id=12508] {
+    optional int32  result       = 1; // 所有消息
+    repeated uint64 shieldlist   = 2; // 屏蔽列表
+    // 1 := 屏蔽成功
+    // 2 := 取消屏蔽成功
+    // 3 := 已经存在于屏蔽里面
+    // 4 := 没有屏蔽该玩家
+    // 5 := shieldroleid不是整形
+}

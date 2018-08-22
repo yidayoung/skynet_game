@@ -1,0 +1,57 @@
+// VIP模块
+// 编号=120
+
+
+// 请求VIP相关信息
+message cs_vip_info[id=12001] {
+}
+message sc_vip_info[id=12002] {
+	optional		p_vip				info			=1; // VIP信息
+}
+// VIP具体信息结构
+message p_vip[id=12003] {
+	optional		uint64				viplv			=1; // VIP等级
+	optional		uint64				points			=2; // VIP积分
+    repeated        p_vip_gift_times    gift            =3; // vip礼包的领取信息
+}
+
+message p_vip_gift_times[id=12009]{
+    optional        uint64              type            =1; //礼包的类型
+    optional        uint64              num             =2; //礼包今天的已经领取的数量
+}
+// 主动推送VIP更新
+message sc_vip_update[id=12004] {
+	optional		p_vip				info			=1; // VIP信息
+}
+
+
+// 请求领取VIP礼包
+message cs_vip_gift[id=12005] {
+	optional		uint64				typeid			=1; // 领取的礼包ID
+}
+message sc_vip_gift[id=12006] {
+	optional 		uint64				result			=1; // 领取结果
+	// 1 := 领取成功
+	// 2 := 失败-VIP等级不足
+	// 3 := 失败-领取次数上限
+	// 4 := 失败-购买礼包消耗不足
+	// 5 := 失败-类型错误
+	optional		p_reward			reward			=2; // 具体奖励
+}
+
+
+// 请求使用VIP券
+message cs_vip_item_effect[id=12007] {
+	optional			uint64				typeid						=1; // 类型ID
+	optional			uint64				number						=2; // 使用数量
+}
+message sc_vip_item_effect[id=12008] {
+	optional			uint64				result						=1; // 使用结果
+	// 1 := 使用成功
+	// 2 := 失败-道具不足
+	// 3 := 失败-道具不能实现此功能
+	optional 			uint64 				add_viplv 					=2; // 增加VIP等级
+	optional 			uint64 				add_points 					=3; // 增加VIP积分
+	optional 			uint64 				add_overdue					=4; // 增加激活时间
+}
+

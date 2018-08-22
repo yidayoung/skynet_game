@@ -1,0 +1,6767 @@
+syntax = "proto2";
+message cs_handshake {
+} 
+
+message sc_handshake {
+     repeated uint64 mix_1 = 1; // 混淆1 
+     optional uint64 arg_a = 2; // 系数a 
+     repeated uint64 mix_2 = 3; // 混淆2 
+     optional uint64 arg_b = 4; // 常数b 
+     repeated uint64 mix_3 = 5; // 混淆3 
+     optional uint64 arg_m = 6; // 模数m 
+     repeated uint64 mix_4 = 7; // 混淆4 
+     optional uint64 arg_x = 8; // 初始x 
+     repeated uint64 mix_5 = 9; // 混淆5 
+} 
+
+message cs_heart {
+} 
+
+message sc_heart {
+     optional uint64 unixtime = 1; // 时间戳 
+} 
+
+message cs_version {
+     optional string version = 1; // 版本号 
+} 
+
+message sc_version {
+     optional uint64 result = 1; // 返回码 
+} 
+
+message cs_config {
+} 
+
+message sc_config {
+     repeated p_config cfglist = 1; // 配置列表 
+} 
+
+message p_config {
+     required int32 key = 1; // 配置类型 
+     required int64 value = 2; // 配置数值 
+} 
+
+message sc_reset_zero {
+} 
+
+message p_reward {
+     repeated p_reward_money moneylist = 1; // 货币列表 
+} 
+
+message p_reward_money {
+     optional uint64 typeid = 1; // 货币类型 
+     optional uint64 number = 2; // 货币数值 
+} 
+
+message cs_gm_test {
+     optional string command = 1; // 命令 
+} 
+
+message sc_gm_test {
+     optional uint64 result = 1; // 结果 
+} 
+
+message p_attr {
+     optional uint64 attack = 1; // 攻击力 
+     optional uint64 maxhp = 2; // 满血量 
+     optional uint64 phydef = 3; // 物理防御 
+     optional uint64 magdef = 4; // 魔法防御 
+     optional uint64 critp = 5; // 暴击 
+     optional uint64 critp_reduce = 6; // 抗暴 
+     optional uint64 critv = 7; // 暴击程度 
+     optional uint64 critv_reduce = 8; // 暴击减免 
+     optional uint64 blockp = 9; // 格挡率 
+     optional uint64 blockp_reduce = 10;// 格挡减免程度 
+     optional uint64 blockv = 11;// 格挡程度 
+     optional uint64 hitp = 12;// 命中 
+     optional uint64 miss = 13;// 闪避 
+     optional uint64 damage_deepen = 14;// 伤害加深 
+     optional uint64 damage_reduce = 15;// 伤害减免 
+     optional uint64 backhpv = 16;// 回血程度 
+     optional uint64 absorbp = 17;// 吸血概率 
+     optional uint64 absorbv = 18;// 吸血程度 
+     optional uint64 bouncep = 19;// 反弹率 
+     optional uint64 bouncev = 20;// 反弹程度 
+     optional uint64 attackaddn = 21;// 基础攻击加成 
+     optional uint64 maxhpaddn = 22;// 基础血量加成 
+     optional uint64 atktohp = 23;// 普通攻击回血固定值 
+     optional uint64 speed = 24;// 速度 
+} 
+
+message p_evolve {
+     optional uint64 stage = 1; //宝贝进化的阶段 
+     optional uint64 rank = 2; //宝贝进化的阶数 
+     optional bool ischose = 3; //该阶段是否被选用 
+     optional uint64 clothes = 4; //时装状态 
+     optional sint64 expiresec = 5; //时装的到期时间 
+} 
+
+message p_skill {
+     optional uint64 pos = 1; //技能的位置 
+     optional uint64 level = 2; //技能的等级 
+     optional uint64 stage = 3; //技能的阶段 
+     optional uint64 extralevel = 4; //因为进化信息获得的等级加成 
+} 
+
+message cs_notice_msg {
+} 
+
+message sc_notice_msg {
+     repeated p_notice notice_list = 1; // 公告列表 
+} 
+
+message p_notice {
+     optional uint64 notice_id = 1; // ID 
+     optional string notice_title = 2; // 活动标题 
+     optional string notice_content = 3; // 活动内容 
+     optional string notice_pic = 4; // 前端活动图片路径 
+     optional uint64 notice_start_time = 5; // 活动开启时间 
+     optional uint64 notice_end_time = 6; // 活动结束时间 
+} 
+
+message cs_gift_draw {
+     required string code = 1; // 礼品码 
+} 
+
+message sc_gift_draw {
+     required int32 result = 1; // 请求结果 
+     optional p_reward reward = 2; // 奖励信息 
+} 
+
+message list_broadcast_msg {
+     required int32 id = 1; // 消息ID 
+     required int32 type = 2; // 消息类型 
+     repeated string args = 3; // 众参数 
+     optional uint64 timestamp = 4; // 发送时间戳 
+} 
+
+message sc_broadcast_msg {
+     repeated list_broadcast_msg list_msg = 1; // 
+}
+
+message cs_account_login {
+     optional uint64 accid = 1; // 账号ID 
+     optional string accname = 2; // 账号名 
+     optional uint64 deadline = 3; // 有效时间 
+     optional string ticket = 4; // 验证密钥 
+     optional uint64 svrid = 5; // 服务器ID 
+     optional uint64 srctype = 6; // 渠道ID 
+     optional string mac = 7; // MAC地址 
+     optional string devid = 8; // 设备ID 
+     optional string phone_model = 9; // 机型 
+     optional string sys_version = 10; // 系统版本 
+     optional uint64 subtype = 11; // 广告渠道 
+     optional string ip_info = 12; // IP地址信息 
+     optional uint64 fc_type = 13; // 财务渠道 
+} 
+
+message sc_account_login {
+     optional uint64 result = 1; // 登录结果 
+     optional uint64 rstate = 2; // 当前状态 
+} 
+
+message cs_account_create {
+     optional string rname = 1; // 角色名字 
+     optional uint64 icon = 2; // 创建角色时初始训练师的显示id 
+} 
+
+message sc_account_create {
+     optional uint64 result = 1; // 结果 
+} 
+
+message sc_account_kick {
+     optional uint64 result = 1; // 原因 
+} 
+
+message cs_role_info {
+} 
+
+message sc_role_info {
+     optional p_role_info roleinfo = 1; // 角色信息 
+} 
+
+message p_role_info {
+     optional uint64 roleid = 1; // 角色ID 
+     optional string rolename = 2; // 角色名 
+     optional uint64 raccid = 3; // 账号ID 
+     optional string accname = 4; // 账号名 
+     optional uint64 familyid = 5; // 公会ID 
+     optional string familyname = 6; // 公会名 
+     optional uint64 icon = 7; // 头像ID 
+     optional uint64 rolelv = 8; // 角色等级 
+     optional uint64 roleexp = 9; // 角色经验 
+     optional uint64 viplv = 10; // VIP等级 
+     optional uint64 vipexp = 11; // VIP经验 
+     optional uint64 atkpower = 12; // 进攻战斗力 
+     optional uint64 defpower = 13; // 防御战斗力 
+     optional uint64 lastlogin = 14; // 最近登录时间 
+     optional uint64 lastlogout = 15; // 最近下线时间 
+     optional uint64 srctype = 16; // 来源渠道 
+     optional string subtype = 17; // 子渠道名 
+     optional uint64 totalpaid = 18; // 累积付费 
+     optional uint64 frame = 19; // 头像框 
+     optional uint64 regtime = 20; // 注册时间 
+} 
+
+message sc_role_exp_notify {
+     optional uint64 rolelv = 1; // 现在角色等级 
+     optional uint64 roleexp = 2; // 现在角色经验 
+} 
+
+message cs_role_public {
+     repeated uint64 roleidlist = 1; // 角色ID列表 
+} 
+
+message sc_role_public {
+     repeated p_role_public publiclist = 1; // 公共信息列表 
+} 
+
+message p_role_public {
+     optional uint64 roleid = 1; // 角色ID 
+     optional string rolename = 2; // 角色名 
+     optional uint64 familyid = 3; // 公会ID 
+     optional string familyname = 4; // 公会名 
+     optional uint64 icon = 5; // 头像ID 
+     optional uint64 rolelv = 6; // 角色等级 
+     optional uint64 viplv = 7; // VIP等级 
+     optional uint64 atkpower = 8; // 进攻战斗力 
+     optional uint64 defpower = 9; // 防御战斗力 
+     optional uint64 lastlogout = 10; // 最近下线时间(0代表在线) 
+     optional uint64 frame = 11; // 头像框 
+     optional uint64 pvprank = 12; // pvp排名 
+} 
+
+message cs_role_extra {
+} 
+
+message sc_role_extra {
+     optional p_role_extra roleextra = 1; // 其它信息 
+} 
+
+message p_role_extra {
+     optional uint64 roleid = 1; // 角色ID 
+     optional uint64 energy = 2; // 体力值 
+     optional uint64 energy_next_recv = 3; // 下次体力回复时间 
+     optional uint64 energy_buy_times = 4; // 今日体力购买次数 
+     optional uint64 skill_point = 5; // 技能点 
+     optional uint64 skill_point_next_recv = 6; // 下次技能点回复时间 
+     optional uint64 skill_point_buy_times = 7; // 今日技能点购买次数 
+     optional uint64 click_gold_times = 8; // 今日点金次数 
+     optional uint64 firstatk = 9; // 战队先手值 
+     optional uint64 mine_energy = 10; // 挖矿体力 
+     optional uint64 mine_energy_next_recv = 11; // 下次挖矿体力回复时间 
+     optional uint64 mine_energy_buy_times = 12; // 今日挖矿体力购买次数 
+     repeated uint64 icon_list = 13; // 特殊头像icon list 
+     optional uint64 cd_time_rename = 14; // 更名cd 
+} 
+
+message sc_role_energy_notify {
+     optional uint64 energy = 1; // 当前体力值 
+     optional uint64 energy_next_recv = 2; // 下次体力回复时间 
+} 
+
+message sc_role_power_notify {
+     optional uint64 atkpower = 1; // 进攻战斗力 
+     optional uint64 defpower = 2; // 防御战斗力 
+} 
+
+message cs_role_options {
+     repeated uint64 key_list = 1; // 键列表 
+} 
+
+message sc_role_options {
+     repeated p_option opt_list = 1; // 选项列表 
+} 
+
+message p_option {
+     optional uint64 key = 1; // 键 
+     optional sint64 value = 2; // 值 
+} 
+
+message cs_role_setopt {
+     optional uint64 key = 1; // 键 
+     optional sint64 value = 2; // 值 
+} 
+
+message sc_role_setopt {
+     optional uint64 result = 1; // 设置结果 
+     optional uint64 key = 2; // 键 
+     optional sint64 value = 3; // 值 
+} 
+
+message cs_role_seticon {
+     optional uint64 newicon = 1; // 新头像ID 
+     optional int32 icon_type = 2; // 头像类型(1:普通玩家头像,2:普通宝贝头像,3:特殊头像) 
+} 
+
+message sc_role_seticon {
+     optional uint64 result = 1; // 设置结果 
+     optional uint64 newicon = 2; // 新头像ID 
+} 
+
+message cs_role_buy_energy {
+     optional uint64 buy_cnt = 1; // 购买次数 
+} 
+
+message sc_role_buy_energy {
+     optional uint64 result = 1; // 购买结果 
+     optional uint64 energy = 2; // 新体力值 
+     optional uint64 energy_buy_times = 3; // 新购买次数 
+} 
+
+message cs_role_exp_effect {
+     optional uint64 typeid = 1; // 类型ID 
+     optional uint64 number = 2; // 使用数量 
+} 
+
+message sc_role_exp_effect {
+     optional uint64 result = 1; // 使用结果 
+     optional uint64 sumexp = 2; // 获得总经验 
+} 
+
+message cs_role_fighters {
+     optional uint64 tarid = 1; // 对方ID 
+} 
+
+message sc_role_fighters {
+     repeated p_ger atklist = 1; // 进攻列表 
+     repeated p_ger deflist = 2; // 防御列表 
+     repeated p_equip equiplist = 3; // 装备列表 
+     optional uint64 atkspeed = 4; // 攻击阵容先手值 
+     optional uint64 defspeed = 5; // 防守阵容先手值 
+} 
+
+message sc_role_skillpoint_notify {
+     optional uint64 skillpoint = 1; // 当前体力值 
+     optional uint64 skillpoint_next_recv = 2; // 下次体力回复时间 
+} 
+
+message cs_role_click_gold {
+     optional uint64 click_cnt = 1; // 请求点金次数 
+} 
+
+message sc_role_click_gold {
+     optional uint64 result = 1; // 结果 
+     optional uint64 new_click_times = 2; // 新点金次数 
+     optional uint64 crit = 3; // 暴击倍率 
+     optional uint64 critnum = 4; // 暴击次数 
+     optional uint64 reward = 5; // 奖励 
+} 
+
+message sc_role_firstatk_update {
+     optional uint64 firstatk = 1; // 新先手值 
+} 
+
+message cs_role_buy_skillpoint {
+     optional uint64 buy_cnt = 1; // 购买次数 
+} 
+
+message sc_role_buy_skillpoint {
+     optional uint64 result = 1; // 购买结果 
+     optional uint64 skillpoint = 2; // 新体力值 
+     optional uint64 skillpoint_buy_times = 3; // 新购买次数 
+} 
+
+message cs_role_firstatk_update {
+} 
+
+message sc_role_mineenergy_notify {
+     optional uint64 mineenergy = 1; // 当前体力值 
+     optional uint64 mineenergy_next_recv = 2; // 下次体力回复时间 
+} 
+
+message cs_role_buy_mineenergy {
+     optional uint64 buy_cnt = 1; // 购买次数 
+} 
+
+message sc_role_buy_mineenergy {
+     optional uint64 result = 1; // 购买结果 
+     optional uint64 mineenergy = 2; // 新体力值 
+     optional uint64 mineenergy_buy_times = 3; // 新购买次数 
+} 
+
+message cs_role_rename {
+     optional string new_name = 1; 
+} 
+
+message sc_role_rename {
+     optional uint32 result = 1; 
+     optional string new_name = 2; 
+     optional uint64 cd_time = 3; 
+} 
+
+message cs_role_openhcard {
+     optional int32 head_card_id = 1; 
+} 
+
+message sc_role_openhcard {
+     optional uint32 result = 1; 
+     repeated uint64 icon_list = 2; 
+     optional p_reward reward = 3; 
+}
+/* 
+ * 战斗模块 
+ */ 
+/* 
+ * 战斗属性结构 
+ */ 
+
+message p_fight_attr {
+     optional sint64 inithp = 1; 
+     optional sint64 attack = 2; 
+     optional sint64 phydef = 3; 
+     optional sint64 magdef = 4; 
+     optional sint64 critp = 5; 
+     optional sint64 critp_reduce = 6; 
+     optional sint64 critv = 7; 
+     optional sint64 critv_reduce = 8; 
+     optional sint64 blockp = 9; 
+     optional sint64 blockp_reduce = 10; 
+     optional sint64 blockv = 11; 
+     optional sint64 hitp = 12; 
+     optional sint64 miss = 13; 
+     optional sint64 damage_deepen = 14; 
+     optional sint64 damage_reduce = 15; 
+     optional sint64 backhpv = 16; 
+     optional sint64 atktohp = 17; 
+     optional sint64 absorbp = 18; 
+     optional sint64 absorbv = 19; 
+     optional sint64 bouncep = 20; 
+     optional sint64 bouncev = 21; 
+     optional sint64 restrainv = 22; 
+     optional sint64 speed = 23; 
+} 
+/* 
+ * 战斗技能结构 
+ */ 
+
+message p_fight_skill {
+     optional sint64 skill_id = 1; 
+     optional sint64 skill_level = 2; 
+} 
+/* 
+ * 战斗数码兽结构 
+ */ 
+
+message p_fight_dgmon {
+     optional sint64 pos = 1; // 数码兽站位 
+     optional sint64 typeid = 2; // 原始模板ID 
+     optional string kind = 3; // 克制类别 
+     optional sint64 level = 4; // 数码兽等级 
+     optional sint64 rank = 5; // 数码兽品阶 
+     optional sint64 star = 6; // 数码兽星级 
+     optional p_fight_attr attr = 7; // 数码兽属性 
+     optional sint64 hp = 8; // 数码兽血量 
+     optional sint64 battle_power = 9; // 数码兽战力 
+     repeated p_fight_skill enter_skills = 10; // 登场技能 
+     repeated p_fight_skill fight_skills = 11; // 战斗技能 
+     repeated p_fight_skill condi_skills = 12; // 条件技能 
+     repeated p_fight_skill super_enter_skills = 13; // 进化登场技能 
+     repeated p_fight_skill super_fight_skills = 14; // 进化战斗技能 
+     repeated p_fight_skill super_condi_skills = 15; // 进化条件技能 
+     optional p_fight_skill transform_skill = 16; // 变身技能 
+     optional sint64 transform_max_round = 17; // 最大变身回合数 
+     optional sint64 transform_type_id = 18; // 变身形态 
+     optional bool is_boss = 19; // 是否是BOSS 
+     optional sint64 base_evolve_level = 20; // 常驻形态 
+     optional sint64 boom_skill = 21; // 曝气技能ID 
+     optional sint64 show_stage = 22; // 装逼显示特效的阶段 
+     optional sint64 clothes = 23; //时装状态 0 = > 默认 1 = > 激活特效 
+     optional bool is_coward = 24; // 是否是胆小鬼 
+} 
+/* 
+ * 战斗训练师动作 
+ */ 
+
+message p_fight_sumer {
+     optional sint64 pos = 1; // 训练师出手位置 
+     optional sint64 cur_round = 2; // 所在回合 
+     optional sint64 cur_out = 3; // 并不懂 ??? 
+} 
+/* 
+ * 战斗通用结构 
+ */ 
+
+message p_fight_struct {
+     repeated sint64 seed = 1; // 随机种子(三元组) 
+     optional sint64 max_round_limit = 2; // 最大回合数限制 
+     repeated p_fight_dgmon dgmon_list = 3; // 第一轮数码兽列表 
+     repeated p_fight_sumer sumer_list = 4; // 第一轮训练师列表 
+     repeated p_fight_dgmon dgmon_list2 = 5; // 第二轮数码兽列表 
+     repeated p_fight_sumer sumer_list2 = 6; // 第二轮训练师列表 
+     repeated p_fight_dgmon dgmon_list3 = 7; // 第三轮数码兽列表 
+     repeated p_fight_sumer sumer_list3 = 8; // 第三轮训练师列表 
+     repeated p_fight_poshp poshp_list = 9; // 位置血量列表 
+     optional sint64 total_round = 10; // 总回合数 
+     optional sint64 atk_trainer = 11; // 攻击方训练师 
+     optional sint64 def_trainer = 12; // 受击方训练师 
+     optional bool is_verify = 13; // 是否为验证 
+     optional bool is_atk_auto = 14; // 攻击方是否为自动 
+     optional bool is_def_auto = 15; // 防御方是否为自动 
+     optional sint64 fight_type = 16; // 战斗类型 
+     optional sint64 battle_index = 17; // 打到了第几波 
+     optional sint64 atk_teamspeed = 18; // 攻击方小队附加先手值 
+     optional sint64 def_teamspeed = 19; // 防守方小队附加先手值 
+     optional sint64 atk_mp = 20; // 攻击方的初始mp,如果是0表示使用配置的初始mp 
+     optional sint64 left_mp = 21; // 攻击方的当前mp值 战斗结束的时候传回用 
+     optional sint64 right_mp = 22; // 防守方的当前mp值 战斗结束的时候传回用 
+} 
+/* 
+ * 请求demo战斗 
+ */ 
+
+message cs_fight_demo {
+} 
+
+message sc_fight_demo {
+     optional p_fight_struct fight_struct = 1; // 战斗结构 
+} 
+/* 
+ * 上报demo战斗 
+ */ 
+
+message cs_fight_demo_report {
+     optional p_fight_struct fight_struct = 1; // 战斗结构 
+} 
+/* 
+ * 站位血量结构 
+ */ 
+
+message p_fight_poshp {
+     optional sint64 pos = 1; // 站位 
+     optional sint64 hp = 2; // 血量 
+     optional sint64 max_hp = 3; //最大血量 
+} 
+/* 
+ * 商店模块 
+     * ID = 10300 
+ */ 
+
+message cs_shop_list {
+} 
+
+message sc_shop_list {
+     repeated p_shop shoplist = 1; // 商店列表 
+     optional uint64 freesec = 2; // 觉醒商店免费单抽倒计时 
+     optional uint64 bide_times = 3; // X次后必得觉醒石 
+     optional uint64 one_gold = 4; // 觉醒商店单抽价格 
+     optional uint64 one_gold_dis = 5; // 觉醒商店单抽折扣 
+     optional uint64 ten_gold = 6; // 觉醒商店十连抽价格 
+     optional uint64 ten_gold_dis = 7; // 觉醒商店十连抽折扣 
+     optional uint64 one_dis_start = 8;// 单抽打折起始时间 
+     optional uint64 one_dis_end = 9;// 单抽打折结束时间 
+     optional uint64 ten_dis_start = 10;// 十连抽打折起始时间 
+     optional uint64 ten_dis_end = 11;// 十连抽打折结束时间 
+} 
+
+message p_shop {
+     optional uint64 shopid = 1; // 商店ID 
+     optional uint64 nextref = 2; // 下次刷新时间 
+     optional uint64 refneed = 3; // 刷新消耗 
+     optional uint64 endtime = 4; // 关闭时间 
+     repeated p_sell sells1 = 5; // 商品列表(上排) 
+     repeated p_sell sells2 = 6; // 商品列表(下排) 
+     optional uint64 reftype = 7; // 商店刷新消耗类型 
+     optional uint64 shopmoney = 8; // 商店对应的货币类型 
+} 
+
+message p_sell {
+     optional uint64 sellid = 1; // 商品ID 
+     optional uint64 buyneed = 2; // 购买消耗 
+     optional uint64 buynum = 3; // 已购次数 
+} 
+
+message sc_shop_notify {
+     repeated p_shop newlist = 1; // 新增列表 
+     repeated p_shop updatelist = 2; // 更新列表 
+     repeated p_shop deletelist = 3; // 删除列表 
+} 
+
+message cs_shop_buy {
+     optional uint64 shopid = 1; // 商店ID 
+     optional uint64 sellid = 2; // 商品ID 
+     optional uint64 neednum = 3; // 购买数量 
+     optional uint64 sellpos = 4; // 商品位置 
+} 
+
+message sc_shop_buy {
+     optional uint64 result = 1; // 购买结果 
+} 
+
+message cs_shop_refresh {
+     optional uint64 shopid = 1; // 商店ID 
+} 
+
+message sc_shop_refresh {
+     optional uint64 result = 1; // 刷新结果 
+} 
+
+message cs_shop_wake_onedraw {
+} 
+
+message sc_shop_wake_onedraw {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 奖励 
+     optional uint64 bide_times = 3; // X次后必得觉醒石 
+     optional uint64 freesec = 4; // 觉醒商店免费单抽倒计时 
+} 
+
+message cs_shop_wake_tendraw {
+} 
+
+message sc_shop_wake_tendraw {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 奖励 
+} 
+
+message cs_ger_list {
+} 
+
+message sc_ger_list {
+     repeated p_ger gerlist = 1; // 所有的精灵信息 
+     repeated p_lineup atklist = 2; // 攻击阵容 
+     repeated p_lineup deflist = 3; // 防守阵容 
+} 
+
+message p_ger {
+     optional uint64 gerid = 1; // 精灵ID 
+     optional uint64 typeid = 2; // 模版ID 
+     optional uint64 star = 3; // 精灵星级 
+     optional uint64 rank = 4; // 精灵品阶 
+     optional uint64 level = 5; // 精灵等级 
+     optional uint64 exp = 6; // 精灵经验 
+     repeated p_evolve evolve = 7; // 精灵进化信息 
+     optional uint64 pos = 8; // 精灵站位 
+     optional p_attr attr = 9; // 精灵属性 
+     repeated p_skill skill = 10; // 技能等级信息 
+     optional uint64 fightpower = 11; // 战斗力 
+     optional uint64 show_stage = 12; // 装逼阶段 
+} 
+
+message sc_ger_notify {
+     repeated p_ger newlist = 1; // 新增列表 
+     repeated p_ger updatelist = 2; // 更新列表 
+     repeated p_ger deletelist = 3; // 删除列表 
+} 
+
+message cs_ger_unlock {
+     optional uint64 itemTypeID = 1; // 要解锁的武将的TypeID 
+} 
+
+message sc_ger_unlock {
+     optional uint64 result = 1; // 操作结果 
+     optional p_ger ger = 2; // 如果成功了这里就是这个新宝贝的信息 
+} 
+
+message cs_ger_standup {
+     optional uint64 gerid = 1; // 精灵ID 
+     optional uint64 pos = 2; // 上阵位置 
+     optional uint64 type = 3; // 1 -> 操作的是进攻阵容， 2 -> 操作的是防守阵容 
+} 
+
+message sc_ger_standup {
+     optional uint64 result = 1; // 上阵结果 
+} 
+
+message cs_ger_movpos {
+     optional uint64 gerid = 1; // 精灵ID 
+     optional uint64 pos = 2; // 目标位置 
+     optional uint64 type = 3; // 1 -> 操作的是进攻阵容， 2 -> 操作的是防守阵容 
+} 
+
+message sc_ger_movpos {
+     optional uint64 result = 1; // 移位结果 
+} 
+
+message cs_ger_uplevel {
+     optional uint64 gerid = 1; // 升级精灵 
+     repeated p_money foodlist = 2; // 吞噬列表 
+} 
+
+message sc_ger_uplevel {
+     optional uint64 result = 1; // 升级结果 
+} 
+
+message cs_ger_uprank {
+     optional uint64 gerid = 1; // 进阶精灵ID 
+} 
+
+message sc_ger_uprank {
+     optional uint64 result = 1; // 进阶结果 
+} 
+
+message cs_ger_upstar {
+     optional uint64 gerid = 1; // 升级精灵 
+} 
+
+message sc_ger_upstar {
+     optional uint64 result = 1; // 合成结果 
+} 
+
+message cs_ger_upskill {
+     optional uint64 gerid = 1; // 洗练精灵 
+     optional uint64 skillpos = 2; // 要升级的技能所在的位置 
+     optional bool onekeyup = 3; // 是否为一键升级 
+} 
+
+message sc_ger_upskill {
+     optional uint64 result = 1; // 技能升级结果 
+} 
+
+message cs_ger_stage_uprank {
+     optional uint64 gerid = 1; // 洗练精灵 
+     optional uint64 stage = 2; // 进化的阶段 
+     optional uint64 itemtypeid = 3; // 使用的碎片TypeID 
+} 
+
+message sc_ger_stage_uprank {
+     optional uint64 result = 1; // 进化阶段升阶结果 
+} 
+
+message cs_ger_stage_chose {
+     optional uint64 gerid = 1; // 选择的精灵gerid 
+     optional uint64 stage = 2; // 要选择的进化阶段 
+} 
+
+message sc_ger_stage_chose {
+     optional uint64 result = 1; // 选择的结果 
+} 
+
+message p_lineup {
+     optional uint64 pos = 1; // 在阵上的位置 
+     optional uint64 gerid = 2; // 宝贝ID 
+} 
+
+message sc_ger_line_notify {
+     optional uint64 type = 1; // 更新的是攻击阵容还是防守阵容 1 -> 攻击阵容 2 -> 防守阵容 
+     repeated p_lineup lineup = 2; // 最新的阵容，本身也很短，所以全部发送 
+} 
+
+message cs_ger_piece_exchange {
+     optional uint64 tarItemTypeID = 1; //要兑换的将魂碎片ID 
+     optional uint64 num = 2; //要兑换的个数 
+     optional uint64 type = 3; //兑换的类型 
+} 
+
+message sc_ger_piece_exchange {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message p_ger_summary {
+     optional uint64 typeid = 1; // 模版ID 
+     optional uint64 star = 2; // 精灵星级 
+     optional uint64 rank = 3; // 精灵品阶 
+     optional uint64 level = 4; // 精灵等级 
+     optional uint64 pos = 5; // 精灵站位 
+     optional uint64 normalstage = 6; // 精灵常驻形态 
+     optional uint64 gerid = 7; // 精灵ID 
+     optional uint64 show_stage = 8; // 装逼等级 
+     optional uint64 clothes = 9; //时装状态 
+     optional sint64 expiresec = 10;//时装的到期时间 
+} 
+
+message p_line_summary {
+     repeated p_ger_summary gerlist = 1; // 宝贝列表 
+} 
+
+message p_ger_line_list {
+     optional uint64 pos = 1; //阵容保存的位置 
+     optional string name = 2; //阵容的名字 
+     repeated p_lineup line_list = 3; //选择使用的武将列表 
+} 
+
+message cs_ger_set_line {
+     optional p_ger_line_list line = 1; //要修改的阵容 
+} 
+
+message sc_ger_set_line {
+     optional uint64 result = 1; //操作结果 
+     optional p_ger_line_list new_line = 2; //只有一个用来客户端初始化数据 
+} 
+
+message cs_ger_line_list {
+} 
+
+message sc_ger_line_list {
+     repeated p_ger_line_list all_line = 1; //所有的已经使用的阵容列表 
+} 
+
+message cs_ger_line_unlock {
+     optional uint64 pos = 1; //要解锁的位置 
+} 
+
+message sc_ger_line_unlock {
+     optional uint64 result = 1; //操作结果 
+     optional p_ger_line_list new_line = 2; //解锁后的空阵容，只有一个用来客户端初始化数据 
+} 
+
+message cs_ger_clothe {
+     optional uint64 ger_id = 1; //操作宝贝的gerID 
+     optional uint64 cloth_id = 2; //购买的时装ID 
+     optional uint64 buy_type = 3; //购买的档位 
+} 
+
+message sc_ger_clothe {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message p_mail {
+     optional uint64 mailid = 1; // 邮件ID 
+     optional uint64 tempid = 2; // 模板ID(也是类型ID) 
+     optional string content = 3; // 邮件内容 
+     optional p_reward reward = 4; // 附加奖励 
+     optional uint64 isread = 5; // 是否已读(0: = 未读,1: = 已读) 
+     optional uint64 drawed = 6; // 是否领取(0: = 未领,1: = 已领) 
+     optional uint64 timestamp = 7; // 生成时间戳 
+     optional uint64 subtype = 8; // 子类型(主要用于表现区分) 
+     optional string title = 9; // 邮件标题 
+     optional uint64 autoget = 10; // 是否能一键读取 0:不能,1:能 
+} 
+
+message cs_mail_info {
+} 
+
+message sc_mail_info {
+     repeated p_mail mail_list = 1; // 邮件列表 
+     optional uint64 unrecv_num = 2; // 未接收数量 
+} 
+
+message cs_mail_more {
+} 
+
+message sc_mail_more {
+     repeated p_mail mail_list = 1; // 邮件列表 
+     optional uint64 unrecv_num = 2; // 未接收数量 
+} 
+
+message cs_mail_read {
+     repeated uint64 mailid_list = 1; // 需要标记已读的邮件ID列表 
+     optional uint64 bonekey = 2; // 是否一键读 
+} 
+
+message sc_mail_read {
+     repeated uint64 mailid_list = 1; // 成功标记已读的邮件ID列表 
+} 
+
+message cs_mail_draw {
+     repeated uint64 mailidlist = 1; // 准备领取的邮件ID 
+     optional uint64 bonekey = 2; // 是否一键领取 
+} 
+
+message sc_mail_draw {
+     optional uint64 result = 1; // 领取结果 
+     repeated uint64 mailidlist = 2; // 成功领取的邮件ID列表 
+     repeated p_reward reward = 3; // 领取得到的奖励 
+} 
+
+message cs_mail_delete {
+     repeated uint64 mailid_list = 1; // 需要删除的邮件ID列表 
+} 
+
+message sc_mail_delete {
+     repeated uint64 mailid_list = 1; // 成功删除的邮件ID列表 
+} 
+
+message sc_mail_new {
+     repeated p_mail mail_list = 1; // 新增的邮件列表 
+} 
+
+message cs_equip {
+} 
+
+message sc_equip {
+     repeated p_equip equiplist = 1; // 装备列表 
+} 
+
+message p_equip {
+     optional uint64 equipid = 1; // 装备ID 
+     optional uint64 typeid = 2; // 模板ID 
+     optional uint64 rank = 3; // 装备品阶 
+     optional uint64 exp = 4; // 装备的经验值 
+     optional uint64 level = 5; // 装备等级 
+     optional uint64 star = 6; // 装备星级 
+     optional uint64 pos = 7; // 装备位置 
+     optional uint64 gerid = 8; // 被装备的武将id 
+     optional p_attr attr = 9; // 装备属性 
+     repeated p_equip_precious precious_info = 10; // 装备插槽信息 
+     repeated p_destiny destinys = 11; // 激活天命的id列表 
+} 
+
+message sc_equip_notify {
+     repeated p_equip newlist = 1; // 新增列表 
+     repeated p_equip updatelist = 2; // 更新列表 
+     repeated p_equip deletelist = 3; // 删除列表 
+} 
+
+message cs_equip_uplevel {
+     optional uint64 equipid = 1; // 装备ID 
+     optional uint64 onekey = 2; // 是否一键 
+} 
+
+message sc_equip_uplevel {
+     optional uint64 result = 1; // 强化结果 
+} 
+
+message cs_equip_uprank {
+     optional uint64 equipid = 1; // 装备ID 
+} 
+
+message sc_equip_uprank {
+     optional uint64 result = 1; // 进阶结果 
+} 
+
+message cs_equip_upstar {
+     optional uint64 equipid = 1; // 装备ID 
+} 
+
+message sc_equip_upstar {
+     optional uint64 result = 1; // 进阶结果 
+} 
+
+message cs_equip_eat {
+     optional uint64 equipid = 1; // 装备ID 
+     repeated p_money foodlist = 2; // 材料装备列表 
+} 
+
+message sc_equip_eat {
+     optional uint64 result = 1; // 进阶结果 
+} 
+
+message p_equip_precious {
+     optional uint64 pos = 1; // 位置 
+     optional uint64 preciousid = 2; // 镶嵌的刻印uid，0则未镶嵌 
+     optional uint64 tmpid = 3; // 镶嵌的刻印模板id 
+} 
+
+message p_destiny {
+     optional uint64 destinyid = 1; // 位置 
+     optional uint64 level = 2; // 天命等级 
+} 
+
+message cs_money_info {
+} 
+
+message sc_money_info {
+     repeated p_money moneylist = 1; // 货币列表 
+} 
+
+message p_money {
+     optional uint64 typeid = 1; // 模板ID 
+     optional uint64 number = 2; // 货币数量 
+} 
+
+message sc_money_notify {
+     repeated p_money newlist = 1; // 新增列表 
+     repeated p_money updatelist = 2; // 更新列表 
+     repeated p_money deletelist = 3; // 删除列表 
+} 
+
+message cs_money_openbox {
+     repeated uint64 typeid = 1; // 模板ID 
+     repeated uint64 number = 2; // 开启数量 
+} 
+
+message sc_money_openbox {
+     optional uint64 result = 1; // 开启结果 
+     optional p_reward reward = 2; // 具体奖励 
+} 
+
+message cs_money_sell {
+     repeated p_money moneylist = 1; // 要出售的物品列表 
+} 
+
+message sc_money_sell {
+     optional uint64 result = 1; // 出售结果 
+     optional p_reward reward = 2; // 具体奖励 
+} 
+
+message cs_money_buy {
+     optional uint64 typeid = 1; // 模板ID 
+     optional uint64 number = 2; // 货币数量 
+} 
+
+message sc_money_buy {
+     optional uint64 result = 1; // 出售结果 
+     optional p_reward reward = 2; // 具体奖励 
+} 
+
+message cs_pvp_get_list {
+} 
+
+message sc_pvp_get_list {
+     optional uint64 rank = 1; // 当前排名 
+     repeated p_pvp pvplist = 2; // 挑战列表 
+     optional uint64 pvptimes = 3; // 已挑战次数 
+     optional uint64 buytimes = 4; // 购买次数 
+     optional uint64 cooltime = 5; // 挑战冷却倒计时 
+     repeated uint64 worshipids = 6; // 膜拜的玩家ID列表 
+     optional p_showicon showicon = 7; // 展示icon 
+     optional p_money refcost = 8; // 刷新消耗 
+     optional p_money eracost = 9; // 冷却清除消耗 
+} 
+
+message p_pvp {
+     optional uint64 roleid = 1; // 角色ID 
+     optional uint64 icon = 2; // 角色头像ID 
+     optional string rolename = 3; // 角色名 
+     optional uint64 rank = 4; // 角色排名 
+     optional uint64 defpower = 5; // 防御战斗力 
+     optional string familyname = 6; // 工会名字 
+     optional uint64 beworship = 7; // 被膜拜次数 
+     optional uint64 ischa = 8; // 是否已挑战过(0: = 未挑战,1: = 已挑战) 
+     optional p_showicon showicon = 9; // 展示icon 
+     optional uint64 viplv = 10; // 角色viplv 
+} 
+
+message cs_pvp_fight {
+     optional uint64 roleid = 1; // 目标玩家ID 
+     optional uint64 rank = 2; // 目标玩家排名 
+} 
+
+message sc_pvp_fight {
+     optional uint64 result = 1; // 结果 
+     optional uint64 newrank = 2; // 新排名 
+     optional p_reward dropreward = 3; // 掉落奖励 
+     optional p_fight_struct fight_struct = 4; // 战斗结构 
+     optional uint64 pvptimes = 5; // PVP可挑战次数 
+     repeated p_pvp pvplist = 6; // 新挑战列表 
+     optional p_pvp atkpvp = 7; // 本方PVP 
+     optional p_pvp defpvp = 8; // 对方PVP 
+     optional uint64 cooltime = 9; // 挑战冷却倒计时 
+     optional p_money eracost = 10; // 清除消耗 
+} 
+
+message cs_pvp_refresh {
+} 
+
+message sc_pvp_refresh {
+     optional uint64 result = 1; // 结果 
+     repeated p_pvp pvplist = 2; // 新挑战列表 
+     optional p_money refcost = 3; // 刷新消耗 
+} 
+
+message cs_pvp_top_list {
+} 
+
+message sc_pvp_top_list {
+     repeated p_pvp pvplist = 1; 
+} 
+
+message cs_pvp_fight_buy {
+} 
+
+message sc_pvp_fight_buy {
+     optional uint64 result = 1; 
+     optional uint64 pvptimes = 2; 
+     optional uint64 buytimes = 3; 
+     optional uint64 cooltime = 4; // 更新冷却时间 
+} 
+
+message cs_pvp_cool_erase {
+} 
+
+message sc_pvp_cool_erase {
+     optional uint64 result = 1; 
+     optional p_money eracost = 2; // 冷却清除消耗 
+} 
+
+message p_pvp_hist {
+     optional uint64 type = 1; 
+     optional uint64 tarroleid = 2; // 对方玩家ID 
+     optional string tarname = 3; // 对方玩家姓名 
+     optional uint64 tarlv = 4; // 对方等级 
+     optional uint64 firstatk = 5; // 先手值 
+     optional uint64 fightsec = 6; // 战斗时间 
+     optional uint64 result = 7; // 战斗结果 
+     optional uint64 replayid = 8; // 战斗录像ID 
+     optional uint64 icon = 9; // 对方头像ID 
+     optional uint64 fightpower = 10;// 对方战斗力 
+     optional sint64 rankdelta = 11;// 排名变化 
+     optional uint64 tarviplv = 12;// 对方vip等级 
+} 
+
+message cs_pvp_hist_list {
+} 
+
+message sc_pvp_hist_list {
+     repeated p_pvp_hist atkhist = 1; // 进攻战报 
+     repeated p_pvp_hist defhist = 2; // 防守战报 
+} 
+
+message cs_pvp_fight_replay {
+     optional uint64 replayid = 1; 
+} 
+
+message sc_pvp_fight_replay {
+     optional p_fight_struct fight_struct = 1; // 战斗结构 
+     optional p_pvp atkpvp = 2; // 本方PVP 
+     optional p_pvp defpvp = 3; // 对方PVP 
+} 
+
+message cs_pvp_rank_reward {
+} 
+
+message sc_pvp_rank_reward {
+     optional uint64 history_rank = 1; // 历史最高排名 
+     optional p_reward reward_acc = 2; // 累计获得奖励 
+     repeated p_rank_reward rank_reward = 3; // 排行奖励 
+} 
+
+message p_rank_reward {
+     optional uint64 rankid = 1; // 排行ID 
+     optional p_reward reward = 2; // 奖励 
+     optional uint64 state = 3; // 奖励领取状态 
+     optional uint64 need_rank = 4; // 排行档位 
+} 
+
+message cs_pvp_rank_draw {
+     optional uint64 rankid = 1; // 排行ID 
+} 
+
+message sc_pvp_rank_draw {
+     optional uint64 result = 1; 
+     optional uint64 rankid = 2; 
+     optional p_reward reward = 3; // 领取的奖励 
+     optional p_reward reward_acc = 4; 
+     optional p_rank_reward rank_reward = 5; // 排行奖励状态更新 
+} 
+
+message cs_pvp_actpoint_reward {
+} 
+
+message sc_pvp_actpoint_reward {
+     optional uint64 actpoint = 1; // 当前活跃点 
+     repeated p_actpoint_reward actpoint_reward = 2; 
+} 
+
+message p_actpoint_reward {
+     optional uint64 pointid = 1; 
+     optional uint64 need_point = 2; 
+     optional p_reward reward = 3; 
+     optional uint64 state = 4; 
+} 
+
+message cs_pvp_actpoint_draw {
+     optional uint64 pointid = 1; 
+} 
+
+message sc_pvp_actpoint_draw {
+     optional uint64 result = 1; 
+     optional uint64 pointid = 2; 
+     optional p_reward reward = 3; // 领取的奖励 
+     optional p_actpoint_reward actpoint_reward = 4; // 活跃点奖励更新 
+} 
+
+message cs_pvp_actpoint_onekey {
+} 
+
+message sc_pvp_actpoint_onekey {
+     optional p_reward reward = 1; // 领取的奖励 
+     repeated p_actpoint_reward actpoint_reward = 2; // 活跃点奖励更新 
+     optional uint64 result = 3; // 结果 
+} 
+
+message cs_pvp_worship {
+     optional uint64 rank = 1; // 膜拜的玩家排名 
+} 
+
+message sc_pvp_worship {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2; 
+     optional p_worship_update worshipupdate = 3; // 被膜拜的玩家信息更新 
+     repeated uint64 worshipids = 4; // 膜拜的玩家ID列表 
+} 
+
+message cs_pvp_onekey_worship {
+} 
+
+message sc_pvp_onekey_worship {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2; 
+     repeated p_worship_update worshipupdate = 3; // 被膜拜的玩家信息更新 
+     repeated uint64 worshipids = 4; // 膜拜的玩家ID列表 
+} 
+
+message p_worship_update {
+     optional uint64 rank = 1; // 被膜拜玩家排名 
+     optional uint64 beworship = 2; // 新的膜拜次数 
+} 
+
+message cs_pvp_show_icon {
+     optional uint64 typeid = 1; // 选中的宝贝typeid 
+     optional uint64 stage = 2; // 展示某进化阶段的形象 
+} 
+
+message sc_pvp_show_icon {
+     optional uint64 result = 1; // 结果 
+     optional p_showicon showicon = 2; // 选中的展示icon 
+} 
+
+message p_showicon {
+     optional uint64 typeid = 1; // 选中的宝贝typeid 
+     optional uint64 stage = 2; // 进化阶段 
+     optional uint64 clothid = 3; // 时装ID 
+     optional sint64 expiresec = 4; //时装的到期时间 
+} 
+
+message cs_trainer_info {
+} 
+
+message sc_trainer_info {
+     repeated p_trainer unlocklist = 1; //已经解锁的训练师的 typeid 
+} 
+
+message cs_trainer_unlock {
+     optional uint64 typeid = 1; //要解锁的训练师的typeid 
+} 
+
+message sc_trainer_unlock {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message cs_trainer_chose {
+     optional uint64 typeid = 1; //要选择的训练师的typeid 
+     optional uint64 type = 2; //对应的是防守阵容还是进攻阵容 
+} 
+
+message sc_trainer_chose {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message p_trainer {
+     optional uint64 typeid = 1; //训练师的typeid 
+     optional bool atkchose = 2; //是否被选择到了进攻阵容中 
+     optional bool defchose = 3; //是否被选择到了防守阵容中 
+} 
+
+message cs_box_info {
+} 
+
+message sc_box_info {
+     optional uint64 result = 1; 
+     optional p_box_info box_info = 2; 
+} 
+
+message cs_box_select {
+     optional uint64 select_type = 1; //选取的抽取种类 
+} 
+
+message sc_box_select {
+     optional uint64 result = 1; 
+     optional uint64 select_type = 2; 
+     repeated p_box_reward reward_list = 3; 
+     optional p_box_info box_info = 4; 
+     optional p_reward fix_reward = 5; 
+} 
+
+message p_box_info {
+     optional uint64 one_item = 1; // 数码币单扭价格 
+     optional uint64 ten_item = 2; // 数码币十扭价格 
+     optional uint64 hun_item = 3; // 数码币百扭价格 
+     optional uint64 gold_free_cool = 4; // 钻石免费单扭冷却时间 
+     optional uint64 item_free_times = 5; // 数码币单扭免费次数 
+     optional uint64 item_free_cool = 6; // 数码币免费单扭冷却时间 
+     optional uint64 one_gold = 7; // 钻石单扭价格 
+     optional uint64 ten_gold = 8; // 钻石十扭价格 
+     optional uint64 gold_ten_dis = 9; // 钻石十扭打折 
+     optional uint64 gold_free_times = 10; // 钻石单扭免费次数 
+     optional uint64 gold_one_dis = 11;// 钻石单扭打折 
+     optional uint64 mystery_gold = 12;// 神秘扭蛋价格 
+     optional uint64 mystery_dis = 13;// 神秘扭蛋打折 
+     optional uint64 one_dis_start = 14;// 钻石单扭打折起始时间 
+     optional uint64 one_dis_end = 15;// 钻石单扭打折结束时间 
+     optional uint64 ten_dis_start = 16;// 钻石十扭打折起始时间 
+     optional uint64 ten_dis_end = 17;// 钻石十扭打折结束时间 
+     optional uint64 mys_dis_start = 18;// 神秘扭蛋打折起始时间 
+     optional uint64 mys_dis_end = 19;// 神秘扭蛋打折结束时间 
+     repeated uint64 mys_hot_id = 20;// 神秘扭蛋热点宝贝ID列表 
+     optional uint64 bide_lefttimes = 21;// 必得宝贝剩余次数 
+} 
+
+message cs_box_open_treasurebox {
+     optional uint64 boxid = 1; // 宝箱ID 
+     optional uint64 num = 2; // 箱子数量 
+} 
+
+message sc_box_open_treasurebox {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 奖励 
+} 
+
+message p_box_reward {
+     optional p_reward reward = 1; // 普通奖励 
+     optional uint64 gertypeid = 2; // 宝贝TypeID 
+     optional uint64 stage = 3; // 宝贝进化阶段 
+     optional uint64 reward_type = 4; // 奖励类型 
+} 
+
+message cs_hegemony_info {
+} 
+
+message sc_hegemony_info {
+     optional uint64 state = 1; // 活动状态 
+     optional uint64 ijoin = 2; // 能否参与 
+} 
+
+message cs_hegemony_signup_info {
+} 
+
+message sc_hegemony_signup_info {
+     optional uint64 signup_state = 1; // 报名状态 
+     optional p_hegemony_struct champion = 2; // 冠军角色信息 
+     optional uint64 signup_number = 3; // 报名人数 
+     optional uint64 signup_limit = 4; // 报名人数上限 
+     optional uint64 hegemony_start = 5; // 争霸开始时间 
+     optional uint64 hegemony_end = 6; // 争霸结束时间 
+     optional uint64 betting_state = 7; // 押注状态 
+} 
+
+message p_hegemony_struct {
+     optional uint64 roleid = 1; // 角色ID 
+     optional p_role_public baseinfo = 2; // 基本数据 
+     repeated p_ger_summary prelilist = 3; // 预赛阵容 
+     repeated p_ger_summary finallist = 4; // 决赛阵容 
+     optional uint64 betting_number = 5; // 押注人数 
+     optional uint64 win_count = 6; // 胜场次数 
+     optional uint64 lose_count = 7; // 败场次数 
+     optional uint64 points = 8; // 积分 
+     optional uint64 rank = 9; // 排名 
+     optional uint64 betting_rate = 10; //压注后的赔率 
+} 
+
+message cs_hegemony_signup_request {
+} 
+
+message sc_hegemony_signup_request {
+     optional uint64 result = 1; // 报名结果 
+} 
+
+message cs_hegemony_gerlist_info {
+} 
+
+message sc_hegemony_gerlist_info {
+     repeated p_ger_summary prelilist = 1; // 预赛阵容 
+     repeated p_ger_summary finallist = 2; // 决赛阵容 
+} 
+
+message cs_hegemony_gerlist_adjust {
+     repeated uint64 preli_gerid_list = 1; // 预赛宝贝 ID 列表 
+     repeated uint64 preli_order_list = 2; // 预赛宝贝顺序列表 
+     repeated uint64 final_gerid_list = 3; // 决赛宝贝 ID 列表 
+     repeated uint64 final_pos_list = 4; // 决赛宝贝站位列表 
+} 
+
+message sc_hegemony_gerlist_adjust {
+     optional uint64 result = 1; // 调整结果 
+} 
+
+message cs_hegemony_betting_info {
+} 
+
+message sc_hegemony_betting_info {
+     optional uint64 betting_state = 1; // 押注状态 
+     repeated p_hegemony_struct candidates = 2; // 候选列表 
+} 
+
+message cs_hegemony_betting_detail {
+     optional uint64 target = 1; // 目标角色ID 
+} 
+
+message sc_hegemony_betting_detail {
+     optional uint64 result = 1; // 请求结果 
+     optional p_hegemony_struct detail = 2; // 详细信息 
+} 
+
+message cs_hegemony_betting_request {
+     optional uint64 target = 1; // 目标角色ID 
+} 
+
+message sc_hegemony_betting_request {
+     optional uint64 result = 1; // 请求结果 
+} 
+
+message cs_hegemony_preli_info {
+} 
+
+message sc_hegemony_preli_info {
+     optional uint64 round = 1; // 预赛场次 
+     optional uint64 round_endsec = 2; // 该场次何时结束 
+     repeated p_hegemony_preli_hist hist_list = 3; // 预赛战报 
+     repeated p_hegemony_preli_result result_list = 4; // 预赛结果 
+} 
+
+message sc_hegemony_preli_notify {
+     repeated p_hegemony_preli_hist add_hist_list = 1; // 新增预赛战报 
+     repeated p_hegemony_preli_result add_result_list = 2; // 新增预赛结果 
+} 
+
+message cs_hegemony_final_info {
+} 
+
+message sc_hegemony_final_info {
+     optional uint64 round = 1; // 决赛场次 
+     optional uint64 round_endsec = 2; // 该场次何时结束 
+     repeated p_hegemony_final_hist hist_list = 3; // 决赛战报 
+     repeated p_hegemony_final_vsinfo vsinfo_list = 4; // 决赛对阵 
+} 
+
+message sc_hegemony_final_notify {
+     repeated p_hegemony_final_hist add_hist_list = 1; // 新增决赛战报 
+} 
+
+message cs_hegemony_hist_info {
+} 
+
+message sc_hegemony_hist_info {
+     repeated p_hegemony_preli_hist preli_hist_list = 1; // 预赛战报 
+     repeated p_hegemony_final_hist final_hist_list = 2; // 决赛战报 
+     repeated p_hegemony_final_hist final_hist_all = 3; // 所有决赛战报 
+} 
+
+message cs_hegemony_tops_info {
+     optional uint64 offset = 1; // 起始位置(分批请求) 
+} 
+
+message sc_hegemony_tops_info {
+     repeated p_hegemony_struct tops_list = 1; // 排行榜列表 
+     optional p_hegemony_struct self_info = 2; // 自己的数据 
+} 
+
+message p_hegemony_preli_hist {
+     optional uint64 atk_id = 1; // 攻击者ID 
+     optional uint64 def_id = 2; // 防御者ID 
+     optional string atk_name = 3; // 攻击者名字 
+     optional string def_name = 4; // 防御者名字 
+     optional uint64 atk_icon = 5; // 攻击者头像 
+     optional uint64 def_icon = 6; // 防御者头像 
+     optional uint64 result = 7; // (1: = 攻击方胜利,2: = 防御方胜利,3: = 攻击方弃权,4: = 攻击方轮空) 
+     optional uint64 draw_box = 8; // 宝箱领取时间 
+     optional uint64 round = 9; // 所属轮数 
+     optional uint64 histid = 10; // 战报ID 
+     optional p_fight_struct replay = 11; // 战斗录像 
+     optional uint64 timestamp = 12; // 战报生成时间 
+} 
+
+message p_hegemony_preli_result {
+     optional p_hegemony_struct baseinfo = 1; // 基本信息 
+} 
+
+message p_hegemony_final_hist {
+     optional uint64 atk_id = 1; // 攻击者ID 
+     optional uint64 def_id = 2; // 防御者ID 
+     optional string atk_name = 3; // 攻击者名字 
+     optional string def_name = 4; // 防御者名字 
+     optional uint64 atk_icon = 5; // 攻击者头像 
+     optional uint64 def_icon = 6; // 防御者头像 
+     optional uint64 result = 7; // (1: = 攻击方胜利,2: = 防御方胜利,3: = 进攻方放弃,4: = 进攻方轮空) 
+     optional uint64 draw_box = 8; // 宝箱领取时间 
+     optional uint64 round = 9; // 所属轮数 
+     optional uint64 histid = 10; // 战报ID 
+     optional p_fight_struct replay = 11; // 战斗录像 
+     optional uint64 timestamp = 12; // 战报生成时间 
+} 
+
+message p_hegemony_final_vsinfo {
+     optional p_hegemony_struct atk_info = 1; // 攻击基本信息 
+     optional p_hegemony_struct def_info = 2; // 防御基本信息 
+} 
+
+message cs_hegemony_replay_self {
+     optional uint64 histid = 1; // 战报ID 
+} 
+
+message sc_hegemony_replay_self {
+     optional uint64 result = 1; // 请求结果 
+     optional p_fight_struct replay = 2; // 战斗录像 
+} 
+
+message cs_hegemony_replay_final {
+     optional uint64 histid = 1; // 战报ID 
+} 
+
+message sc_hegemony_replay_final {
+     optional uint64 result = 1; // 请求结果 
+     optional p_fight_struct replay = 2; // 战斗录像 
+} 
+
+message cs_hegemony_exchange {
+     optional uint64 exchangeid = 1; // 兑换ID 
+} 
+
+message sc_hegemony_exchange {
+     optional uint64 result = 1; // 兑换结果 
+     optional p_reward reward = 2; // 奖励 
+} 
+
+message sc_hegemony_state_update {
+     optional uint64 state = 1; // 具体状态 
+} 
+
+message cs_hegemony_draw_reward {
+     optional uint64 histid = 1; // 战报ID 
+} 
+
+message sc_hegemony_draw_reward {
+     optional uint64 result = 1; // 领奖结果 
+     optional p_reward reward = 2; // 奖励 
+} 
+
+message cs_hegemony_activity_info {
+} 
+
+message sc_hegemony_activity_info {
+     optional uint64 endtime = 1;//开服活动的结束时间,如果是0则表示没开放,下面的字段也不会有 
+     repeated p_activity activity = 2;//当前活动内容 
+     optional uint64 drawtime = 3;//什么时候可以领取结算奖励 
+     optional p_reward reward = 4;//结算满额度奖励 
+     optional bool isdraw = 5;//当前是否已经领取过结算奖励 
+} 
+
+message cs_hegemony_activity_draw {
+     optional uint64 activityid = 1;//活动id 
+     optional uint64 drawid = 2;//drawid 
+} 
+
+message sc_hegemony_activity_draw {
+     optional uint64 result = 1; // 领取结果 
+     repeated p_activity newact = 2; // 新信息 
+} 
+
+message cs_hegemony_activity_drawend {
+} 
+
+message sc_hegemony_activity_drawend {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2;//具体领到的奖励内容 
+} 
+
+message sc_hegemony_activity_notify {
+     repeated p_activity activity = 1;//改变了的活动内容 
+} 
+
+message cs_hegemony_join_view {
+} 
+
+message cs_hegemony_leave_view {
+} 
+
+message cs_onlinerwd_info {
+} 
+
+message sc_onlinerwd_info {
+     optional uint64 haverwd = 1; // 当天是否还有奖励 
+     optional uint64 cdown = 2; // 下次领取的时间点 
+     optional uint64 rwdid = 3; // 奖励ID 
+     optional p_reward reward = 4; // 奖励列表 
+} 
+
+message cs_onlinerwd_draw {
+     optional uint64 rwdid = 1; // 奖励ID 
+} 
+
+message sc_onlinerwd_draw {
+     optional uint64 result = 1; // 结果 
+}
+/* 
+ * 战役模块 
+ */ 
+
+message cs_battle_info {
+     repeated uint64 battleid_list = 1; // 战役ID列表 
+} 
+
+message sc_battle_info {
+     repeated p_battle battle_list = 1; // 战役列表 
+} 
+
+message p_battle {
+     optional uint64 battleid = 1; // 战役ID(1 : = 主线; 2 : = 精英) 
+     optional uint64 progress = 2; // 当前进度(已通过的最大关卡ID) 
+     repeated p_chapter chapter_list = 3; // 章节简略信息预览列表 
+     optional uint64 maxstory = 4; // 已播放过的最大剧情关卡ID 
+     optional bool is_open = 5; // 是否开启 
+     optional uint64 cha_times = 6; // 特殊战役挑战次数 
+     optional uint64 last_cha_sec = 7; // 上次挑战特殊副本时间 
+} 
+
+message cs_battle_chapter {
+     optional uint64 chapterid = 1; // 章节ID 
+} 
+
+message sc_battle_chapter {
+     optional p_chapter chapter = 1; // 章节信息 
+} 
+
+message p_chapter {
+     optional uint64 chapterid = 1; // 章节ID 
+     optional uint64 startotal = 2; // 星星总数 
+     optional uint64 rewardcnt = 3; // 领奖次数 
+     repeated p_dungeon dungeon_list = 4; // 关卡详细数据信息列表 
+} 
+
+message p_dungeon {
+     optional uint64 dungeonid = 1; // 关卡ID 
+     optional uint64 cha_times = 2; // 挑战次数 
+     optional uint64 starcount = 3; // 星星数量 
+     optional uint64 rewardcnt = 4; // 领奖次数 
+     optional uint64 cha_total = 5; // 累计挑战 
+     optional uint64 reset_times = 6; //重置次数 
+} 
+
+message sc_battle_update {
+     repeated p_battle battle_list = 1; // 战役列表 
+} 
+
+message cs_battle_fight_request {
+     optional uint64 dungeonid = 1; // 关卡ID 
+} 
+
+message sc_battle_fight_request {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional p_fight_struct fight_struct = 3; // 战斗结构 
+     optional p_reward drop_reward_view = 4; // 掉落奖励预览 
+     optional uint64 addrolexp = 5; // 增加主角经验 
+     optional uint64 addgerexp = 6; // 增加宝贝经验 
+} 
+
+message cs_battle_fight_report {
+     optional uint64 dungeonid = 1; // 关卡ID 
+     optional p_fight_struct fight_struct = 2; // 战斗结构 
+} 
+
+message sc_battle_fight_report {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional bool attacker_win = 3; // 是否胜利 
+     optional uint64 starcount = 4; // 星星数量 
+     optional uint64 addrolexp = 5; // 增加主角经验 
+     optional uint64 addgerexp = 6; // 增加宝贝经验 
+     optional p_reward reward = 7; // 其余奖励信息 
+     repeated bool star_array = 8; // 每颗星星有没有 
+} 
+
+message cs_battle_chapter_reward {
+     optional uint64 chapterid = 1; // 章节ID 
+} 
+
+message sc_battle_chapter_reward {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 chapterid = 2; // 章节ID 
+     optional p_reward reward = 3; // 具体奖励信息 
+} 
+
+message cs_battle_dungeon_reward {
+     optional uint64 dungeonid = 1; // 关卡ID 
+} 
+
+message sc_battle_dungeon_reward {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional p_reward reward = 3; // 具体奖励信息 
+} 
+
+message cs_battle_fight_sweep {
+     optional uint64 dungeonid = 1; // 关卡ID 
+     optional uint64 sweep_num = 2; // 扫荡次数 
+} 
+
+message sc_battle_fight_sweep {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional uint64 real_sweep_num = 3; // 实际扫荡次数 
+     optional uint64 sweep_num = 4; // 扫荡次数 
+     optional uint64 addrolexp = 5; // 增加主角经验 
+     optional uint64 addgerexp = 6; // 增加宝贝经验 
+     optional p_reward normal_reward = 7; // 普通奖励信息 
+     optional p_reward extra_reward = 8; // 额外奖励信息 
+} 
+
+message cs_battle_story_fight {
+     optional uint64 dungeonid = 1; // 关卡ID 
+} 
+
+message sc_battle_story_fight {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional p_fight_struct fight_struct = 3; // 战斗结构 
+} 
+
+message cs_battle_fight_request2 {
+     optional uint64 dungeonid = 1; // 关卡ID 
+     repeated uint64 geridlist = 2; // 宝贝ID列表, [compatible] 060版本废弃保留做兼容 
+     repeated uint64 poslist = 3; // 宝贝站位列表, [compatible] 060版本废弃保留做兼容 
+     optional uint64 trainerid = 4; // 训练师ID 
+} 
+
+message sc_battle_fight_request2 {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional p_fight_struct fight_struct = 3; // 战斗结构 
+} 
+
+message cs_battle_fight_report2 {
+     optional uint64 dungeonid = 1; // 关卡ID 
+     optional p_fight_struct fight_struct = 2; // 战斗结构 
+} 
+
+message sc_battle_fight_report2 {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional bool attacker_win = 3; // 是否胜利 
+     optional uint64 starcount = 4; // 星星数量 
+     optional p_reward reward = 5; // 其余奖励信息 
+     repeated bool star_array = 6; // 每颗星星有没有 
+     optional uint64 passing_rate = 7; // 通过率(万分比) 
+} 
+
+message cs_battle_fight_sweep2 {
+     optional uint64 dungeonid = 1; // 关卡ID 
+     optional uint64 sweep_num = 2; // 扫荡次数 
+} 
+
+message sc_battle_fight_sweep2 {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional uint64 real_sweep_num = 3; // 实际扫荡次数 
+     optional uint64 sweep_num = 4; // 扫荡次数 
+     optional p_reward reward = 5; // 奖励信息 
+} 
+
+message cs_battle_fight_reset {
+     optional uint64 dungeonid = 1; //关卡ID 
+} 
+
+message sc_battle_fight_reset {
+     optional uint64 result = 1; //操作结果 
+     optional p_dungeon new_dungeon = 2; //如果操作成功则刷新新的关卡信息 
+} 
+
+message cs_battle_fight_line2 {
+     optional uint64 battle_id = 1; //副本类型 
+} 
+
+message sc_battle_fight_line2 {
+     optional uint64 battle_id = 1; //副本类型 
+     repeated p_lineup line = 2; //当前阵容 
+} 
+
+message cs_battle_fight_set_line2 {
+     optional uint64 battle_id = 1; //副本类型 
+     repeated p_lineup line = 2; //要设置的阵容 
+} 
+
+message sc_battle_fight_set_line2 {
+     optional uint64 result = 1; //结果 
+     repeated p_lineup line = 2; //当前阵容 
+} 
+
+message cs_battle_activity_list {
+} 
+
+message p_battle_args {
+     optional uint64 type = 1; //活动类型 
+     optional uint64 value = 2; //具体值 
+} 
+
+message sc_battle_activity_list {
+     repeated p_battle_args arg_list = 1; //参数列表 
+}
+
+message cs_item_box_open {
+     optional uint64 type_id = 1; //宝箱type_id 
+     optional uint64 num = 2; //开启数量 
+} 
+
+message sc_item_box_open {
+     optional uint64 result = 1; //结果 
+     optional p_reward reward = 2; //开出来的东西 
+} 
+
+message cs_item_box_open_onekey {
+     repeated p_money boxlist = 1; // 需要一键开宝箱列表 
+} 
+
+message sc_item_box_open_onekey {
+     optional uint64 result = 1; // 是否满背包(1:否,255:是) 
+     optional int64 number = 2; // 成功开启数量 
+     repeated p_reward reward = 3; // 开出来的东西 
+} 
+
+message cs_item_chosebox_open {
+     optional uint64 box_type_id = 1; //宝箱ID 
+     optional uint64 reward_id = 2; //奖励ID 
+     optional uint64 num = 3; //开箱数量 
+} 
+
+message sc_item_chosebox_open {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //开出来的东西 
+} 
+
+message cs_item_chosebox_view {
+     optional uint64 box_type_id = 1; //宝箱ID 
+} 
+
+message sc_item_chosebox_view {
+     optional uint64 result = 1; //结果 
+     repeated p_item_chosebox reward_list = 2; //箱子内容 
+} 
+
+message p_item_chosebox {
+     optional uint64 rewardid = 1; //奖励ID 
+     optional p_reward reward = 2; //奖励内容 
+} 
+
+message cs_item_use {
+     optional uint64 typeid = 1; // 道具typeid 
+     optional uint64 num = 2; // 使用数量 
+} 
+
+message sc_item_use {
+     optional uint64 result = 1; // 结果 
+}
+
+message cs_ghandrwd_login_info {
+} 
+
+message sc_ghandrwd_login_info {
+     required int32 start_time = 1; // 活动开始时间 
+     required int32 end_time = 2; // 活动结束时间 
+     required int32 login_days = 3; // 累计登录天数 
+     repeated int32 drawlist = 4; // 已领取奖励的天数列表 
+     required string desc = 5; // 活动描述 
+     required string title = 6; // 活动名称 
+     repeated p_view reward = 7; // 奖励预览 
+     optional uint32 openlv = 8; // vip等级限制 
+     optional uint32 openviplv = 9; // 角色等级限制 
+} 
+
+message cs_ghandrwd_login_draw {
+     required int32 tar_day = 1; // 待领取的目标天,例如领取第1天的目标天为1 
+     optional uint32 selectnum = 2; // 奖励可选个数(0:全部领取1.领取一个) 
+     repeated uint64 rewardidlist = 3; // 奖励id数组(玩家自己选择的奖励id) 
+} 
+
+message sc_ghandrwd_login_draw {
+     required int32 result = 1; // 结果 
+     optional p_reward reward = 2; // 奖励 
+} 
+
+message sc_ghandrwd_login_update {
+     required int32 login_days = 1; // 累计登录天数 
+     repeated int32 new_drawlist = 2; // 新增的已领奖天数 
+} 
+
+message p_view {
+     required int32 day = 1; // 天数 
+     required p_reward reward = 2; // 奖励 
+     required uint32 selectnum = 3; // 奖励可选个数(0:全部领取1.领取一个) 
+} 
+
+message cs_task_trunk {
+} 
+
+message sc_task_trunk {
+     repeated p_task tasklist = 1; // 任务列表 
+} 
+
+message cs_task_daily {
+} 
+
+message sc_task_daily {
+     repeated p_task tasklist = 1; // 任务列表 
+} 
+
+message p_task {
+     optional uint64 taskid = 1; // 任务ID 
+     optional uint64 progress = 2; // 任务进度 
+     optional uint64 subtid = 3; // 子任务ID 
+     optional uint64 trigger = 4; // 是否触发(0: = 未触发;1: = 已触发) 
+     optional uint64 endsec = 5; // 任务结束时间 
+} 
+
+message sc_task_notify {
+     repeated p_task newlist = 1; // 新增列表 
+     repeated p_task updatelist = 2; // 更新列表 
+     repeated p_task deletelist = 3; // 删除列表 
+} 
+
+message cs_task_draw {
+     optional uint64 taskid = 1; // 任务ID 
+} 
+
+message sc_task_draw {
+     optional uint64 result = 1; // 领取结果 
+     optional p_reward reward = 2; // 奖励内容 
+} 
+
+message cs_task_one_draw {
+     optional uint64 type = 1; // 任务类型 
+} 
+
+message sc_task_one_draw {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 奖励内容 
+} 
+
+message cs_activity_preview {
+} 
+
+message sc_activity_preview {
+     repeated p_actiview prelist = 1; // 预览列表 
+} 
+
+message p_actiview {
+     optional uint64 actid = 1; // 活动ID 
+     optional string name = 2; // 活动名称 
+     optional uint64 class = 3; // 活动类型 
+     repeated string icon = 4; // 活动图标 
+     optional uint64 endtime = 5; // 结束时间 
+     optional uint64 priority = 6; // 优先级 
+     optional uint64 is_kaifu = 7; // (1 : = 开服活动; 2 : = 其它活动) 
+} 
+
+message sc_activity_notify {
+     repeated p_actiview newlist = 1; // 新增列表 
+     repeated p_actiview updatelist = 2; // 更新列表 
+     repeated p_actiview deletelist = 3; // 删除列表 
+} 
+
+message cs_activity_info {
+     repeated uint64 idlist = 1; // ID列表 
+} 
+
+message sc_activity_info {
+     repeated p_activity actlist = 1; // 活动列表 
+} 
+
+message p_activity {
+     optional uint64 actid = 1; // 活动ID 
+     optional string name = 2; // 活动名称 
+     optional uint64 class = 3; // 活动类型 
+     repeated string icon = 4; // 活动图标 
+     optional uint64 endtime = 5; // 结束时间 
+     optional uint64 refresh = 6; // 刷新时间 
+     optional string desc = 7; // 活动描述 
+     repeated p_actidraw drawlist = 8; // 子项列表 
+     repeated p_actiarg args = 9; // 附加参数 
+     repeated p_actiarg condition = 10; // 附加条件 
+     optional uint64 starttime = 11; // 开始时间 
+     optional uint64 priority = 12; // 优先级 
+     optional uint64 is_kaifu = 13; // (1 : = 开服活动; 2 : = 其它活动) 
+} 
+
+message p_actidraw {
+     optional uint64 drawid = 1; // 子项ID 
+     optional string desc = 2; // 子项描述 
+     optional uint64 numlimit = 3; // 次数限制 
+     repeated p_actiarg condition = 4; // 领取条件 
+     optional p_reward reward = 5; // 领取奖励 
+     optional uint64 state = 6; // 是否可领 
+     optional uint64 number = 7; // 领取次数 
+} 
+
+message p_actiarg {
+     optional uint64 type = 1; // 参数类型 
+     optional uint64 value = 2; // 参数数值 
+} 
+
+message cs_activity_draw {
+     optional uint64 actid = 1; // 活动ID 
+     optional uint64 drawid = 2; // 子项ID 
+} 
+
+message sc_activity_draw {
+     optional uint64 result = 1; // 领取结果 
+     repeated p_activity newact = 2; // 新信息 
+} 
+
+message cs_activity_czjj_buy {
+     optional uint64 actid = 1; // 对应活动ID 
+} 
+
+message sc_activity_czjj_buy {
+     optional uint64 result = 1; // 购买结果 
+     optional uint64 actid = 2; // 对应活动ID 
+} 
+
+message cs_activity_active_view {
+} 
+
+message sc_activity_activy_view {
+     repeated p_active_week weeklist = 1; // 每周的结构 
+} 
+
+message p_active_week {
+     optional string title = 1; // 标题 
+     optional uint64 starttime = 2; // 起始时间 
+     optional uint64 endtime = 3; // 结束时间 
+     repeated p_active_days dayslist = 4; // 每天的结构 
+     repeated p_reward shipmoney = 5; // 飞船奖励预览 
+} 
+
+message p_active_days {
+     optional string title = 1; // 标题 
+     repeated p_actidraw drawlist = 2; // 每项的结构 
+     optional uint64 starttime = 3; // 起始时间 
+     optional uint64 endtime = 4; // 结束时间 
+} 
+
+message cs_activity_kaifu {
+} 
+
+message sc_acitivity_kaifu {
+     optional uint64 endtime = 1;//开服活动的结束时间,如果是0则表示没开放 
+     repeated p_activity activity = 2;//当前活动内容 
+     optional uint64 drawtime = 3;//什么时候可以领取结算奖励 
+     optional p_reward reward = 4;//结算满额度奖励 
+     optional bool isdraw = 5;//当前是否已经领取过结算奖励 
+} 
+
+message cs_activity_kaifu_draw {
+     optional uint64 activityid = 1;//活动id 
+     optional uint64 drawid = 2;//drawid 
+} 
+
+message sc_activity_kaifu_draw {
+     optional uint64 result = 1; // 领取结果 
+     repeated p_activity newact = 2; // 新信息 
+} 
+
+message cs_activity_kaifu_drawend {
+} 
+
+message sc_activity_kaifu_drawend {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2;//具体领到的奖励内容 
+} 
+
+message sc_acitivity_kaifu_notify {
+     repeated p_activity activity = 1;//改变了的活动内容 
+} 
+
+message cs_vip_info {
+} 
+
+message sc_vip_info {
+     optional p_vip info = 1; // VIP信息 
+} 
+
+message p_vip {
+     optional uint64 viplv = 1; // VIP等级 
+     optional uint64 points = 2; // VIP积分 
+     repeated p_vip_gift_times gift = 3; // vip礼包的领取信息 
+} 
+
+message p_vip_gift_times {
+     optional uint64 type = 1; //礼包的类型 
+     optional uint64 num = 2; //礼包今天的已经领取的数量 
+} 
+
+message sc_vip_update {
+     optional p_vip info = 1; // VIP信息 
+} 
+
+message cs_vip_gift {
+     optional uint64 typeid = 1; // 领取的礼包ID 
+} 
+
+message sc_vip_gift {
+     optional uint64 result = 1; // 领取结果 
+     optional p_reward reward = 2; // 具体奖励 
+} 
+
+message cs_vip_item_effect {
+     optional uint64 typeid = 1; // 类型ID 
+     optional uint64 number = 2; // 使用数量 
+} 
+
+message sc_vip_item_effect {
+     optional uint64 result = 1; // 使用结果 
+     optional uint64 add_viplv = 2; // 增加VIP等级 
+     optional uint64 add_points = 3; // 增加VIP积分 
+     optional uint64 add_overdue = 4; // 增加激活时间 
+} 
+
+message p_family {
+     optional uint64 familyid = 1; // 公会ID 
+     optional string familyname = 2; // 公会名 
+     optional uint64 familylv = 3; // 公会等级 
+     optional uint64 familycons = 4; // 公会建设度 
+     repeated p_ftech techlist = 5; // 科技列表 
+     optional uint64 techpoints = 6; // 科技点数 
+     optional string notice = 7; // 公会公告(对内) 
+     optional string whatup = 8; // 公会宣言(对外) 
+     optional uint64 create_time = 9; // 创建时间 
+     optional string chairname = 10; // 会长名字 
+     optional uint64 active = 11; // 活跃点数 
+     repeated p_flog floglist = 12; // 日志列表 
+     optional uint64 donate_times = 13; // 已捐献次数 
+     optional uint64 joinneedlv = 14; // 加入需要的等级 
+     optional bool joinneedagree = 15; // 加入是否需要审批 
+     optional uint64 rank = 16; // 公会排行 
+     optional uint64 lastrecruitsec = 17; // 上次招募的时间点 
+} 
+
+message p_ftech {
+     optional uint64 type = 1; // 科技类型 
+     optional uint64 level = 2; // 科技等级 
+} 
+
+message p_flog {
+     optional uint64 type = 1; // 日志类型 
+     optional string content = 2; // 日志内容 
+     optional uint64 timestamp = 3; // 生成时间戳 
+} 
+
+message p_family_summary {
+     optional uint64 familyid = 1; // 公会ID 
+     optional string familyname = 2; // 公会名 
+     optional uint64 familylv = 3; // 公会等级 
+     optional string whatup = 4; // 公会宣言 
+     optional uint64 membernum = 5; // 成员数量 
+     optional string chairname = 6; // 会长名字 
+     optional uint64 chairid = 7; // 会长ID 
+     optional uint64 totalpower = 8; // 总战斗力 
+     optional uint64 joinneedlv = 9; // 加入需要的等级 
+     optional bool joinneedagree = 10;// 加入是否需要审批 
+     optional uint64 rank = 11;// 联盟排行 
+} 
+
+message p_fmember_public {
+     optional p_role_public baseinfo = 1; // 基本信息 
+     optional uint64 title = 2; // 权限(0: = 成员;1: = 副会长;2: = 会长) 
+     optional uint64 totalcons = 3; // 个人累计贡献度 
+     optional uint64 todaycons = 4; // 个人当天的贡献 
+     optional p_line_summary atkline = 5; // 阵容信息（进攻阵容） 
+     optional p_line_summary defline = 6; // 阵容信息（防守阵容） 
+} 
+
+message cs_family_info {
+} 
+
+message sc_family_info {
+     optional uint64 result = 1; // 请求结果 
+     repeated p_family familyinfo = 2; // 公会信息 
+     repeated p_fmember_public members = 3; // 成员列表 
+     optional uint64 lastquit = 4; // 最后一次退出公会的时间 
+     repeated uint64 applylist = 5; // 已申请公会ID列表 
+     optional uint64 donate_times = 6; // 今日已捐献次数 
+} 
+
+message cs_family_list {
+     optional uint64 pagenum = 1; // 页码(从1开始) 
+} 
+
+message sc_family_list {
+     repeated p_family_summary familylist = 1; // 公会信息列表 
+} 
+
+message cs_family_search {
+     optional string name = 1; // 字符串 
+} 
+
+message sc_family_search {
+     repeated p_family_summary familylist = 1; // 公会信息列表 
+} 
+
+message cs_family_create {
+     optional string familyname = 1; // 公会名 
+     optional string notice = 2; // 公会公告 
+     optional string whatup = 3; // 公会宣言 
+} 
+
+message sc_family_create {
+     optional uint64 result = 1; // 创建结果 
+     repeated p_family familyinfo = 2; // 公会信息 
+     repeated p_fmember_public members = 3; // 成员列表 
+} 
+
+message cs_family_send_apply {
+     optional uint64 familyid = 1; // 公会ID 
+} 
+
+message cs_family_send_apply_fast {
+     optional uint64 tarroleid = 1; // 对方角色ID 
+} 
+
+message sc_family_send_apply {
+     optional uint64 result = 1; // 请求结果 
+} 
+
+message sc_family_apply_notify {
+     optional p_family_apply newapply = 1; // 新申请 
+} 
+
+message p_family_apply {
+     optional uint64 roleid = 1; // 申请人ID 
+     optional uint64 timestamp = 2; // 申请时间戳 
+     optional string rname = 3; // 申请人名字 
+     optional uint64 level = 4; // 申请人等级 
+     optional uint64 nonolv = 5; // Nono等级 
+     optional uint64 power = 6; // 申请人战力 
+     optional uint64 icon = 7; // 申请人头像 
+} 
+
+message cs_family_apply_list {
+} 
+
+message sc_family_apply_list {
+     optional uint64 result = 1; // 请求结果 
+     repeated p_family_apply applylist = 2; // 所有申请列表 
+} 
+
+message cs_family_handle_apply {
+     optional uint64 applyid = 1; // 申请人ID 
+     optional uint64 option = 2; // 具体选项 
+} 
+
+message sc_family_handle_apply {
+     optional uint64 result = 1; // 处理结果 
+     optional uint64 option = 2; // 具体选项 
+} 
+
+message cs_family_cancel_apply {
+     optional uint64 familyid = 1; // 申请公会ID 
+} 
+
+message sc_family_cancel_apply {
+     optional uint64 result = 1; // 撤回结果 
+} 
+
+message sc_family_cancel_notify {
+     optional uint64 roleid = 1; // 申请人ID 
+} 
+
+message sc_family_handle_notify {
+     optional uint64 roleid = 1; // 申请人ID 
+} 
+
+message sc_family_join_notify {
+     optional uint64 roleid = 1; // 申请人ID 
+} 
+
+message sc_family_agreed_notify {
+     optional p_family familyinfo = 1; // 公会信息 
+     repeated p_fmember_public members = 2; // 成员列表 
+} 
+
+message sc_family_refused_notify {
+     optional uint64 familyid = 1; // 公会ID 
+} 
+
+message cs_family_kick {
+     optional uint64 roleid = 1; // 准备踢的人的ID 
+} 
+
+message sc_family_kick {
+     optional uint64 result = 1; // 踢人结果 
+} 
+
+message sc_family_kicked_notify {
+} 
+
+message cs_family_quit {
+} 
+
+message sc_family_quit {
+     optional uint64 result = 1; // 退出结果 
+} 
+
+message sc_family_update_notify {
+     optional p_family familyinfo = 1; // 公会新信息 
+} 
+
+message sc_fmember_new_notify {
+     repeated p_fmember_public newlist = 1; // 新增成员列表 
+} 
+
+message sc_fmember_del_notify {
+     repeated uint64 dellist = 1; // 删除成员ID列表 
+} 
+
+message sc_fmember_update_notify {
+     repeated p_fmember_public updatelist = 1; // 更新成员列表 
+} 
+
+message cs_family_manage {
+     optional uint64 option = 1; // 选项 
+     optional uint64 roleid = 2; // 被操作者ID 
+} 
+
+message sc_family_manage {
+     optional uint64 result = 1; // 管理结果 
+} 
+
+message sc_family_manage_notify {
+     optional uint64 option = 1; // 选项 
+     optional uint64 roleid = 2; // 被操作者ID 
+     optional uint64 ctrlid = 3; // 操作者ID 
+} 
+
+message cs_family_dissolve {
+} 
+
+message sc_family_dissolve {
+     optional uint64 result = 1; // 解散结果 
+} 
+
+message sc_family_dissolve_notify {
+     optional uint64 familyid = 1; // 公会ID 
+} 
+
+message cs_family_edit {
+     optional string notice = 1; // 公会公告 
+     optional string whatup = 2; // 公会宣言 
+} 
+
+message sc_family_edit {
+     optional uint64 result = 1; // 编辑结果 
+} 
+
+message sc_family_edit_notify {
+     optional string notice = 1; // 公会公告 
+     optional string whatup = 2; // 公会宣言 
+} 
+
+message sc_fmember_state_trans_notify {
+     optional uint64 roleid = 1; // 角色ID 
+     optional uint64 lastlogout = 2; // 新状态 
+} 
+
+message cs_family_donate {
+     optional uint64 type = 1; // 捐献类型 
+} 
+
+message sc_family_donate {
+     optional uint64 result = 1; // 捐献结果 
+     optional uint64 type = 2; // 捐献类型 
+     optional p_reward reward = 3; // 获得奖励 
+} 
+
+message sc_family_cons_notify {
+     optional uint64 newlv = 1; // 新等级 
+     optional uint64 newcons = 2; // 新建设度 
+     optional uint64 donate_times = 3; // 新的捐献次数 
+} 
+
+message cs_family_upgrade_techlv {
+     optional uint64 type = 1; // 科技类型 
+} 
+
+message sc_family_upgrade_techlv {
+     optional uint64 result = 1; // 升级结果 
+} 
+
+message sc_family_tech_notify {
+     repeated p_ftech changelist = 1; // 改变的科技列表 
+     optional uint64 techpoints = 2; // 最新的科技点数 
+} 
+
+message sc_family_log_notify {
+     repeated p_flog addloglist = 1; // 新增的日志列表 
+} 
+
+message p_family_msg {
+     optional uint64 type = 1; // 消息类型 
+     optional uint64 uid = 2; // 消息UID 
+     optional uint64 time = 3; // 时间戳 
+     optional uint64 src_id = 4; // 发送者ID 
+     optional string src_name = 5; // 发送者名字 
+     optional string content = 6; // 消息内容 
+     optional uint64 icon = 7; // 发送者头像 
+     optional uint64 vip = 8;// 发送者的vip等级 
+} 
+
+message cs_family_msg_list {
+} 
+
+message sc_family_msg_list {
+     optional uint64 result = 1; // 请求结果 
+     repeated p_family_msg chatlist = 2; // 普通消息 
+     repeated p_family_msg sysmlist = 3; // 系统消息 
+} 
+
+message sc_family_msg_notify {
+     repeated p_family_msg chatlist = 2; // 新增消息 
+} 
+
+message cs_family_send_msg {
+     optional string content = 1; // 发送内容 
+} 
+
+message sc_family_send_msg {
+     optional uint64 result = 1; // 发送结果 
+} 
+
+message sc_family_activepoints_notify {
+     optional uint64 activepoints = 1; // 最新活跃度 
+} 
+
+message cs_family_impeach_info {
+} 
+
+message sc_family_impeach_info {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 deadline = 2; // 结束倒计时(0表示没有弹劾) 
+     optional uint64 vote_num = 3; // 投票人数 
+     optional uint64 is_voted = 4; // 自己是否参与投票(1 : = 参与; 2 : = 未参与) 
+} 
+
+message cs_family_impeach_start {
+} 
+
+message sc_family_impeach_start {
+     optional uint64 result = 1; // 请求结果 
+} 
+
+message cs_family_impeach_vote {
+} 
+
+message sc_family_impeach_vote {
+     optional uint64 result = 1; // 请求结果 
+} 
+
+message sc_family_impeach_notify {
+     optional uint64 deadline = 1; // 结束倒计时(0表示没有弹劾) 
+     optional uint64 vote_num = 2; // 投票人数 
+     optional uint64 is_voted = 3; // 自己是否参与投票(1 : = 参与; 2 : = 未参与) 
+} 
+
+message sc_family_impeach_success {
+     optional uint64 oldchairid = 1; // 老会长ID 
+     optional uint64 newchairid = 2; // 新会长ID 
+} 
+
+message cs_family_setarg {
+     optional uint64 joinneedlv = 1; // 加入需要的战队等级 
+     optional bool join_needagree = 2; // 加入是否需要审批 
+} 
+
+message sc_family_setarg {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 joinneedlv = 2; // 加入需要的战队等级 
+     optional bool join_needagree = 3; // 加入是否需要审批 
+} 
+
+message cs_family_quick_join {
+} 
+
+message sc_family_quick_join {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message cs_family_recruit {
+} 
+
+message sc_family_recruit {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 lastrecruitsec = 2; //如果成功了就是成功的时间点，失败就是上次的时间点 
+} 
+
+message cs_family_view_other {
+     optional uint64 tar_roleid = 1; //目标角色ID 
+} 
+
+message sc_family_view_other {
+     optional uint64 result = 1; //操作结果 
+     optional p_fmember_public tar = 2; //目标信息 
+} 
+
+message cs_family_send_member_mail {
+     optional string chat_msg = 1; //聊天内容 
+} 
+
+message sc_family_send_member_mail {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message p_family_role_packet {
+     optional uint64 typeid = 1; //红包的typeid 
+     optional string rolename = 2; //发红包的角色名 
+     optional uint64 packetid = 3; //红包的唯一ID 
+     optional uint64 leftnum = 4; //已经开启的红包个数 
+     optional bool isdraw = 5; //是否已经领取了这个红包 
+} 
+
+message p_family_get_packet {
+     optional string rolename = 1; //抢到的红包发送者的名字 
+     optional p_reward reward = 2; //抢到的内容 
+} 
+
+message p_family_sent_packet {
+     optional uint64 typeid = 1; //红包的类型 
+     optional uint64 sentnum = 2; //已经发送的个数 
+} 
+
+message p_family_packet {
+     optional uint64 type = 1; //红包的类型 
+     optional uint64 packettimes = 2; //红包的可抢次数 
+     optional uint64 packetgold = 3; //红包的总量 
+     optional uint64 packetnums = 4; //红包的数量 
+     optional string packetbestRole = 5; //红包最高获得者 
+     optional bool isdraw = 6; //当天是否已经领取过该类型的红包 
+} 
+
+message cs_family_packet_info {
+} 
+
+message sc_family_packet_info {
+     repeated p_family_packet family_packet = 1; //联盟每天的免费红包 
+     repeated p_family_sent_packet sent_pakcet = 2; //自己已经发送的公会红包信息 
+     repeated p_family_role_packet role_send_packet = 3; //公会玩家发送出来的红包 
+     repeated p_family_get_packet role_get_packet = 4; //玩家自己抢到的红包信息 
+} 
+
+message cs_family_packet_drawfamily {
+     optional uint64 type = 1; //要领取的红包类型 
+} 
+
+message sc_family_packet_drawfamily {
+     optional uint64 result = 1; //操作返回码 
+     optional p_reward reward = 2; //红包内的奖励 
+} 
+
+message cs_family_sendpacket {
+     optional uint64 typeid = 1; //要发送的红包类型 
+} 
+
+message sc_family_sendpacket {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //发送后的返利内容 
+} 
+
+message cs_family_packet_drawrole {
+     optional uint64 packetid = 1; //红包的id 
+} 
+
+message sc_family_packet_drawrole {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //获得的奖励 
+} 
+
+message cs_family_packet_ranklist {
+} 
+
+message sc_family_packet_ranklist {
+     repeated p_family_packet_rank ranklist = 1; //排行榜信息 
+} 
+
+message p_family_packet_rank {
+     optional uint64 rank = 1; //排行 
+     optional string rolename = 2; //角色名字 
+     optional uint64 sentnum = 3; //发送红包的数量 
+     optional uint64 costgold = 4; //花费的元宝数量 
+} 
+
+message sc_family_packet_notify {
+     repeated p_family_packet family_packet = 1; //联盟每天的免费红包 
+     repeated p_family_sent_packet sent_pakcet = 2; //自己已经发送的公会红包信息 
+     repeated p_family_role_packet role_send_packet = 3; //公会玩家发送出来的红包 
+     repeated p_family_get_packet role_get_packet = 4; //玩家自己抢到的红包信息 
+} 
+
+message cs_fboss_info {
+} 
+
+message sc_fboss_info {
+     optional uint64 result = 1; //请求是否成功 
+     optional uint64 curdungeonid = 2; //当前关卡ID 
+     optional uint64 nowhp_percent = 3; //当前血量万分比 
+     repeated p_lineup gerlist = 4; //选中的阵容 
+     optional uint64 addattr = 5; //增加的属性加成万分比 
+     optional uint64 leftatktimes = 6; //剩余的挑战次数 
+     repeated uint64 drawdungeonids = 7; //已经领取通关奖励的关卡 
+} 
+
+message cs_fboss_dungeon_detial {
+     optional uint64 dungeonid = 1; //关卡ID 
+} 
+
+message sc_fboss_dungeon_detial {
+     optional uint64 result = 1; //处理结果 
+     optional uint64 nowhp_percent = 2; //当前剩余血量万分比 
+     repeated p_fboss3rank ranklist = 3; //该关卡的通关排行 
+     optional uint64 lastatkroleid = 4; //上次攻击bos的角色ID 
+     optional uint64 lastatktime = 5; //上次攻击bos的时间 
+} 
+
+message p_fboss3rank {
+     optional string familyname = 1; //联盟名字 
+     optional uint64 nowhp_percent = 2; //当前血量剩余万分比 
+     optional uint64 rank = 3; //排行 
+} 
+
+message cs_fboss_rank {
+     optional uint64 dungeonid = 1; //关卡ID 
+} 
+
+message sc_fboss_rank {
+     optional uint64 result = 1; //操作结果 
+     repeated p_fboss_rank ranklist = 2; //排行榜 
+} 
+
+message p_fboss_rank {
+     optional uint64 rank = 1; //排名 
+     optional string rolename = 2; //角色名字 
+     optional uint64 harmvalue = 3; //伤害值 
+} 
+
+message cs_fboss_passrank {
+     optional uint64 dungeonid = 1; //关卡ID 
+} 
+
+message sc_fboss_passrank {
+     optional uint64 result = 1; //操作结果 
+     repeated p_fboss_passrank ranklist = 2; //排行榜 
+} 
+
+message p_fboss_passrank {
+     optional uint64 rank = 1; //排名 
+     optional string familyname = 2; //联盟名字 
+     optional uint64 passsec = 3; //通关时的unix时间 
+} 
+
+message cs_fboss_atk {
+     optional uint64 dungeonid = 1; //关卡ID 
+} 
+
+message sc_fboss_atk {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional p_fight_struct fight_struct = 3; // 战斗结构 
+     optional uint64 curatkroleid = 4; //当前正在攻打bos角色ID 
+     optional uint64 lastatktime = 5; //上次攻击bos的时间 
+} 
+
+message cs_fboss_report {
+     optional uint64 dungeonid = 1; //关卡ID 
+     optional p_fight_struct fight_struct = 2; //战斗结构 
+} 
+
+message sc_fboss_report {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 dungeonid = 2; //关卡ID 
+     optional bool attacker_win = 3; //是否获胜 
+     optional p_reward reward = 4; //获得的奖励 
+     optional sint64 harm_percent = 5; //造成的伤害的万分比，可能是负数 
+     optional sint64 harm_value = 6; //造成的伤害，可能是负数 
+} 
+
+message cs_fboss_draw {
+     repeated uint64 dungeonlist = 1; //要领取奖励的关卡列表 
+} 
+
+message sc_fboss_draw {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //奖励内容 
+     repeated uint64 dungeonlist = 3; //已经领取奖励的关卡列表 
+} 
+
+message cs_fboss_setline {
+     repeated p_lineup linelist = 1; //选择使用的武将列表 
+} 
+
+message sc_fboss_setline {
+     optional uint64 result = 1; //操作结果 
+     repeated p_lineup linelist = 2; //选择使用的武将列表 
+} 
+
+message sc_fboss_sync {
+     optional uint64 curdungeonid = 1; //当前关卡ID 
+     optional uint64 nowhp_percent = 2; //当前血量万分比 
+}
+
+message cs_ffight_preview {
+} 
+
+message sc_ffight_preview {
+     required uint64 state = 1; // 状态 
+} 
+
+message cs_ffight_detail {
+} 
+
+message sc_ffight_detail {
+     required uint64 state = 1; // 状态 
+     required uint64 etime = 2; // 状态结束时间 
+     required uint64 isign = 3; // (1: = 已报名;2: = 未报名) 
+     repeated p_ffight_family self = 4; // 我方公会详情 
+     repeated p_ffight_family enemy = 5; // 敌方公会详情 
+} 
+
+message p_ffight_family {
+     required uint64 platform = 1; // 平台 
+     required uint64 serverid = 2; // 区号 
+     required string fname = 3; // 公会名 
+     required uint64 score = 4; // 积分 
+     required uint64 rating = 5; // 段位 
+     repeated p_ffight_member memberlist = 6; // 成员列表 
+} 
+
+message p_ffight_member {
+     required p_role_public baseinfo = 1; // 基本信息 
+     required uint64 winstar = 2; // 赢得星星数 
+     required uint64 ownstar = 3; // 自己星星数 
+     required uint64 attack_times = 4; // 攻击次数 
+     repeated p_ffight_hist histlist = 5; // 战报列表 
+} 
+
+message p_ffight_hist {
+     required uint64 histid = 1; // 战报ID 
+     required uint64 type = 2; // (1: = 我方为攻击;2: = 我方为受击) 
+     required string atkname = 3; // 攻击方名字 
+     required string defname = 4; // 防御方名字 
+     required uint64 result = 5; // 攻击结果(1: = 胜利;2: = 失败) 
+     repeated p_fight_struct replay = 6; // 具体战斗录像 
+     required uint64 addstar = 7; // 增加星星数 
+     required uint64 timestamp = 8; // 战斗时间戳 
+} 
+
+message cs_ffight_hist_with_replay {
+     required uint64 tarid = 1; // 目标ID 
+     required uint64 histid = 2; // 战报ID 
+     required uint64 type = 3; // 请求类型 
+} 
+
+message sc_ffight_hist_with_replay {
+     repeated p_ffight_hist histinfo = 1; // 具体战报 
+} 
+
+message sc_ffight_member_update {
+     required uint64 type = 1; // (1: = 我方;2: = 敌方) 
+     repeated p_ffight_member updatelist = 2; // 更新成员列表 
+} 
+
+message cs_ffight_signup {
+     repeated uint64 memberidlist = 1; // 参战ID列表 
+} 
+
+message sc_ffight_signup {
+     required uint64 result = 1; // 报名结果 
+} 
+
+message cs_ffight_attack {
+     required uint64 enemyid = 1; // 对手ID 
+} 
+
+message sc_ffight_attack {
+     required uint64 result = 1; // 攻击结果 
+     required uint64 addstar = 2; // 增加星星数 
+     repeated p_ffight_hist histlist = 3; // 战报(带录像) 
+} 
+
+message cs_ffight_prev_hist_list {
+} 
+
+message sc_ffight_prev_hist_list {
+     repeated p_ffight_family self = 1; // 我方公会详情 
+     repeated p_ffight_family enemy = 2; // 敌方公会详情 
+} 
+
+message cs_ffight_tops {
+     required uint64 neednum = 1; // 公会数量 
+} 
+
+message sc_ffight_tops {
+     repeated p_ffight_top toplist = 1; // 排行榜单 
+} 
+
+message p_ffight_top {
+     required uint64 platform = 1; // 平台 
+     required uint64 serverid = 2; // 区号 
+     required string fname = 3; // 公会名 
+     required uint64 score = 4; // 积分 
+     required uint64 rank = 5; // 排名 
+} 
+
+message cs_pay_info {
+} 
+
+message sc_pay_info {
+     optional uint64 first_pay_state = 1; // 首充相关状态 
+     repeated uint64 paid_case_list = 2; // 已充档位列表 
+} 
+
+message cs_pay_test {
+     optional uint64 pay_type = 1; // 充值类型 
+     optional uint64 amount_rmbfen = 2; // 充值额度(分) 
+     optional uint64 giftTypeID = 3; // 礼包的TypeID 
+} 
+
+message sc_pay_notify {
+     optional uint64 result = 1; // 充值结果 
+     optional p_reward reward = 2; // 充值奖励 
+     optional uint64 pay_type = 3; // 充值类型 
+     optional uint64 pay_case = 4; // 充值档位(非定档为0) 
+     optional uint64 amount_rmbfen = 5; // 充值额度(分) 
+} 
+
+message cs_pay_first_draw {
+} 
+
+message sc_pay_first_draw {
+     optional uint64 result = 1; // 充值结果 
+     repeated p_reward rewards = 2; // 充值奖励 
+} 
+
+message cs_pay_offline_ensure {
+} 
+
+message p_talk_msg {
+     optional uint64 type = 1; // 消息类型 
+     optional uint64 uid = 2; // 消息UID 
+     optional uint64 time = 3; // 时间戳 
+     optional uint64 src_id = 4; // 发送者ID 
+     optional string src_name = 5; // 发送者名字 
+     optional string content = 6; // 消息内容 
+     optional uint64 icon = 7; // 发送者头像 
+     optional uint64 frame = 8; // 发送者相框 
+     optional uint32 vip = 9; // 发送者vip信息 
+     repeated int64 args = 10; // 特殊消息的扩展参数 
+} 
+
+message cs_talk_msg_list {
+} 
+
+message sc_talk_msg_list {
+     repeated p_talk_msg chatlist = 1; // 所有消息 
+     repeated uint64 shieldlist = 2; // 屏蔽列表 
+} 
+
+message sc_talk_msg_notify {
+     repeated p_talk_msg chatlist = 1; // 新增消息 
+} 
+
+message cs_talk_send_msg {
+     optional int32 type = 1; 
+     optional string content = 2; // 发送内容 
+} 
+
+message sc_talk_send_msg {
+     optional int32 type = 1; 
+     optional uint64 result = 2; // 发送结果 
+} 
+
+message cs_talk_set_shield {
+     optional int32 bcancel = 1; 
+     optional uint64 shieldroleid = 2; 
+} 
+
+message sc_talk_set_shield {
+     optional int32 result = 1; // 所有消息 
+     repeated uint64 shieldlist = 2; // 屏蔽列表 
+}
+
+message cs_fbird_info {
+} 
+
+message sc_fbird_info {
+     optional uint64 leftTimes = 1; //剩余的挑战次数 
+     optional uint64 todaybest = 2; //今日的最佳成绩 
+     optional uint64 rolebest = 3; //历史最佳战绩 
+     optional uint64 coin = 4; //金币获得 
+     optional uint64 gold = 5; //钻石获得 
+     optional uint64 card = 6; //卡牌获得 
+} 
+
+message cs_fbird_rank {
+} 
+
+message sc_fbird_rank {
+     repeated p_fbird_rank ranklist = 1; //排行榜 
+} 
+
+message p_fbird_rank {
+     optional uint64 rank = 1; //排名 
+     optional string rolename = 2; //角色名 
+     optional uint64 score = 3; //得分 
+} 
+
+message cs_fbird_draw {
+     optional uint64 score = 1; //得分 
+     optional uint64 coin = 2; //金币获得 
+     optional uint64 gold = 3; //钻石获得 
+     optional uint64 card = 4; //卡牌获得 
+} 
+
+message sc_fbird_draw {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 coin = 2; //金币获得 
+     optional uint64 gold = 3; //钻石获得 
+     optional uint64 card = 4; //卡牌获得 
+}
+
+message cs_fschool_info {
+} 
+
+message sc_fschool_info {
+     optional uint64 acceleratetime = 1; //已经使用的加速次数 
+     repeated p_fshool_desk desks = 2; //课桌，所有解锁的桌子都会回 
+     repeated string rolenames = 3; //给你加速的人的名字 
+     repeated uint64 cansendroles = 4; //可被赠送的角色列表 
+} 
+
+message p_fshool_desk {
+     optional uint64 pos = 1; //位置 
+     optional p_school_ger ger = 2; //桌子上的宝贝 
+} 
+
+message p_school_ger {
+     optional uint64 gerid = 1; //宝贝ID 
+     optional uint64 level = 2; //宝贝等级 
+     optional uint64 exp = 3; //宝贝的经验值 
+     optional uint64 typeid = 4; //宝贝的typeid 
+     optional uint64 normalstage = 5; //宝贝的常驻形态 
+     optional uint64 clothes = 6; //时装状态 
+     optional sint64 expiresec = 7; //时装的到期时间 
+} 
+
+message cs_fschool_setger {
+     optional uint64 pos = 1; //桌子位置 
+     optional uint64 gerid = 2; //宝贝ID 
+} 
+
+message sc_fschool_setger {
+     optional uint64 result = 1; //操作结果 
+     optional p_fshool_desk new_desk = 2; //新的桌子信息 
+} 
+
+message cs_fschool_viewother {
+     optional uint64 roleid = 1; //角色ID 
+} 
+
+message sc_fschool_viewother {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 acceleratedtime = 2; //被加速次数 
+     repeated p_fshool_desk desks = 3; //课桌，所有解锁的桌子都会回 
+} 
+
+message cs_fschool_accelerate {
+     optional uint64 roleid = 1; //角色ID 
+     optional uint64 pos = 2; //选择加速的位置 
+     optional uint64 gerid = 3; //要加速的宝贝ID 
+} 
+
+message sc_fschool_accelerate {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 tarroleid = 2; //目标角色ID 
+     repeated p_fshool_desk new_desk = 3; //新的桌子信息 
+     optional p_reward reward = 4; //加速成功后的奖励 
+} 
+
+message cs_fschool_accelerate_auto {
+} 
+
+message sc_fschool_accelerate_auto {
+     optional uint64 result = 1; //操作结果 
+     optional string tar_rolename = 2; //新的桌子信息 
+     optional p_reward reward = 3; 
+}
+
+message cs_guide_list {
+} 
+
+message sc_guide_list {
+     repeated p_guide guidelist = 1; // 任务列表 
+} 
+
+message p_guide {
+     optional uint64 guideid = 1; // 任务ID 
+     optional uint64 progress = 2; // 任务进度 
+     optional uint64 trigger = 3; // 是否完成(0: = 未完成;1: = 已完成) 
+} 
+
+message sc_guide_notify {
+     repeated p_guide newlist = 1; // 新增列表 
+     repeated p_guide updatelist = 2; // 更新列表 
+     repeated p_guide deletelist = 3; // 删除列表 
+} 
+
+message cs_guide_draw {
+     optional uint64 guideid = 1; // 任务ID 
+} 
+
+message sc_guide_draw {
+     optional uint64 result = 1; // 领取结果 
+     repeated p_reward reward = 2; // 奖励内容 
+} 
+
+message cs_achieve_foster {
+} 
+
+message sc_achieve_foster {
+     repeated p_achieve achievelist = 1; // 成就列表 
+} 
+
+message cs_achieve_adventure {
+} 
+
+message sc_achieve_adventure {
+     repeated p_achieve achievelist = 1; // 成就列表 
+} 
+
+message cs_achieve_activity {
+} 
+
+message sc_achieve_activity {
+     repeated p_achieve achievelist = 1; // 成就列表 
+} 
+
+message p_achieve {
+     optional uint64 achieveid = 1; // 成就ID 
+     optional uint64 progress = 2; // 进度 
+     optional uint64 subaid = 3; // 成就当前子ID 
+     optional uint64 state = 4; // 成就状态(0: = 未完成,1: = 可领取,2: = 已完成) 
+     optional uint64 numacc = 5; // 累计完成的子成就数量 
+} 
+
+message sc_achieve_notify {
+     repeated p_achieve newlist = 1; // 新增列表 
+     repeated p_achieve updatelist = 2; // 更新列表 
+     repeated p_achieve deletelist = 3; // 删除列表 
+} 
+
+message cs_achieve_draw {
+     optional uint64 achieveid = 1; // 成就ID 
+} 
+
+message sc_achieve_draw {
+     optional uint64 result = 1; // 领取结果 
+     optional uint64 subaid = 2; // 当前成就的子成就ID 
+} 
+
+message cs_achieve_one_draw {
+} 
+
+message sc_achieve_one_draw {
+     optional uint64 result = 1; // 结果 
+     repeated uint64 subaidlist = 2; // 子成就ID列表 
+}
+
+message cs_pokdex_info {
+} 
+
+message sc_pokdex_info {
+     optional uint64 result = 1; // 结果 
+     repeated p_pokdex pokdexes = 2; // 宝贝图鉴信息 
+} 
+
+message p_pokdex {
+     optional uint64 gerinitid = 1; // 宝贝初始ID 
+     optional uint64 pokrank = 2; // 品阶 
+     optional uint64 poklevel = 3; // 等级 
+     optional uint64 pokfavor = 4; // 好感度 
+     optional uint64 fatkacc = 5; // 累计贡献的先手值 
+     optional uint64 isuprank = 6; // 宝贝是否可升品 
+} 
+
+message cs_pokdex_feed {
+     optional uint64 gerinitid = 1; // 宝贝初始ID 
+     repeated p_money foodlist = 2; // 食物列表 
+} 
+
+message sc_pokdex_feed {
+     optional uint64 result = 1; // 结果 
+} 
+
+message cs_pokdex_onekey_feed {
+     optional uint64 gerinitid = 1; // 宝贝初始ID 
+} 
+
+message sc_pokdex_onekey_feed {
+     optional uint64 result = 1; // 结果 
+} 
+
+message cs_pokdex_uprank {
+     optional uint64 gerinitid = 1; // 宝贝初始ID 
+} 
+
+message sc_pokdex_uprank {
+     optional uint64 result = 1; // 结果 
+} 
+
+message sc_pokdex_notify {
+     repeated p_pokdex newlist = 1; // 新增列表 
+     repeated p_pokdex updatelist = 2; // 更新列表 
+     repeated p_pokdex deletelist = 3; // 删除列表 
+} 
+
+message cs_trial_info {
+} 
+
+message sc_trial_info1 {
+     optional uint64 result = 1; // 结果 
+     optional uint64 jumpdun = 2; // 可跳到第X层级 
+} 
+
+message sc_trial_info2 {
+     optional uint64 result = 1; // 结果 
+} 
+
+message p_trial {
+     optional uint64 curdun = 1; // 当前试炼层级 
+     optional uint64 curscore = 2; // 今日积分 
+     optional uint64 chatimes = 3; // 今日已挑战次数 
+     optional uint64 curmorale = 4; // 今日士气 
+     optional uint64 hisscore = 5; // 历史积分 
+     optional p_attr addattr = 6; // 普通buff 
+     repeated uint64 deadlist = 7; // 今日试炼挑战中已阵亡的宝贝id列表(不能再次上阵) 
+     repeated p_tbox tbox = 8; // 宝箱信息 
+     repeated p_buff bufflist = 9; // 若当前试炼层级为buff关卡,发送buff购买信息,反之为空 
+     optional uint64 gertypeid = 10; // 玩家购买复活buff时返回复活的宝贝typeid 
+     repeated p_mon monlist = 11; // 怪物关卡信息 
+     optional uint64 state = 12; // 状态 
+     repeated uint64 bdunids = 13; // buff关卡id(快速通关显示进度) 
+     optional uint64 ctype = 14; // 怪物关卡上次挑战难度 
+} 
+
+message sc_trial_update {
+     optional p_trial trial = 1; // 更新后的试炼信息 
+} 
+
+message cs_trial_jump {
+     optional uint64 select = 1; // 选择类型 
+} 
+
+message sc_trial_jump {
+     optional uint64 result = 1; // 结果 
+     optional uint64 type = 2; // 跳关类型(类型同上) 
+     optional uint64 score = 3; // 积分奖励 
+     optional uint64 morale = 4; // 士气奖励 
+     optional p_reward reward = 5; // 保底奖励 
+} 
+
+message cs_trial_challenge {
+     optional uint64 dunid = 1; // 挑战关卡ID 
+     optional uint64 ctype = 2; // 挑战的难度类型 
+     repeated uint64 geridlist = 3; // 宝贝ID列表 
+     repeated uint64 poslist = 4; // 宝贝站位列表 
+     optional uint64 trainerid = 5; // 训练师ID 
+} 
+
+message sc_trial_challenge {
+     optional uint64 result = 1; // 结果 
+     optional p_fight_struct fight_struct = 2; // 战斗结构 
+} 
+
+message cs_trial_challenge_back {
+     optional p_fight_struct fight_struct = 1; // 战斗结构 
+} 
+
+message sc_trial_challenge_back {
+     optional uint64 result = 1; // 结果 
+     optional uint64 star = 2; // 战斗得星 
+     optional uint64 isend = 3; // 是否达到最高关卡 
+     optional uint64 vipadd = 4; // 积分vip加成 
+     optional uint64 iswin = 5; // 战斗结果 
+} 
+
+message cs_trial_buff_buy {
+     optional uint64 buffid = 1; // 要购买的buff id 
+     optional uint64 times = 2; // 要购买的次数 
+     optional uint64 gerid = 3; // 复活宝贝id 
+} 
+
+message sc_trial_buff_buy {
+     optional uint64 result = 1; // 结果 
+} 
+
+message p_buff {
+     optional uint64 buffid = 1; // buff id 
+     optional uint64 buytimes = 2; // 已购买次数 
+} 
+
+message cs_trial_tbox_open {
+     optional uint64 type = 1; // 开宝箱类型 
+     optional uint64 boxid = 2; // 宝箱id 
+} 
+
+message sc_trial_tbox_open {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 奖励 
+     optional uint64 opentimes = 3; // 实际开启宝箱个数 
+} 
+
+message cs_trial_next_lv {
+} 
+
+message sc_trial_next_lv {
+     optional uint64 result = 1; // 结果 
+} 
+
+message cs_trial_score_rank {
+} 
+
+message sc_trial_score_rank {
+     optional uint64 result = 1; // 结果 
+     optional p_srank rolerank = 2; // 玩家排行 
+     repeated p_srank ranklist = 3; // 积分排行列表 
+} 
+
+message p_srank {
+     optional uint64 rank = 1; // 排名 
+     optional uint64 roleid = 2; // 角色ID 
+     optional string rolename = 3; // 角色名 
+     optional uint64 score = 4; // 积分 
+     optional uint64 topdun = 5; // 最高层级 
+} 
+
+message cs_trial_hsr_info {
+} 
+
+message sc_trial_hsr_info {
+     optional uint64 result = 1; // 结果 
+     repeated p_hsreward rewardlist = 2; // 历史积分奖励列表 
+     optional p_reward rewardacc = 3; // 累计获得的奖励 
+} 
+
+message p_hsreward {
+     optional uint64 stage = 1; // 积分阶段ID 
+     optional uint64 state = 2; // 积分奖励状态 
+} 
+
+message sc_trial_hsr_update {
+     repeated p_hsreward rewardlist = 1; // 更新列表 
+} 
+
+message cs_trial_hsr_draw {
+     optional uint64 stage = 1; // 领取的积分阶段 
+} 
+
+message sc_trial_hsr_draw {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 奖励 
+     optional p_reward rewardacc = 3; // 累计获得的奖励 
+} 
+
+message p_relive {
+     optional uint64 reliveid = 1; // 复活id 
+     optional uint64 num = 2; // 拥有的复活个数 
+} 
+
+message cs_trial_fj_leave {
+} 
+
+message sc_trial_fj_leave {
+     optional uint64 result = 1; // 结果 
+} 
+
+message p_tbox {
+     optional uint64 boxid = 1; // 宝箱id 
+     optional uint64 opentimes = 2; // 开启次数 
+} 
+
+message p_mon {
+     optional uint64 type = 1; // 难度类型 
+     optional uint64 monpower = 2; // 怪物战斗力 
+     optional uint64 monid = 3; // 怪物roleid 
+} 
+
+message cs_trial_tbox_fixreward {
+} 
+
+message sc_trial_tbox_fixreward {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 保底奖励 
+} 
+
+message sc_trial_curfew {
+     optional uint64 result = 1; // 试炼宵禁 
+}
+
+message cs_ftiger_info {
+} 
+
+message sc_ftiger_info {
+     optional uint64 freetimes = 1; //已经使用的免费刷新次数 
+     optional uint64 jointimes = 2; //参与次数 
+     optional uint64 paytimes = 3; //付费刷新次数 
+     optional p_tiger tiger = 4; //当前老虎机的内容，如果没有这个字段说明没有在祈福状态 
+} 
+
+message p_tiger {
+     repeated uint64 numbers = 1; //老虎机当前的内容 
+} 
+
+message cs_ftiger_rank {
+} 
+
+message sc_ftiger_rank {
+     repeated p_tiger_rank ranklist = 2; //排行榜信息 
+} 
+
+message p_tiger_rank {
+     optional uint64 rank = 1; //排行 
+     optional string name = 2; //玩家名字 
+     optional uint64 cardnum = 3; //将魂获得数 
+     optional uint64 usetimes = 4; //使用的祈福次数 
+} 
+
+message cs_ftiger_play {
+} 
+
+message sc_ftiger_play {
+     optional uint64 result = 1; //操作结果 
+     optional p_tiger tiger = 2; //刷新成功后的新的老虎机信息 
+} 
+
+message cs_ftiger_refresh {
+} 
+
+message sc_ftiger_refresh {
+     optional uint64 result = 1; //操作结果 
+     optional p_tiger tiger = 2; //刷新后的老虎机信息 
+} 
+
+message cs_ftiger_draw {
+} 
+
+message sc_ftiger_draw {
+     optional uint64 result = 1; //操作后的结果 
+     optional p_reward reward = 2; //奖励 
+} 
+
+message cs_powerrank_open {
+} 
+
+message sc_powerrank_open {
+     optional uint64 start_time = 1; //开启时间戳 
+     optional uint64 end_time = 2; //结束时间戳 
+     optional uint64 priority = 3; //活动优先级 
+     optional string icon = 4; //图标 
+     optional string title = 5; //名称 
+     optional string content = 6; //内容 
+     optional uint64 is_open = 7; //是否是开服活动 
+     optional uint64 rewardger = 8; //奖励的武将的typeid 
+     optional uint64 max_power = 9; //历史最高战斗力,不显示用来算奖励那是不是已完成 
+} 
+
+message cs_powerrank_list {
+} 
+
+message sc_powerrank_list {
+     optional uint64 result = 1; 
+     repeated p_powerrank rank_list = 2; //战斗力排行榜 
+     repeated p_powerrank_reward reward_list = 3; //战斗力排行给的奖励 
+     repeated p_powerrank_achv_reward achv_list = 4; //战斗力到达多少后给的奖励 
+     required uint64 my_rank = 5; //自己的排名要是没上榜就是0 
+} 
+
+message p_powerrank {
+     optional uint64 rank = 1; 
+     optional uint64 power = 2; 
+     optional string role_name = 3; 
+     optional uint64 level = 4; 
+     optional uint64 role_id = 5; 
+} 
+
+message p_powerrank_reward {
+     optional uint64 begin_rank = 1; 
+     optional uint64 end_rank = 2; 
+     optional p_reward reward = 3; 
+} 
+
+message p_powerrank_achv_reward {
+     optional uint64 power = 1; //档位需要的战斗力 
+     optional p_reward reward = 2; //奖励内容 
+}
+
+message p_top_ranker {
+     optional uint64 roleid = 1; // 角色id 
+     optional uint64 icon = 2; // 角色icon 
+     optional string rolename = 3; // 角色名 
+     optional string familyname = 4; // 所属工会名 
+     optional uint64 viplv = 5; // 角色viplv 
+} 
+
+message cs_sysrank_fightpower {
+     optional uint64 offset = 1; // 偏移量 
+} 
+
+message sc_sysrank_fightpower {
+     optional uint64 result = 1; // 结果 
+     optional p_fight_power rank = 2; // 玩家排行信息 
+     optional p_top_ranker toprank = 3; // 本服最强 
+     repeated p_fight_power ranklist = 4; // 排行列表 
+} 
+
+message p_fight_power {
+     optional uint64 rank = 1; // 角色排名 
+     optional uint64 roleid = 2; // 角色ID 
+     optional string rolename = 3; // 角色名 
+     optional uint64 rolelv = 4; // 战队等级 
+     optional uint64 power = 5; // 攻击阵容战斗力 
+} 
+
+message cs_sysrank_advstar {
+     optional uint64 offset = 1; // 偏移量 
+} 
+
+message sc_sysrank_advstar {
+     optional uint64 result = 1; // 结果 
+     optional p_adv_star rank = 2; // 玩家排行信息 
+     optional p_top_ranker toprank = 3; // 本服最强 
+     repeated p_adv_star ranklist = 4; // 排行列表 
+} 
+
+message p_adv_star {
+     optional uint64 rank = 1; // 角色排名 
+     optional uint64 roleid = 2; // 角色ID 
+     optional string rolename = 3; // 角色名 
+     optional uint64 power = 4; // 战斗力 
+     optional uint64 starnums = 5; // 冒险得星数 
+} 
+
+message cs_sysrank_gerpokdex {
+     optional uint64 offset = 1; // 偏移量 
+} 
+
+message sc_sysrank_gerpokdex {
+     optional uint64 result = 1; // 结果 
+     optional p_ger_pokdex rank = 2; // 玩家排行信息 
+     optional p_top_ranker toprank = 3; // 本服最强 
+     repeated p_ger_pokdex ranklist = 4; // 排行列表 
+} 
+
+message p_ger_pokdex {
+     optional uint64 rank = 1; // 角色排名 
+     optional uint64 roleid = 2; // 角色ID 
+     optional string rolename = 3; // 角色名 
+     optional uint64 fatk = 4; // 战队总先手值 
+     optional uint64 gernum = 5; // 已有宝贝数量 
+} 
+
+message cs_sysrank_topger {
+     optional uint64 offset = 1; // 偏移量 
+} 
+
+message sc_sysrank_topger {
+     optional uint64 result = 1; // 结果 
+     optional p_top_ger rank = 2; // 玩家排行信息 
+     optional p_top_ranker toprank = 3; // 本服最强 
+     repeated p_top_ger ranklist = 4; // 排行列表 
+} 
+
+message p_top_ger {
+     optional uint64 rank = 1; // 角色排名 
+     optional uint64 roleid = 2; // 角色ID 
+     optional string rolename = 3; // 角色名 
+     optional p_ger_summary gericon = 4; // 宝贝头像信息 
+     optional uint64 gerpower = 5; // 宝贝战斗力 
+} 
+
+message cs_sysrank_topfamily {
+     optional uint64 offset = 1; // 偏移量 
+} 
+
+message sc_sysrank_topfamily {
+     optional uint64 result = 1; // 结果 
+     optional p_top_family rank = 2; // 玩家排行信息 
+     optional p_top_ranker toprank = 3; // 本服最强 
+     repeated p_top_family ranklist = 4; // 排行列表 
+} 
+
+message p_top_family {
+     optional uint64 rank = 1; // 公会排名 
+     optional uint64 familyid = 2; // 公会ID 
+     optional string familyname = 3; // 公会名 
+     optional uint64 familylv = 4; // 公会等级 
+     optional uint64 familypower = 5; // 公会战斗力 
+} 
+
+message cs_sysrank_family_summary {
+     optional uint64 familyid = 1; // 工会id 
+} 
+
+message sc_sysrank_family_summary {
+     optional uint64 result = 1; // 结果 
+     optional p_family_summary summary = 2; // 工会信息 
+}
+
+message cs_sign_info {
+} 
+
+message sc_sign_info {
+     optional uint64 month = 1; //当前是几月 
+     optional bool can_sign = 2; //当前是否可以签到 
+     optional uint64 month_sign_times = 3; //当前月份签到次数 
+     repeated p_sign_reward rewardlist = 4; //签到给予的奖励信息 
+     optional p_sign_add_reward add_reward = 5; //累计签到信息 
+} 
+
+message p_sign_reward {
+     optional uint64 multiNeedVip = 1; //双倍需要的vip等级 
+     optional p_reward reward = 2; //奖励内容 
+} 
+
+message p_sign_add_reward {
+     optional uint64 signtimes = 1; //累计签到次数 
+     optional uint64 need_times = 2; //领取当前累计签到奖励需要的次数 
+     optional p_reward reward = 3; //具体的奖励内容 
+} 
+
+message cs_sign_draw {
+} 
+
+message sc_sign_draw {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //成功后领取的奖励 
+} 
+
+message cs_sign_draw_add {
+} 
+
+message sc_sign_draw_add {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //成功后领取的奖励 
+     optional p_sign_add_reward new_add_reward = 3; //新的累计签到信息 
+}
+
+message cs_hotmsg_list {
+} 
+
+message sc_hotmsg_list {
+     repeated p_hotmsg msg_list = 1; //公告列表 
+} 
+
+message p_hotmsg {
+     required uint64 id = 1; //公告ID 
+     required string icon = 2; //使用的资源 
+}
+
+message cs_renvelope_info {
+} 
+
+message sc_renvelope_info {
+     optional uint64 result = 1; // 结果 
+     optional uint64 robtimes = 2; // 今日已抢次数 
+     optional p_renvelope envelope = 3; // 红包结构 
+     optional uint64 isrob = 4; // 是否已抢过当前红包 
+} 
+
+message p_renvelope {
+     optional uint64 renvelopeid = 1; // 当前红包id 
+     optional uint64 renvelopecase = 2; // 当前红包档次 
+     optional uint64 rentimes = 3; // 红包已抢次数 
+} 
+
+message cs_renvelope_rob {
+     optional uint64 envelopeid = 1; // 红包id 
+} 
+
+message sc_renvelope_rob {
+     optional uint64 result = 1; // 结果 
+     optional p_reward reward = 2; // 红包奖励 
+} 
+
+message sc_renvelope_xhd {
+     optional uint64 ctimes = 1; // 红包可抢次数 
+} 
+
+message cs_renvelope_xhd {
+}
+
+message cs_friend_info {
+} 
+
+message sc_friend_info {
+     repeated p_friend_frd friend_list = 1; // 好友列表 
+     optional uint64 send_energy_times = 2; // 赠送体力次数 
+     optional uint64 draw_energy_times = 3; // 领取体力次数 
+} 
+
+message cs_friend_search {
+     optional string tar_name = 1; // 目标名字 
+     optional uint64 type = 2; // 搜索类型 
+} 
+
+message sc_friend_search {
+     repeated p_friend_stranger stranger_list = 1; // 玩家列表 
+} 
+
+message cs_friend_send_apply {
+     repeated uint64 tar_id = 1; // 被申请方ID 
+} 
+
+message sc_friend_send_apply {
+     optional uint64 result = 1; // 申请结果 
+} 
+
+message cs_friend_handle_apply {
+     repeated uint64 msg_uid = 1; // 申请消息ID 
+     optional uint64 option = 2; // 响应选项 
+} 
+
+message sc_friend_handle_apply {
+     optional uint64 result = 1; // 响应结果 
+} 
+
+message cs_friend_delete {
+     repeated uint64 tar_id = 1; // 好友ID 
+} 
+
+message sc_friend_delete {
+     optional uint64 result = 1; // 删除结果 
+} 
+
+message sc_friend_msg {
+     repeated p_friend_msg msg_list = 1; // 消息列表(未读) 
+} 
+
+message cs_friend_msg {
+     optional uint64 read_uid = 1; // 已读消息最大UID 
+} 
+
+message cs_friend_send_msg {
+     optional uint64 tar_id = 1; // 好友ID 
+     optional string content = 2; // 聊天内容 
+} 
+
+message sc_friend_send_msg {
+     optional uint64 result = 1; // 发送结果 
+} 
+
+message cs_friend_send_energy {
+     optional uint64 tar_id = 1; // 好友ID 
+} 
+
+message sc_friend_send_energy {
+     optional uint64 result = 1; // 赠送结果 
+} 
+
+message cs_friend_draw_energy {
+     optional uint64 msg_uid = 1; // 消息UID 
+} 
+
+message sc_friend_draw_energy {
+     optional uint64 result = 1; // 领取结果 
+} 
+
+message cs_friend_draw_energy_and_return_onekey {
+} 
+
+message sc_friend_draw_energy_and_return_onekey {
+     optional uint64 result = 1; // 领取结果 
+     repeated uint64 msg_uid_list = 2; // 领取回赠的消息UID列表 
+} 
+
+message cs_friend_challenge {
+     optional uint64 roleid = 1; // 对方ID 
+} 
+
+message sc_friend_challenge {
+     optional uint64 result = 1; // 挑战结果 
+} 
+
+message cs_friend_send_energy_onekey {
+     repeated uint64 tar_id_list = 1; // 好友ID列表 
+} 
+
+message sc_friend_send_energy_onekey {
+     repeated uint64 succid_list = 1; // 成功ID列表 
+} 
+
+message p_friend_frd {
+     optional p_role_public base_info = 1; // 基本信息 
+     optional uint64 send_energy = 2; // 赠送体力 
+} 
+
+message p_friend_stranger {
+     optional p_role_public base_info = 1; // 基本信息 
+     optional uint64 state = 2; // 双方状态 
+} 
+
+message p_friend_msg {
+     optional uint64 type = 1; // 消息类型 
+     optional uint64 uid = 2; // 消息UID 
+     optional uint64 time = 3; // 时间戳 
+     optional uint64 src_id = 4; // 发送者ID 
+     optional string src_name = 5; // 发送者名字 
+     optional string content = 6; // 消息内容 
+     optional uint64 icon = 7; // 发送者头像 
+     optional string desc = 8; // 描述 
+     optional p_role_public role_public = 9; // 角色公共信息只有好友申请消息才有值 
+} 
+
+message sc_friend_add_notify {
+     repeated p_friend_frd add_list = 1; // 新增列表 
+} 
+
+message sc_friend_del_notify {
+     repeated uint64 del_list = 1; // 删除列表 
+} 
+
+message sc_friend_state_trans_notify {
+     optional uint64 roleid = 1; // 角色ID 
+     optional uint64 lastlogout = 2; // 新状态 
+}
+
+message cs_boss_info {
+     optional int32 open = 1; // 是否进入界面 
+} 
+
+message sc_boss_info {
+     optional uint32 state = 1; // BOSS 状态 
+     optional uint64 cd_time = 2; // 挑战冷却时间 
+     optional p_boss boss_info = 3; // BOSS信息 
+     repeated uint32 role_draw_inds = 4; // 已领取玩家tops领奖id 
+     repeated uint32 family_draw_inds = 5; // 已领取公会tops领奖id 
+     optional uint64 begin_time = 6; // boss活动时间begin 
+     optional uint64 end_time = 7; // boss活动时间end 
+     optional int32 b_vip_sel = 8; // 是否选择了vip自动打 
+     optional uint64 open_time = 9; // 活动开启时间 
+} 
+
+message p_boss {
+     optional p_ger base = 1; // BOSS基础信息 
+     optional uint64 hp = 2; // BOSS血量 
+     optional uint32 boss_index = 3; // BOSS等级 
+} 
+
+message cs_boss_quit {
+} 
+
+message sc_boss_quit {
+     optional int32 result = 1; // 退出结果 
+} 
+
+message cs_boss_draw {
+     optional int32 draw_type = 1; // 类型(1: = role;2: = family) 
+     repeated int32 draw_inds = 2; // 当前领奖id 
+} 
+
+message sc_boss_draw {
+     optional int32 result = 1; // 领取结果 
+     optional int32 draw_type = 2; // 类型(1: = role;2: = family) 
+     repeated int32 draw_inds = 3; // 当前已领取领奖id 
+     optional p_reward reward = 4; // 领取奖励 
+} 
+
+message cs_boss_fight {
+} 
+
+message sc_boss_fight {
+     optional int32 result = 1; // 挑战结果 
+     optional p_fight_struct fight_struct = 2; // 战斗 
+     optional uint64 harm = 3; // 新伤害值 
+     optional uint64 cd_time = 4; // 冷却时间 
+     optional double per_harm = 5; // 伤害百分百 
+     optional p_reward one_fight_reward = 6; // 一次击杀的奖励 
+} 
+
+message cs_boss_tops {
+     optional int32 tops_type = 1; // 类型(1: = role;2: = family;3: = familyrole) 
+} 
+
+message sc_boss_tops {
+     optional int32 result = 1; // 挑战结果 
+     optional int32 tops_type = 2; // 类型(1: = role;2: = family;3: = familyrole) 
+     repeated p_boss_top tops = 3; // 排行榜数据 
+} 
+
+message p_boss_top {
+     optional uint64 roleid = 1; // 基础信息 
+     optional string rolename = 2; // 基础信息 
+     optional uint64 familyid = 3; // 基础信息 
+     optional string familyname = 4; // 基础信息 
+     optional uint64 harm = 5; // 伤害值 
+} 
+
+message sc_player_harm {
+     optional string name = 1; // 玩家名字 
+     optional uint64 roleid = 2; // 玩家roleid 
+     optional uint64 harm = 3; // 伤害值 
+     optional uint64 icon = 4; // 头像ID 
+     optional uint64 hp = 5; // 
+} 
+
+message cs_boss_selvip {
+     optional int32 bselect = 1; // 
+} 
+
+message sc_boss_selvip {
+     optional int32 result = 1; // 
+} 
+
+message cs_boss_harm {
+} 
+
+message sc_boss_harm {
+     optional uint64 role_harm = 1; // 玩家伤害 
+     optional uint64 family_harm = 2; // 玩家所在公会伤害 
+} 
+
+message sc_boss_state_update {
+     optional uint32 state = 1; // BOSS 状态 
+}
+
+message cs_digivice_info {
+} 
+
+message sc_digivice_info {
+     optional uint64 result = 1; // 结果 
+     repeated p_digivice diglist = 2; // 数码机列表 
+     optional p_attr sumattr = 3; // 全体数码机总的强化&洗炼属性 
+} 
+
+message p_digivice {
+     optional uint64 digid = 1; // 第X代 
+     optional uint64 level = 2; // 等级 
+     optional uint64 exp = 3; // 经验 
+     repeated p_refine reflist = 4; // 洗炼列表 
+     optional bool isopen = 5; // 数码机是否开启 
+     repeated p_dig_cond condlist = 6; // 数码机开启条件 
+     optional p_attr digattr = 7; // 数码机强化总属性 
+} 
+
+message p_refine {
+     optional uint64 refid = 1; // 洗炼ID 
+     optional uint64 state = 2; // 洗炼状态 
+     repeated p_refine_attr attrlist = 3; // 洗炼子属性列表 
+     repeated p_refine_attr tmplist = 4; // 洗炼临时列表(属性待替换状态下使用) 
+} 
+
+message p_refine_attr {
+     optional uint64 attrid = 1; // 子属性ID 
+     optional uint64 value = 2; // 子属性值 
+} 
+
+message cs_digivice_reinforce {
+     optional uint64 digid = 1; // 第X代 
+     optional uint64 type = 2; // 强化方式 
+} 
+
+message sc_digivice_reinforce {
+     optional uint64 result = 1; // 结果 
+} 
+
+message sc_digivice_notify {
+     repeated p_digivice newlist = 1; // 新增列表 
+     repeated p_digivice updatelist = 2; // 更新列表 
+     repeated p_digivice deletelist = 3; // 删除列表 
+     optional p_attr sumattr = 4; // 全体数码机总的强化&洗炼属性 
+} 
+
+message cs_digivice_refine {
+     optional uint64 digid = 1; // 数码机ID 
+     optional uint64 refid = 2; // 洗炼ID 
+     optional uint64 type = 3; // 洗炼类型 
+     repeated uint64 locklist = 4; // 锁定的attrid列表 
+} 
+
+message sc_digivice_refine {
+     optional uint64 result = 1; // 结果 
+} 
+
+message cs_digivice_replace {
+     optional uint64 digid = 1; // 数码机ID 
+     optional uint64 refid = 2; // 洗炼ID 
+     optional uint64 type = 3; // 洗炼类型(同上) 
+     repeated p_refine_attr replist = 4; // 替换列表 
+} 
+
+message sc_digivice_replace {
+     optional uint64 result = 1; // 结果 
+} 
+
+message p_dig_cond {
+     optional bool ismeet = 1; // 是否满足 
+     optional string digcond = 2; // 开启条件 
+} 
+
+message cs_digivice_replace_giveup {
+     optional uint64 digid = 1; // 数码机ID 
+     optional uint64 refid = 2; // 洗炼ID 
+} 
+
+message sc_digivice_replace_giveup {
+     optional uint64 result = 1; // 结果 
+}
+
+message cs_rmbgift_info {
+} 
+
+message sc_rmbgift_info {
+     repeated p_rmbgift gift_list = 1; //礼包列表 
+     repeated p_rmbgift vip_gift_list = 2; //vip礼包列表 
+     repeated p_rmbgift all_gift_list = 3; //vip礼包列表 
+} 
+
+message p_rmbgift {
+     optional uint64 typeid = 1; //礼包ID 
+     optional uint64 sellID = 2; //充值的时候给appstore发的sellid 
+     optional uint64 start_sec = 3; //开启时间 0表示永久 
+     optional uint64 end_sec = 4; //结束时间 0表示永久 
+     optional uint64 now_price = 5; //当前价格RMB 
+     optional uint64 old_price = 6; //原价 
+     optional uint64 need_vip_lv = 7; //需要的vip等级 
+     optional p_reward reward = 8; //礼包的内容 
+     optional string name = 9; //礼包的名字 
+     optional string icon = 10;//icon资源的名称 
+     optional uint64 draw_times = 11;//已经购买的次数 
+     optional uint64 can_draw_times = 12;//可购买的次数 
+     optional uint64 refresh_type = 13;//购买次数刷新方式 
+     optional uint64 refresh_day = 14;//购买次数刷新时间 
+     optional string desc = 15;//礼包描述 
+     optional uint64 show_state = 16;//礼包默认显示状态 
+}
+
+message cs_mine_info {
+} 
+
+message sc_mine_info {
+     optional uint64 result = 1; //请求挖矿主界面结果 
+     repeated p_money cur_buy_cost = 2; //直接去买矿的消耗 
+     repeated p_money cur_search_cost = 3; //搜索其他玩家的矿需要的消耗 
+     repeated p_mine_car car_list = 4; //矿车的信息 
+     optional p_mine_atk_info cur_atk_info = 5; //当前正在攻击的目标 
+     repeated uint64 used_geridList = 6;//当前已经使用宝贝 
+     optional p_mine_detail tar_mine = 7;//对方的矿坑信息,只在有进攻目标的时候有值 
+} 
+
+message p_mine_atk_info {
+     optional uint64 cur_atk_roleid = 1; //当前正在攻击的目标 
+     repeated uint64 dead_gerid_list = 2; //在当前攻击中已经死亡的宝贝列表 
+     optional uint64 cur_atk_release = 3; //当前被攻击的对象的释放时间 
+} 
+
+message p_mine_car {
+     optional uint64 pos = 1; //位置 
+     optional uint64 cur_type = 2; //当前矿的typeid 
+     optional bool is_mine = 3; //是不是自己的矿 
+     optional uint64 dig_start_time = 4; //挖矿开始时间 
+     optional uint64 reward_time = 5; //开采结束的时间 
+     optional p_reward base_reward = 6; //基础收益 
+     optional uint64 reward_rate = 7; //当前的收益万分比,没被攻击的时候是1W 
+     repeated p_mine_seat role_list = 8; //正在护矿的人的RoleID列表，自己也包括 
+} 
+
+message cs_mine_refresh {
+     optional uint64 pos = 1; //要做刷新的矿坑的位置 
+} 
+
+message sc_mine_refresh {
+     optional uint64 result = 1;//刷新结果 
+     optional uint64 pos = 2;//要做刷新的矿坑的位置 
+     repeated uint64 mineTypeIDList = 3;//新矿坑模板ID 
+     repeated p_money cur_buy_cost = 4;//当前刷新消耗 
+} 
+
+message cs_mine_buy {
+     optional uint64 pos = 1;//需要购买的矿坑位置 
+     optional uint64 mineTypeID = 2;//需要购买的矿坑模板ID 
+} 
+
+message sc_mine_buy {
+     optional uint64 result = 1;//购买结果 
+     optional p_mine_car new_car = 2;//成功后新的矿坑 
+} 
+
+message cs_mine_dig {
+     optional uint64 pos = 1;//自己矿坑的位置 
+     repeated p_lineup linelist = 2;//选择使用的武将列表 
+} 
+
+message sc_mine_dig {
+     optional uint64 result = 1;//开始挖矿结果 
+     optional p_mine_car new_car = 2;//成功后新的矿车信息 
+     repeated uint64 used_gerid_list = 3;//更新后的已使用宝贝ID列表 
+} 
+
+message cs_mine_view {
+     optional uint64 roleid = 1;//要查看的矿的人的roleid 
+     optional uint64 car_pos = 2;//要查看的他哪个矿车 
+     optional uint64 seat_pos = 3;//查看的矿车内的具体位置 
+} 
+
+message sc_mine_view {
+     optional p_role_public role_public = 1;//角色的公告信息 
+     repeated p_ger_summary ger_line = 2;//选择护矿的阵容 
+} 
+
+message cs_mine_explore {
+} 
+
+message sc_mine_explore {
+     optional uint64 result = 1; //结果 
+     optional p_mine_detail tar_mine = 2;//对方的矿坑信息 
+     optional p_mine_atk_info atk_info = 3;//新的攻击信息 
+     repeated p_money cur_search_cost = 4;//搜索其他玩家的矿需要的消耗 
+} 
+
+message p_mine_detail {
+     optional uint64 ownerID = 1;//主人角色ID 
+     optional string ownerName = 2;//主人名字 
+     optional uint64 mineTypeID = 3;//矿坑模板ID 
+     optional uint64 releaseTime = 4;//如果是要攻击这个矿而不是护矿就是自动释放时间 
+     optional uint64 rewardTime = 5;//矿坑生命期 
+     repeated p_mine_seat seat_list = 6;//位置上的人信息 
+     optional uint64 pos = 7;//矿在这个人的那个矿位 
+} 
+
+message p_mine_seat {
+     optional uint64 pos = 1;//位置 
+     optional uint64 roleid = 2;//位置的人 
+     optional p_role_public role_public = 3;//角色的基本信息 
+     optional bool is_alive = 4;//状态 
+} 
+
+message cs_mine_attack_request {
+     optional uint64 seat_pos = 1;//攻击目标的哪个位置上的玩家 
+     repeated p_lineup line_list = 2;//攻击时使用的阵容 
+} 
+
+message sc_mine_attack_request {
+     optional uint64 result = 1;//攻击结果 
+     optional p_fight_struct fight_struct = 2;// 战斗结构 
+} 
+
+message cs_mine_attack_report {
+     optional uint64 seat_pos = 1;//攻击目标的哪个位置上的玩家 
+     optional p_fight_struct fight_struct = 2;// 战斗结构 
+} 
+
+message sc_mine_attack_report {
+     optional uint64 result = 1; // 请求结果 
+     optional bool attacker_win = 2; // 是否胜利 
+     repeated p_mine_seat seat_list = 3; //位置上的人信息 
+     optional p_reward reward = 4; //奖励内容 
+     repeated uint64 dead_gerid_list = 5; //总共死亡的宝贝id列表 
+} 
+
+message cs_mine_hist {
+     optional uint64 type = 1; //战报类型 
+} 
+
+message sc_mine_hist {
+     optional uint64 type = 1; //战报类型 
+     repeated p_mine_hist hist_list = 2; //战报列表 
+} 
+
+message p_mine_hist {
+     optional uint64 histType = 1;//战报类型 
+     optional string attackerName = 2;//攻击者名字 
+     optional string ownerName = 3;//矿主名字 
+     optional uint64 mineTypeID = 4;//矿的类型 
+     optional uint64 fightTime = 5;//战斗时间(UNIX时间) 
+     optional uint64 icon = 6;//头像 
+     optional uint64 viplv = 7;//头像对应的vip等级 
+     optional bool is_win = 8;//进攻者是否赢了 
+} 
+
+message cs_mine_invite {
+     optional uint64 mine_pos = 1; //矿坑的位置也就是 car_pos 
+} 
+
+message sc_mine_invite {
+     optional uint64 result = 1;//邀请结果 
+} 
+
+message cs_mine_join_view {
+     optional uint64 msg_id = 1; // 消息ID 
+} 
+
+message sc_mine_join_view {
+     optional uint64 result = 1; // 结果 
+     optional p_mine_detail mine = 2; // 具体的矿坑信息 
+} 
+
+message cs_mine_guard {
+     optional uint64 tar_roleid = 1;//目标角色RoleID 
+     optional uint64 tar_pos = 2;//目标矿坑位置 
+     optional uint64 seat_pos = 3;//要坐到哪个位置 
+     repeated p_lineup line = 4;//要使用的阵容 
+} 
+
+message sc_mine_guard {
+     optional uint64 result = 1;//操作结果 
+     optional p_mine_car new_car = 2;//护卫完成后自己新的矿坑信息 
+     repeated uint64 used_geridList = 3;//当前已经使用宝贝 
+} 
+
+message cs_mine_open {
+     optional uint64 car_pos = 1;//要开矿坑的位置 
+} 
+
+message sc_mine_open {
+     optional uint64 result = 1;//操作结果 
+     optional p_mine_car new_car = 2;//新开成功的矿车 
+} 
+
+message cs_mine_draw {
+     optional uint64 car_pos = 1;//自己的矿车的位置 
+} 
+
+message sc_mine_draw {
+     optional uint64 result = 1;//操作结果 
+     optional p_reward reward = 2;//具体奖励 
+     optional p_mine_car new_car = 3;//领奖成功后空的矿车 
+     repeated uint64 used_gerid_list = 4;//已经使用的宝贝列表 
+} 
+
+message sc_mine_notify {
+     repeated p_mine_car new_car = 1;//新的矿车信息 
+} 
+
+message cs_mine_view_reward {
+     repeated p_lineup line_list = 1;//阵容 
+} 
+
+message sc_mine_view_reward {
+     optional uint64 add_rate = 2;//阵容提供的加成万分比 
+}
+
+message cs_hist_share {
+     optional uint64 type = 1; // 战报类型 
+     optional uint64 histid = 2; // 战报ID 
+     optional uint64 tarroleid = 3; // 对方ID 
+} 
+
+message sc_hist_share {
+     optional uint64 result = 1; // 结果 
+} 
+
+message cs_hist_watch {
+     optional uint64 histid = 1; // 战报ID 
+} 
+
+message sc_hist_watch {
+     optional uint64 result = 1; // 结果 
+     optional p_fight_struct fight_struct = 2; // 战斗结构 
+     optional p_role_hist atkpvp = 3; // 攻击方信息 
+     optional p_role_hist defpvp = 4; // 防守方信息 
+} 
+
+message p_role_hist {
+     optional uint64 roleid = 1; // 角色ID 
+     optional uint64 icon = 2; // 角色头像ID 
+     optional string rolename = 3; // 角色名 
+     optional uint64 rank = 4; // 角色排名 
+     optional uint64 viplv = 5; // 角色viplv 
+}
+
+message cs_pray_info {
+} 
+
+message sc_pray_info {
+     optional uint32 result = 1; //操作结果 
+     optional uint64 endtime = 2; // 
+     optional uint64 typeid = 3; //本期宝贝的typeid 
+     optional uint64 self_score = 4; //自己的积分 
+     repeated uint64 draw_indexs = 5; //已经领取的积分奖励档位 
+     optional p_reward one_cost = 6; //一次消耗 
+     optional p_reward ten_cost = 7; //十次消耗 
+     optional uint32 count = 8; //当前祈福次数 
+     optional uint32 pray_state = 9; //当前祈福次数 
+     optional uint32 bfree = 10; //第一次单次祈福免费 
+     optional p_client_show_info client_show_info = 11; //客户端显示信息 
+} 
+
+message cs_pray_rank {
+     optional uint64 rank_start = 1; //开始位置 
+     optional uint64 rank_end = 2; //结束位置 
+} 
+
+message sc_pray_rank {
+     optional uint32 result = 1; //操作结果 
+     repeated p_pray_rank rank_list = 2; //排行榜 
+     optional uint64 self_rank = 3; //自己的排行 
+     optional uint64 score = 4; //自己的积分 
+} 
+
+message cs_pray_do {
+     optional uint32 bten = 1; //是否10次 
+     optional uint64 count = 2; //祈福的次数 
+} 
+
+message sc_pray_do {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //奖励内容 
+     optional uint64 new_score = 3; //新的积分 
+     optional uint32 count = 4; //当前祈福次数 
+     optional uint32 bfree = 5; //第一次单次祈福免费 
+} 
+
+message cs_pray_draw {
+     optional uint64 score = 1; //要领取的断的积分 
+} 
+
+message sc_pray_draw {
+     optional uint64 result = 1; //结果 
+     optional p_reward reward = 2; //奖励内容 
+     repeated uint64 draw_indexs = 3; //已经领取的积分奖励档位 
+} 
+
+message sc_pray_state {
+     optional uint32 pray_state = 1; 
+} 
+
+message p_pray_rank {
+     optional uint64 roleid = 1; //角色ID 
+     optional string role_name = 2; //角色名字 
+     optional uint64 score = 3; //积分 
+} 
+
+message p_client_show_info {
+     repeated p_show_rank_info show_rank_info_list = 1; //排名显示信息 
+     repeated p_show_score_info show_score_info_list = 2; //积分显示信息 
+} 
+
+message p_show_rank_info {
+     optional int32 score = 1; // 
+     optional int32 beg_rank = 2; // 
+     optional int32 end_rank = 3; // 
+     optional p_reward reward = 4; // 
+} 
+
+message p_show_score_info {
+     optional int32 id = 1; // 
+     optional int32 score = 2; // 
+     optional p_reward reward = 3; // 
+}
+
+message cs_field_info {
+} 
+
+message sc_field_info {
+     repeated p_field_stone stones = 1; // 
+} 
+
+message p_field_stone {
+     optional int64 stone_id = 1; // 领域石id 
+     optional int64 initid = 2; 
+     optional int64 ger_id = 3; // 该领域石携带者ger id 
+     optional int32 stage = 4; // 初中高三个阶段 
+     optional int64 level = 5; 
+     optional int64 pos = 6; 
+} 
+
+message cs_field_uplv {
+     optional uint32 b_mutil = 1; //是否是多个升级 
+     repeated int64 initids = 2; // 
+     optional uint32 lv = 3; // 
+} 
+
+message sc_field_uplv {
+     optional uint32 result = 1; //升级结果 
+     repeated p_field_stone stones = 2; //升级后的石头 
+} 
+
+message cs_field_decompose {
+     repeated int64 initids = 1; // 
+} 
+
+message sc_field_decompose {
+     optional uint32 result = 1; //分解结果 
+     optional p_reward reward = 2; //分解物品 
+     repeated p_field_stone stones = 3; //分解后的领域石列表 
+} 
+
+message cs_field_change {
+     optional int64 equip_initid = 1; // 
+     optional int64 un_initid = 2; // 
+     optional int64 ger_id = 3; // 
+     optional int32 stage = 4; // 初中高三个阶段 
+     optional int64 pos = 5; 
+} 
+
+message sc_field_change {
+     optional uint32 result = 1; //更换结果 
+     optional p_field_stone euqip_stone = 2; // 
+     optional p_field_stone unstone = 3; // 
+} 
+
+message cs_field_set {
+     optional int64 suit_id = 1; // 
+     repeated int64 initids = 2; // 
+     optional int64 ger_id = 3; // 该领域石携带者ger id 
+     optional int32 stage = 4; // 初中高三个阶段 
+} 
+
+message sc_field_set {
+     optional uint32 result = 1; //更换结果 
+     repeated p_field_stone stones = 2; //穿上 
+     repeated p_field_stone unstones = 3; //卸下 
+} 
+
+message cs_field_allun {
+     repeated int64 initids = 1; // 
+} 
+
+message sc_field_allun {
+     optional uint32 result = 1; //结果 
+     repeated p_field_stone unstones = 2; //卸下 
+} 
+
+message cs_field_equip_change {
+     optional int64 equip_initid1 = 1; // 
+     optional int64 equip_initid2 = 2; // 
+     optional int64 ger_id = 3; // 
+     optional int32 stage = 4; // 初中高三个阶段 
+     optional int32 postar1 = 5; // 
+     optional int32 postar2 = 6; // 
+} 
+
+message sc_field_equip_change {
+     optional uint32 result = 1; //更换结果 
+     optional p_field_stone stone1 = 2; // 
+     optional p_field_stone stone2 = 3; // 
+}
+
+message cs_chaser_enter {
+} 
+
+message sc_chaser_enter {
+     optional uint64 result = 1; // 结果 
+     optional bool is_open = 2; // 活动是否开启 
+     optional bool is_teamup = 3; // 是否组队 
+     optional uint64 chaser_times = 4; // 今日已挑战次数 
+     repeated p_ger_summary mon_list = 5; // 怪物列表 
+     repeated p_chaser chaser_list = 6; // 玩家列表 
+     optional uint64 teamid = 7; // 队伍ID 
+     optional uint64 startsec = 8; // 活动开始时间 
+     optional uint64 endsec = 9; // 活动结束时间 
+} 
+
+message p_chaser {
+     optional p_role_public role_public = 1; // 角色信息 
+     repeated p_ger_summary ger_list = 2; // 出战宝贝列表 
+     optional uint64 serverid = 3; 
+     optional uint64 team_speed = 4; // 行动值 
+} 
+
+message cs_chaser_new_teamup {
+} 
+
+message sc_chaser_new_teamup {
+     optional uint64 result = 1; // 结果 
+     repeated p_chaser chaser_list = 2; // 玩家列表 
+     optional uint64 teamid = 3; // 队伍ID 
+} 
+
+message cs_chaser_quick_join {
+} 
+
+message sc_chaser_quick_join {
+     optional uint64 result = 1; // 结果 
+     repeated p_chaser chaser_list = 2; // 玩家列表 
+     optional uint64 teamid = 3; // 队伍ID 
+} 
+
+message cs_chaser_leave {
+} 
+
+message sc_chaser_leave {
+     optional uint64 result = 1; // 结果 
+} 
+
+message cs_chaser_invite {
+} 
+
+message sc_chaser_invite {
+     optional uint64 result = 1; // 结果 
+} 
+
+message cs_chaser_join {
+     optional uint64 teamid = 1; // 队伍id 
+} 
+
+message sc_chaser_join {
+     optional uint64 result = 1; // 结果 
+     repeated p_chaser chaser_list = 2; // 玩家列表 
+     optional uint64 teamid = 3; // 队伍ID 
+} 
+
+message cs_chaser_ger_exchange {
+     optional uint64 gerid = 1; // 上阵宝贝id 
+     optional uint64 tarpos = 2; // 上阵位置 
+} 
+
+message sc_chaser_ger_exchange {
+     optional uint64 result = 1; // 结果 
+     repeated p_chaser chaser_list = 2; // 玩家列表 
+} 
+
+message cs_chaser_embattle {
+} 
+
+message sc_chaser_embattle {
+     optional uint64 result = 1; // 结果 
+     repeated p_chaser chaser_list = 2; // 玩家列表 
+} 
+
+message cs_chaser_ger_movpos {
+     optional uint64 gerid = 1; // 换位宝贝id 
+     optional uint64 tarpos = 2; // 目标位置 
+} 
+
+message sc_chaser_ger_movpos {
+     optional uint64 result = 1; // 结果 
+     repeated p_chaser chaser_list = 2; // 玩家列表 
+} 
+
+message cs_chaser_fight {
+} 
+
+message sc_chaser_fight {
+     optional uint64 result = 1; //结果 
+     optional p_fight_struct fight_struct = 2; // 战斗结构 
+} 
+
+message cs_chaser_fight_back {
+     optional p_fight_struct fight_struct = 1; // 战斗结构 
+} 
+
+message sc_chaser_fight_back {
+     optional uint64 result = 1; // 结果 
+     optional bool iswin = 2; // 战斗结果 
+     optional uint64 chaser_times = 3; // 今日已挑战次数 
+     optional uint64 blood_percent = 4; // 血量百分比 
+} 
+
+message sc_chaser_notify {
+     repeated p_chaser chaser_list = 1; // 玩家列表 
+}
+
+message cs_sgame_info {
+     optional uint64 type = 1; //小游戏类型 
+} 
+
+message sc_sgame_info {
+     optional uint64 result = 1; 
+     optional sgame_base_info sgame_base = 2; //对应小游戏基础信息 
+     optional uint64 canusenum = 3; //小游戏当前可用次数（所有小游戏公用同一个次数） 
+     optional uint64 totalnum = 4; //小游戏当日总共可用次数 
+     optional uint64 buy_times = 5; //小游戏当日已购买次数 
+} 
+
+message cs_sgame_reward {
+     optional uint64 type = 1; //小游戏类型 
+} 
+
+message sc_sgame_reward {
+     optional uint64 result = 1; 
+     repeated p_sgame_reward lists = 2;//积分奖励列表 
+} 
+
+message p_sgame_reward {
+     optional uint64 id = 1; // 积分档位ID 
+     optional uint64 state = 2; 
+     optional uint64 points = 3; //需求积分 
+     optional p_reward reward = 4; // 奖励列表 
+} 
+
+message cs_sgame_buytimes {
+     optional uint64 type = 1; // 游戏类型 
+     optional uint64 times = 2; // 购买次数 
+} 
+
+message sc_sgame_buytimes {
+     optional uint64 result = 1; 
+     optional uint64 times = 2;//购买次数 
+} 
+
+message cs_sgame_enter {
+     optional uint64 type = 1; // 游戏类型 
+} 
+
+message sc_sgame_enter {
+     optional uint64 result = 1; 
+} 
+
+message cs_sgame_draw {
+     optional uint64 type = 1; //游戏类型 
+     optional uint64 id = 2; //积分奖励ID 
+} 
+
+message sc_sgame_draw {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2; //奖励 
+} 
+
+message cs_sgame_onekey {
+     optional uint64 type = 1; // 游戏类型 
+} 
+
+message sc_sgame_onekey {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2; //奖励 
+} 
+
+message sc_sgame_notify {
+     optional sgame_base_info sgame_base = 1; //更某个小游戏数据 
+} 
+
+message cs_sgame_over {
+     optional uint64 type = 1; // 游戏类型 
+     optional uint64 points = 2;//获得积分 
+     optional uint64 numbers = 3;//获得宝箱数量 
+     repeated rwd_id_and_number lists = 4;//获取奖励数量列表(备注：类型4中的碎片只需配置基础碎片即可) 
+} 
+
+message sc_sgame_over {
+     optional uint64 result = 1; 
+     optional uint64 points = 2;//获得积分 
+     optional p_reward reward = 3; //获得宝箱奖励 
+} 
+
+message sgame_base_info {
+     optional uint64 type = 1;//小游戏类型ID 
+     optional uint64 used_times = 2;//当日已使用次数 
+     optional uint64 cur_points = 3;//当前积分 
+     optional uint64 total_times = 4;//当日可挑战总次数 
+     repeated p_sgame_reward lists = 5;//积分列表 
+     optional uint64 buy_times = 6;//当日已购买次数 
+} 
+
+message rwd_id_and_number {
+     optional uint64 id = 1;//获取的奖励id(此处对应的是基础碎片tid) 
+     optional uint64 number = 2;//获取的奖励数量 
+} 
+
+message sc_sgame_num_notify {
+     optional uint64 canusenum = 1; 
+     optional uint64 totalnum = 2; 
+     optional uint64 buy_times = 3; //小游戏当日已购买次数 
+} 
+
+message cs_perterr_tupo {
+} 
+
+message sc_perterr_tupo {
+     optional uint32 result = 1; 
+     optional p_production_skill production_skill = 2; //生产技能 
+} 
+
+message cs_perterr_switch_title {
+     optional int64 prod_id = 1; 
+} 
+
+message sc_perterr_switch_title {
+     optional uint32 result = 1; 
+     optional p_production_skill production_skill = 2; //生产技能 
+} 
+
+message cs_perterr_recycle {
+     optional int64 id = 1; 
+     optional uint64 num = 2; 
+} 
+
+message sc_perterr_recycle {
+     optional uint32 result = 1; 
+     optional p_reward reward = 2; //奖励内容 
+     optional p_recycle_shop rcle_shop = 3; //回收站 
+} 
+
+message cs_perterr_announce {
+     optional string announce = 1; 
+} 
+
+message sc_perterr_announce {
+     optional uint32 result = 1; 
+} 
+
+message cs_perterr_info {
+     optional uint64 roleid = 1; //玩家ID 
+} 
+
+message sc_perterr_info {
+     optional uint32 result = 1; 
+     optional p_perterr_info perterr_info = 2; 
+     optional p_role_public role_public = 3; 
+} 
+
+message p_perterr_info {
+     optional uint64 roleid = 1; //玩家ID 
+     optional p_foster foster = 2; //寄样宝贝信息 
+     repeated p_production_shop production_shops = 3; //生产器 
+     optional p_recycle_shop recycle_shop = 4; //回收器 
+     optional p_production_skill production_skill = 5; //生产技能 
+     optional string announce = 6; //告示牌信息 
+     optional int32 bfdraw = 7; //是否可以领寄养奖励 
+} 
+
+message p_foster {
+     optional uint64 roleid = 1; //玩家ID 
+     optional uint64 type_id = 2; //宝贝type_id 
+     optional int64 surplus_time = 3; //宝贝寄养剩余时间 
+     optional p_ger_summary ger = 4; 
+     optional string frolename = 5; 
+     optional uint64 stage = 6; // 展示某进化阶段的形象 
+} 
+
+message p_production_shop {
+     optional int32 prod_id = 1; //生产器id 
+     optional int32 is_open = 2; //生产器是否开放 
+     optional int32 level = 3; //生产器等级 
+     optional int64 exp = 4; //生产器当前等级的经验值 
+     optional int64 stor_material = 5; //生产器当前存储的材料数量 
+     optional int64 stor_exp = 6; //生产器当前存储的经验数量 
+     optional int64 stor_gold = 7; //生产器当前存储的金币数量 
+     optional int64 col_num = 8; //当前累计收集的材料数量 
+     optional int64 prod_time = 9; //当前生产还剩余时间 
+} 
+
+message p_recycle_shop {
+     optional int32 level = 1; //回收站等级 
+     optional int32 is_open = 2; //回收器是否开放 
+     optional int32 acc_num = 3; //当前回收数量 
+} 
+
+message p_production_skill {
+     optional int32 level = 1; //生产技能等级 
+     optional int32 exp_times = 2; //生产技能当前等级的累计游戏次数 
+     optional int32 tupo_lv = 3; //突破等级 
+     optional int32 prod_id = 4; //当前技能对应的生成器id 
+     optional int64 cd = 5; //技能切换cd 
+} 
+
+message cs_perterr_openshop {
+     optional int32 prod_id = 1; 
+} 
+
+message sc_perterr_openshop {
+     optional uint32 result = 1; 
+} 
+
+message cs_perterr_collect {
+     optional int64 prod_id = 1; //生成器id 
+} 
+
+message sc_perterr_collect {
+     optional uint32 result = 1; 
+     optional int32 bcrit = 2; //是否暴击 1暴击 0没暴击 
+     optional p_reward normalreward = 3; //普通奖励 
+     optional int64 roleexp = 4; //普通奖励(人物经验) 
+     optional p_reward colreward = 5; //暴击奖励 
+     optional p_production_shop production_shop = 6; //生产器 
+} 
+
+message cs_perterr_foster {
+     optional uint64 type_id = 1; 
+     optional uint64 froleid = 2; 
+     optional uint64 stage = 3; // 展示某进化阶段的形象 
+} 
+
+message sc_perterr_foster {
+     optional uint32 result = 1; 
+     optional p_foster foster = 2; //被寄养信息 
+} 
+
+message cs_perterr_prod_uplv {
+     optional int64 prod_id = 1; //生成器id 
+} 
+
+message sc_perterr_prod_uplv {
+     optional uint32 result = 1; 
+     optional p_production_shop prod_shop = 2; //生产器 
+} 
+
+message cs_perterr_friend {
+} 
+
+message sc_perterr_friend {
+     optional uint32 result = 1; 
+     repeated p_perterr_friendinfo finfo = 2; //好友信息 
+     optional int32 bdraw = 3; //是否可以领奖 
+     optional uint64 surtime = 4; //剩余寄养时间 
+     optional uint64 froleid = 5; //被寄养的玩家id 
+} 
+
+message p_perterr_friendinfo {
+     optional p_role_public role_public = 1; 
+     optional uint64 flag = 2; // 1:自己使用 2:空闲 3:已有寄养 
+     optional int32 bfriend = 3; // 1:是好友 0:不是好友 2:公会成员 
+} 
+
+message cs_perterr_fosterdraw {
+} 
+
+message sc_perterr_fosterdraw {
+     optional uint32 result = 1; 
+     optional p_reward reward = 2; //奖励内容 
+} 
+
+message cs_perterr_rcle_uplv {
+} 
+
+message sc_perterr_rcle_uplv {
+     optional uint32 result = 1; 
+     optional p_recycle_shop rcle_shop = 2; //回收站 
+} 
+
+message cs_perterr_getprod {
+     optional uint64 froleid = 1; 
+     optional int64 prod_id = 2; //生成器id 
+} 
+
+message sc_perterr_getprod {
+     optional uint32 result = 1; 
+     optional p_production_shop production_shop = 2; //生产器 
+     optional uint64 roleid = 3; 
+} 
+
+message cs_perterr_skilluplv {
+} 
+
+message sc_perterr_skilluplv {
+     optional uint32 result = 1; 
+     optional p_production_skill production_skill = 2; //生产技能 
+} 
+
+message cs_perterr_getskill {
+     optional uint64 roleid = 1; 
+} 
+
+message sc_perterr_getskill {
+     optional uint32 result = 1; 
+     optional p_production_skill production_skill = 2; //生产技能 
+} 
+
+message cs_perterr_invite_foster {
+     optional uint64 tar_id = 1; // 好友ID 
+     optional string content = 2; // 聊天内容 
+} 
+
+message sc_perterr_invite_foster {
+     optional uint64 result = 1; // 发送结果 
+}
+
+message cs_fterritory_info {
+} 
+
+message sc_fterritory_info {
+     optional uint64 result = 1; 
+     optional uint64 lv = 2; // 公会建筑等级 
+     repeated p_task tasklist = 3; // 公会建筑任务列表 
+     optional p_shop shop = 4; // 公会建筑商店 
+     repeated p_pmansion pmansion = 5; // 个人建筑列表 
+     repeated p_switch switchlist = 6; // 申请列表 
+     optional p_reward ftmoney = 7; // 商店money 
+     repeated p_fter_buff bufflist = 8; // 加成buff列表 
+     repeated p_hanguptask hanguptasklist = 9; // 公会挂机任务列表 
+} 
+
+message p_pmansion {
+     optional uint64 manid = 1; // 建筑ID 
+     optional uint64 roleid = 2; // 玩家ID 
+     optional string rolename = 3; // 玩家姓名 
+     optional uint64 title = 4; // 玩家头衔(0: = 成员;1: = 副会长;2: = 会长) 
+     optional uint64 coolsec = 5; // 冷却时间 
+} 
+
+message cs_fterritory_taskdraw {
+     optional uint64 taskid = 1; // 任务ID 
+} 
+
+message sc_fterritory_taskdraw {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2; // 奖励 
+} 
+
+message cs_fterritory_shopbuy {
+     optional uint64 sellid = 1; // 商品ID 
+     optional uint64 buynum = 2; // 购买数量 
+     optional uint64 sellpos = 3; // 商品位置 
+} 
+
+message sc_fterritory_shopbuy {
+     optional uint64 result = 1; 
+} 
+
+message cs_fterritory_uplevel {
+} 
+
+message sc_fterritory_uplevel {
+     optional uint64 result = 1; 
+     optional uint64 lv = 2; // 新等级 
+} 
+
+message cs_fterritory_switch {
+     optional uint64 tarmanid = 1; // 目标领地mansionid 
+} 
+
+message sc_fterritory_switch {
+     optional uint64 result = 1; 
+} 
+
+message sc_fter_pmansion_notify {
+     repeated p_pmansion pmansion = 1; // 个人建筑列表 
+} 
+
+message sc_fter_task_notify {
+     repeated p_task newlist = 1; // 新增列表 
+     repeated p_task updatelist = 2; // 更新列表 
+     repeated p_task deletelist = 3; // 删除列表 
+} 
+
+message sc_ftshop_notify {
+     optional p_reward ftmoney = 1; // 领地商店money 
+} 
+
+message cs_fterritory_switchback {
+     optional uint64 respond = 1; // 回应 
+     optional uint64 roleid = 2; // 申请者ID 
+} 
+
+message sc_fterritory_switchback {
+     optional uint64 result = 1; 
+} 
+
+message p_switch {
+     optional uint64 roleid = 1; // 申请者ID 
+     optional string rolename = 2; // 申请者姓名 
+     optional uint64 mansionid = 3; // 申请者建筑ID 
+     optional uint64 coolsec = 4; // 申请信息有效时间 
+} 
+
+message sc_fter_switch_notify {
+     repeated p_switch newlist = 1; // 新增列表 
+     repeated p_switch updatelist = 2; // 更新列表 
+     repeated p_switch deletelist = 3; // 删除列表 
+} 
+
+message sc_fter_buff_notify {
+     repeated p_fter_buff newlist = 1; // 新增列表 
+     repeated p_fter_buff updatelist = 2; // 更新列表 
+     repeated p_fter_buff deletelist = 3; // 删除列表 
+} 
+
+message p_fter_buff {
+     optional uint64 buffid = 1; // buffid 
+     optional uint64 endsec = 2; // 结束时间 
+} 
+
+message cs_fterritory_htask {
+} 
+
+message sc_fterritory_htask {
+     optional uint64 result = 1; 
+     repeated p_htask htasklist = 2; 
+} 
+
+message p_htask {
+     optional uint64 roleid = 1; // 成员ID 
+     optional string rolename = 2; // 成名姓名 
+     optional uint64 ttask = 3; // 当日已完成数量 
+     optional uint64 htask = 4; // 累计已完成数量 
+     optional uint64 tftmoney = 5; // 当日已贡献资源 
+     optional uint64 hftmoney = 6; // 累计已贡献资源 
+} 
+
+message sc_fterritory_fhangup_task_notify {
+     repeated p_hanguptask newlist = 1; // 新增列表 
+     repeated p_hanguptask updatelist = 2; // 更新列表 
+     repeated p_hanguptask deletelist = 3; // 删除列表 
+} 
+
+message cs_fterritory_fhangup_active {
+     optional uint64 taskid = 1; // 任务ID 
+     repeated p_ger_stand standlist = 2; // 上阵宝贝id 
+} 
+
+message sc_fterritory_fhangup_active {
+     optional uint64 result = 1; 
+} 
+
+message cs_fterritory_fhangup_taskdraw {
+     optional uint64 taskid = 1; // 任务ID 
+} 
+
+message sc_fterritory_fhangup_taskdraw {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2; // 奖励 
+} 
+
+message p_hanguptask {
+     repeated p_ger_stand_info standlist = 1; 
+     optional p_task task = 2; 
+} 
+
+message p_ger_stand_info {
+     optional uint64 gerid = 1; // gerid 
+     optional uint64 evolve = 2; // 形态 
+     optional uint64 pos = 3; // 位置 
+}
+
+message cs_fcross_enrol {
+} 
+
+message sc_fcross_enrol {
+     optional uint64 result = 1; 
+} 
+
+message cs_fcross_inspire {
+     optional int32 inspire_type = 1; 
+} 
+
+message sc_fcross_inspire {
+     optional uint64 result = 1; 
+     optional p_inspire_info inspire_info = 2; 
+} 
+
+message cs_fcross_disposal {
+     optional int32 battack = 1; 
+     repeated p_warger_info warger_lists = 2; 
+} 
+
+message sc_fcross_disposal {
+     optional uint64 result = 1; 
+     repeated p_warger_info warger_lists = 2; 
+     optional int32 battack = 3; 
+} 
+
+message cs_fcross_battlefield {
+     optional int32 benemy = 1; 
+} 
+
+message sc_fcross_battlefield {
+     optional uint64 result = 1; 
+     optional uint64 selfleftatttimes = 2; //自己剩余攻击次数 
+     optional uint64 selfstars = 3; //自己得星 
+     optional uint64 fstars = 4; //本公会得星 
+     optional uint64 enemy_fstars = 5; //敌方公会得星 
+     repeated p_warrior_info warrior_list = 6; //英雄列表 
+     optional int32 benemy = 7; 
+     optional uint64 allatttimes = 8; //工会总的攻击次数 
+     optional int32 fullsets = 9; //有多少玩家上满三套阵容 
+} 
+
+message p_warrior_info {
+     optional uint32 lost_stars = 1; //丢失星星 
+     optional uint64 roleid = 2; //这个英雄的roleid 
+     optional uint64 mark_roleid = 3; //标记这个英雄的roleid 
+     optional uint64 power_rank = 4; //战力排名 
+     optional string rolename = 5; //这个英雄的名字 
+} 
+
+message cs_fcross_team {
+     optional int32 battack = 1; 
+     optional int32 benemy = 2; 
+     optional uint64 selroleid = 3; 
+} 
+
+message sc_fcross_team {
+     optional uint64 result = 1; 
+     optional int32 battack = 2; 
+     repeated p_warger_info warger_list = 3; 
+     optional int32 benemy = 4; 
+     optional uint64 selroleid = 5; 
+     optional uint64 team_speed = 6; 
+} 
+
+message cs_fcross_inspireinfo {
+} 
+
+message sc_fcross_inspireinfo {
+     optional uint64 result = 1; 
+     repeated p_role_inspire inspire_list = 2; 
+} 
+
+message p_role_inspire {
+     optional uint32 times = 1; // 鼓舞次数 
+     optional p_role_public role_public = 2; 
+} 
+
+message cs_fcross_getstars {
+} 
+
+message sc_fcross_getstars {
+     optional uint64 result = 1; 
+     repeated stars_info stars_list = 2; 
+} 
+
+message stars_info {
+     optional uint32 stars = 1; // 得星 
+     optional p_role_public role_public = 2; 
+     optional uint32 power = 3; 
+} 
+
+message cs_fcross_challtimes {
+} 
+
+message sc_fcross_challtimes {
+     optional uint64 result = 1; 
+     repeated challtimes_info challtimes_list = 2; 
+} 
+
+message challtimes_info {
+     optional uint32 times = 1; 
+     optional p_role_public role_public = 2; 
+} 
+
+message cs_fcross_scorerank {
+     optional uint32 rankbeg = 1; 
+     optional uint32 rankend = 2; 
+} 
+
+message sc_fcross_scorerank {
+     optional uint64 result = 1; 
+     repeated p_scorerank_info scorerank_list = 2; 
+     optional p_scorerank_info self_rankinfo = 3; 
+} 
+
+message p_scorerank_info {
+     optional uint32 score = 1; 
+     optional uint64 familyid = 2; 
+     optional string familyname = 3; 
+     optional uint32 svrid = 4; 
+     optional string chairname = 5; 
+     optional int32 rank = 6; 
+     optional int32 allstars = 7; 
+     optional uint64 chairicon = 8; 
+} 
+
+message cs_fcross_familyreplay {
+} 
+
+message sc_fcross_familyreplay {
+     optional uint64 result = 1; 
+     repeated p_fight_replay_info fight_replay_list = 2; //战报 
+} 
+
+message cs_fcross_replay {
+     optional uint64 histid = 1; //战报id 
+} 
+
+message sc_fcross_replay {
+     optional uint64 result = 1; 
+     repeated p_fight_struct_info fight_struct_info_lists = 2; // 战斗 
+     optional p_fight_replay_info fight_replay = 3; //战报 
+} 
+
+message cs_fcross_markenemy {
+     optional uint64 markroleid = 1; 
+} 
+
+message sc_fcross_markenemy {
+     optional uint64 result = 1; 
+     optional uint64 roleid = 2; 
+     optional uint64 markroleid = 3; 
+} 
+
+message p_warger_info {
+     optional uint64 gerid = 1; // 
+     optional uint64 sets = 2; //第几套阵容 
+     optional uint64 pos = 3; //每套阵容的位置 
+     optional p_ger_summary summary_ger = 4; // 
+     optional uint64 speed = 5; // 
+     optional uint64 fightpower = 6; // 
+} 
+
+message cs_fcross_fightreplay {
+} 
+
+message sc_fcross_fightreplay {
+     optional uint64 result = 1; 
+     repeated p_fight_replay_info fight_replay_list = 2; //战报 
+} 
+
+message cs_fcross_fight {
+     optional uint64 enemy_roleid = 1; 
+} 
+
+message sc_fcross_fight {
+     optional uint64 result = 1; 
+     repeated p_fight_struct_info fight_struct_info_lists = 2; // 战斗 
+     optional p_fight_replay_info fight_replay = 3; //战报 
+} 
+
+message p_fight_replay_info {
+     optional uint64 histid = 1; 
+     optional uint64 atkroleid = 2; 
+     optional uint64 atkfamilyid = 3; 
+     optional uint64 defroleid = 4; 
+     optional uint64 deffamilyid = 5; 
+     optional string atkrolename = 6; 
+     optional string defrolename = 7; 
+     optional string atkfamilyname = 8; 
+     optional string deffamilyname = 9; 
+     optional int32 allstars = 10; 
+     optional uint64 serverid = 11; 
+     optional uint64 eserverid = 12; 
+} 
+
+message cs_fcross_info {
+} 
+
+message sc_fcross_info {
+     optional uint64 result = 1; 
+     optional int32 stage = 2; //当前阶段 
+     optional family_info family = 3; //我方公会 
+     optional family_info efamily = 4; //敌方工会 
+     optional uint64 inspire = 5; //鼓舞次数 
+     optional uint64 allinspire = 6; //鼓舞总次数 
+     optional uint64 goldadd = 7; //金币加成 
+     optional uint64 diaadd = 8; //钻石加成 
+     optional int32 benrol = 9; 
+     optional int32 total_addbuf = 10; 
+     optional uint64 countdown = 11; //倒计时 
+     optional p_season_settlement season_settlement = 12; 
+     optional int32 last_benrol = 13; 
+     optional uint64 begin_time = 14; 
+} 
+
+message family_info {
+     optional string familyname = 1; 
+     optional uint64 serverid = 2; 
+     optional uint64 score = 3; 
+     optional int32 score_change = 4; 
+     optional uint64 stars = 5; 
+     optional uint64 fightpower = 6; //工会战斗力 
+} 
+
+message p_inspire_info {
+     optional uint64 inspire = 1; //鼓舞次数 
+     optional uint64 allinspire = 2; //鼓舞总次数 
+     optional int32 total_addbuf = 3; //总加成 
+} 
+
+message cs_fcross_definfo {
+} 
+
+message sc_fcross_definfo {
+     optional uint64 result = 1; 
+     repeated p_definfo definfo_lists = 2; 
+} 
+
+message p_definfo {
+     optional uint32 num = 1; //上阵个数 
+     optional uint64 power = 2; //战斗力 
+     optional p_role_public role_public = 3; 
+} 
+
+message p_fight_struct_info {
+     optional int32 place = 1; //第几场 
+     optional bool iswin = 2; // 
+     optional p_fight_struct fight_struct = 3; 
+} 
+
+message p_season_settlement {
+     optional uint64 begin_time = 1; 
+     repeated p_scorerank_info scorerank_info = 2; 
+} 
+
+message sc_fcross_bcfight {
+     optional uint64 roleid = 1; 
+     optional int32 stars = 2; 
+     optional int32 challtimes = 3; 
+     optional int32 benemy = 4; 
+     optional int32 allstars = 5; 
+     optional int32 self_challtime = 6; 
+     optional uint64 enemyroleid = 7; 
+} 
+
+message cs_fcross_open_bfield {
+     optional int32 benemy = 1; 
+     optional int32 open = 2; 
+} 
+
+message sc_fcross_open_bfield {
+     optional uint64 result = 1; 
+     optional int32 open = 2; 
+     optional int32 benemy = 3; 
+} 
+
+message sc_fcross_notify_enrol {
+     optional uint64 result = 1; 
+} 
+
+message sc_fcross_notify_stage {
+     optional int32 stage = 1; 
+}
+
+message cs_extreme_info {
+} 
+
+message sc_extreme_info {
+     optional uint64 result = 1;//是否开启 1：开启成功 2:等级不够 3:开服时间不够，4：休赛时间 5:活动还未开始 6:主服挂了 7:配置错误 
+     optional uint64 curscore = 2;//当前积分 
+     optional uint64 division = 3;//段位 eg：最强王者 
+     optional uint64 seasonbegin = 4;//开始时间 
+     repeated p_extreme_boxbattle boxbattle = 6;//战斗宝箱(胜负为不同的宝箱) 
+     optional p_extreme_boxfree boxfree = 7;//免费箱子 
+     optional p_extreme_boxwin boxwin = 8;//(战功宝箱信息,即累积胜利场次的箱子) 
+     repeated p_extreme_standup standuplist = 9;//当前阵容列表 
+     optional uint64 quickopennum = 10;//快速开启次数 
+     optional string challengetm = 11;//可挑战时间段 
+} 
+
+message p_extreme_boxbattle {
+     optional uint64 boxid = 1;//id 
+     optional uint64 boxtype = 2;//类型 胜负 
+     optional uint64 boxpos = 3;//位置 
+     optional uint64 boxtime = 4;//宝箱解锁后的开启时间 unix_time，0表示未解锁 
+     optional uint64 quicknum = 5;//激活时的快速开启次数 
+} 
+
+message p_extreme_boxfree {
+     optional uint64 boxid = 1;//可以开启宝箱id 
+     optional uint64 boxtime = 2;//可以开启时间 -1表示已经满了 
+} 
+
+message p_extreme_boxwin {
+     optional uint64 boxid = 1; 
+     optional uint64 isdraw = 2;//是否领取过 0 可领取 1 不能在领取 
+     optional uint64 wincount = 3;//胜利次数 
+     optional uint64 boxtime = 4;//刷新时间 
+     optional uint64 openneed = 5;//需要胜利次数 
+} 
+
+message cs_extreme_match {
+} 
+
+message sc_extreme_match {
+     optional uint64 result = 1;//结果 
+     repeated p_fight_list fight_structs = 2;//战斗结构 
+     optional p_extreme_record fight_result = 3;//匹配成功后返回的战报，战斗数据及结果全在里面 
+} 
+
+message p_extreme_record {
+     optional uint64 replayid = 1;//战报id 
+     optional uint64 fightsec = 2;//战斗时间 
+     repeated p_result_list players = 3;//对战玩家信息 
+} 
+
+message p_result_list {
+     optional uint64 roleid = 1; 
+     optional string rolename = 2; 
+     optional string familyname = 3; 
+     optional uint64 serverid = 4; 
+     optional uint64 curscore = 5; 
+     optional int64 getscore = 6; 
+     optional uint64 winnum = 7; 
+     repeated p_ger_list gerlist = 8; 
+     optional uint64 rank = 9; 
+     optional uint64 icon = 10; 
+     optional uint64 viplv = 11; 
+} 
+
+message p_ger_list {
+     optional uint64 place = 1; 
+     optional bool iswin = 2; 
+} 
+
+message cs_extreme_matchcancel {
+} 
+
+message sc_extreme_matchcancel {
+     optional uint64 result = 1;//1成功 2失败 3:赛季结束 
+} 
+
+message cs_extreme_rank {
+} 
+
+message sc_extreme_rank {
+     optional uint64 result = 1;//1成功 2失败 
+     repeated p_extreme_rank rankinfo = 2;//排名信息 
+     repeated p_extreme_rank ownrank = 3;//自己的排行信息 若为空表，则未找到自己的排行 
+} 
+
+message p_extreme_rank {
+     optional uint64 rank = 1;//排名 
+     optional uint64 roleid = 2;//roleid 
+     optional uint64 serverid = 3;//所在服务器id 
+     optional string rolename = 4;//名字 
+     optional string familyname = 5;//公会 
+     optional uint64 curscore = 6;//积分 
+     optional uint64 division = 7;//段位 
+} 
+
+message cs_extreme_total_record {
+} 
+
+message sc_extreme_total_record {
+     optional uint64 result = 1;//1成功 2失败 
+     repeated p_extreme_record records = 2;//战报列表 
+} 
+
+message cs_extreme_my_record {
+} 
+
+message sc_extreme_my_record {
+     optional uint64 result = 1;//1成功 2失败 
+     repeated p_extreme_record records = 2;//战报列表 
+} 
+
+message cs_extreme_replayview {
+     optional uint64 isowner = 1; 
+     optional uint64 replayid = 2;//replayid 
+} 
+
+message sc_extreme_replayview {
+     optional uint64 result = 1;//1成功，2失败(该战报已过期) 
+     repeated p_fight_list fight_structs = 2;//战斗结构 
+     optional p_extreme_record fight_result = 3;//战斗结算 
+} 
+
+message p_fight_list {
+     optional uint64 place = 1; //第几场 
+     optional p_fight_struct struct = 2; // 战斗结构 
+} 
+
+message cs_extreme_standup {
+     repeated p_extreme_standup standuplist = 1; //布阵列表 
+} 
+
+message sc_extreme_standup {
+     optional uint64 result = 1; 
+     repeated p_extreme_standup standuplist = 2;//布阵 
+} 
+
+message p_extreme_standup {
+     optional uint64 place = 1; // 第几场 
+     repeated p_ger_stand ger_stand = 2; //精灵战位 
+} 
+
+message cs_extreme_boxopen {
+     optional uint64 boxtype = 1; 
+     optional uint64 boxpos = 2; 
+} 
+
+message sc_extreme_boxopen {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2;//奖励 
+} 
+
+message cs_extreme_quickopen {
+     optional uint64 boxtype = 1; // 此处传战斗宝箱type = 3 
+     optional uint64 boxpos = 2; 
+} 
+
+message sc_extreme_quickopen {
+     optional uint64 result = 1; 
+     optional p_reward reward = 2;//奖励 
+} 
+
+message sc_extreme_notify_freebox {
+     optional p_extreme_boxfree boxfree = 1; 
+} 
+
+message sc_extreme_notify_boxwin {
+     optional p_extreme_boxwin boxwin = 1; 
+} 
+
+message sc_extreme_notify_boxbattle {
+     optional uint64 boxid = 1;//id 0：表示该位置为空 
+     optional uint64 boxtype = 2;//类型 1:失败宝箱， 2：胜利宝箱 
+     optional uint64 boxpos = 3;//位置 
+     optional uint64 boxtime = 4;//宝箱解锁后的可领取时间 unix_time，0表示未解锁 
+} 
+
+message p_ger_stand {
+     optional uint64 gerid = 1; // 精灵id 
+     optional uint64 pos = 2; // 上阵位置 
+} 
+
+message sc_extreme_notify_info {
+     optional uint64 quickopennum = 1; //快速开启次数 
+     optional uint64 curscore = 2;//当前积分 
+     optional uint64 division = 3;//段位 eg：最强王者 
+     optional uint64 seasonbegin = 4;//开始时间 
+     optional uint64 result = 5;//是否开启 1：开启成功 2:等级不够 3:开服时间不够，4：休赛时间 5:活动还未开始 
+     optional uint64 cleanstandup = 6;//是否将阵型清空 1：清空 
+} 
+
+message cs_extreme_battlebox_unlock {
+     optional uint64 boxpos = 1;//胜利宝箱的位置::1|2|3|4 
+} 
+
+message sc_extreme_battlebox_unlock {
+     optional uint64 result = 1; 
+     optional uint64 boxpos = 2;//宝箱位置 
+     optional uint64 boxtime = 3;//可以开启的时间 
+     optional uint64 quicknum = 4;//解锁时的快速开启次数 
+} 
+
+message sc_hist_watch_extreme {
+     optional uint64 result = 1; // 结果 
+     repeated p_fight_list fight_structs = 2;//战斗结构 
+     optional p_extreme_record fight_result = 3;//战斗结算 
+} 
+
+message cs_statue_info {
+} 
+
+message sc_statue_info {
+     optional uint64 result = 1; 
+     repeated p_statue unlocklist = 2; //已解锁列表 
+} 
+
+message cs_statue_active {
+     optional p_statue statue = 1; // 需激活的对应雕像信息 
+} 
+
+message sc_statue_active {
+     optional uint64 result = 1; 
+     optional p_statue active = 2; //已激活雕像列表 
+     repeated p_statue maxstatuelist = 3; //各区域品阶 对应的最高激活列表 
+     optional p_activerate rateinfo = 4; 
+} 
+
+message p_statue {
+     optional uint64 area = 1; // 区域 
+     optional uint64 pos = 2; // 位置（对应皮肤） 
+     optional uint64 stage = 3; // 品阶 
+     optional uint64 level = 4; // 等级 
+} 
+
+message p_activerate {
+     optional p_statue statue = 1; // statue基础信息 
+     optional uint64 luckpoint = 2; // 祝福值 
+} 
+
+message cs_statue_unlock {
+     optional p_statue statue = 1; 
+} 
+
+message sc_statue_unlock {
+     optional uint64 result = 1; 
+     optional p_statue unlock = 2; 
+} 
+
+message cs_statue_rateinfo {
+     optional p_statue statue = 1; 
+} 
+
+message sc_statue_rateinfo {
+     optional uint64 result = 1; 
+     optional p_activerate rateinfo = 2; 
+} 
+
+message cs_statue_areainfo {
+     optional uint64 area = 1; 
+} 
+
+message sc_statue_areainfo {
+     optional uint64 result = 1; 
+     repeated p_statue activelist = 2; //已激活雕像列表 
+     repeated p_statue maxstatuelist = 3; //各区域品阶 对应的最高激活列表 
+} 
+
+message streng_record {
+     optional int32 biogid = 1; // 剧情id 
+     optional int32 streng_exp = 2; // 强化模块经验值 
+     optional int32 streng_level = 3; // 强化模块等级 
+} 
+
+message p_biog_record {
+     optional int32 biogid = 1; // 剧情id 
+     optional int32 streng_exp = 2; // 强化模块经验值 
+     optional int32 streng_level = 3; // 强化模块等级 
+     repeated uint64 chapteridrecord_list = 4; // 已经完成的章节id 
+     optional uint64 chapterid = 5; // 选择的章节 
+} 
+
+message cs_biogbattle_info {
+} 
+
+message sc_biogbattle_info {
+     optional int32 result = 1; 
+     repeated p_biog_record biogid_list = 2; // 可供选择的剧情id列表 
+     optional int32 biogid = 3; // 已选择的剧情id(0表示没有选择) 
+     repeated streng_record streng_list = 4; // 强化模块信息 
+} 
+
+message cs_biogbattle_select {
+     optional int32 biogid = 1; // 选择的剧情id 
+     optional uint64 chapterid = 2; 
+} 
+
+message sc_biogbattle_select {
+     optional int32 result = 1; 
+     optional int32 biogid = 2; // 选择的剧情id 
+     optional uint64 chapterid = 3; 
+     repeated p_dungeon_box_reward dungeon_box_reward = 4; 
+} 
+
+message p_commodity_info {
+     optional int32 commodity_id = 1; // 商品id 
+     optional p_reward commodity_src = 2; // 商品 
+     optional p_reward commodity_dest = 3; // 商品 
+} 
+
+message sc_biogbattle_shopopen {
+     repeated p_commodity_info commodity_list = 1; // 商品 
+     optional uint64 chapterid = 2; 
+     optional p_reward shop_refresh_cost = 3; // 
+} 
+
+message cs_biogbattle_shopclose {
+} 
+
+message sc_biogbattle_shopclose {
+     optional int32 result = 1; 
+} 
+
+message cs_biogbattle_exchange {
+     optional int32 commodity_id = 1; 
+     optional uint64 chapterid = 2; 
+} 
+
+message sc_biogbattle_exchange {
+     optional int32 result = 1; 
+     optional int32 commodity_id = 2; 
+     optional uint64 chapterid = 3; 
+} 
+
+message cs_biogbattle_shoprefresh {
+     optional uint64 chapterid = 1; 
+     optional uint64 commodity_id = 2; 
+} 
+
+message sc_biogbattle_shoprefresh {
+     optional int32 result = 1; 
+     optional p_commodity_info new_commodity = 2; // 商品 
+     optional uint64 chapterid = 3; 
+     optional p_reward next_need_money = 4; // 
+} 
+
+message p_dungeon_box_reward {
+     optional uint64 dungeonid = 1; 
+     optional p_reward reward = 2; 
+} 
+
+message cs_biogbattle_chapterinfo {
+     optional uint64 chapterid = 1; 
+} 
+
+message sc_biogbattle_chapterinfo {
+     optional int32 result = 1; 
+     repeated uint64 todaydungeonid_list = 2; // 今天已经完成的关卡id 
+     repeated uint64 rwddungeon_list = 3; // 已经领取宝箱的关卡id 
+     repeated uint64 dungeonidrecord_list = 4; // 历史已经完成的关卡id 
+     repeated p_dungeon_box_reward dungeon_box_reward = 5; 
+     repeated uint64 enter_war_ger_list = 6; 
+} 
+
+message cs_biogbattle_fight {
+     optional uint64 chapterid = 1; 
+     optional uint64 dungeonid = 2; 
+     repeated uint64 geridlist = 3; 
+     repeated uint64 poslist = 4; 
+} 
+
+message sc_biogbattle_fight {
+     optional int32 result = 1; // 挑战结果 
+     optional p_fight_struct fight_struct = 2; // 战斗 
+     optional p_reward fight_reward = 3; // 击杀的奖励 
+     optional int32 streng_exp = 4; // 强化模块经验值 
+     optional uint64 addrolexp = 5; // 增加主角经验 
+     optional uint64 addgerexp = 6; // 增加宝贝经验 
+     repeated uint64 enter_war_ger_list = 7; 
+     optional int32 streng_level = 8; // 强化等级 
+} 
+
+message cs_biogbattle_openbox {
+     optional uint64 dungeonid = 1; 
+} 
+
+message sc_biogbattle_openbox {
+     optional int32 result = 1; // 挑战结果 
+     optional uint64 dungeonid = 2; 
+     optional p_reward reward = 3; // 奖励 
+} 
+
+message cs_biogbattle_disposal {
+     optional uint64 dungeonid = 1; 
+     optional p_lineup line1 = 2; 
+     optional p_lineup line2 = 3; 
+} 
+
+message sc_biogbattle_disposal {
+     optional int32 result = 1; // 挑战结果 
+     repeated p_ger_summary atk_ger_list = 2; 
+     repeated p_ger_summary def_ger_list = 3; 
+     optional uint64 atkteam_speed = 4; // 行动值 
+     optional uint64 atkteam_power = 5; // 战斗力 
+     optional uint64 defteam_speed = 6; // 行动值 
+     optional uint64 defteam_power = 7; // 战斗力 
+} 
+
+message cs_wheel_state {
+} 
+
+message sc_wheel_state {
+     optional uint64 state = 1; //活动开启状态 
+     optional uint64 next_sec = 2; //下次阶段切换的时间 
+} 
+
+message cs_wheel_config {
+} 
+
+message sc_wheel_config {
+     optional p_wheel_config config_info = 1; //活动配置相关信息 
+} 
+
+message cs_wheel_info {
+} 
+
+message sc_wheel_info {
+     optional uint64 my_score = 1; //我的积分 
+     optional uint64 free_times = 2; //可免费抽取的次数 
+     repeated uint64 times_reward_draw = 3; //已经领取的次数奖励，可领取的自己用当前积分和配置算 
+} 
+
+message p_wheel_config {
+     repeated p_money one_cost = 1; //抽取1次的花费 
+     repeated p_money ten_cost = 2; //抽取10次的花费 
+     repeated p_reward box_list = 3; //转盘上的格子的奖励列表 
+     repeated p_wheel_box times_box_list = 4; //次数奖励盒子信息 
+     optional p_reward lucky_reward = 5; //幸运奖励 
+     repeated p_wheel_rank_reward rank_reward_list = 6; //排行榜奖励 
+     optional uint64 luck_need = 7; //幸运奖励入场需要的基础积分 
+} 
+
+message p_wheel_box {
+     optional uint64 need_times = 1; //领取需要的次数 
+     optional p_reward reward = 2; //奖励具体内容 
+} 
+
+message p_wheel_rank_reward {
+     optional uint64 begin_rank = 1; //奖励起始排名 
+     optional uint64 end_rank = 2; //奖励结束排名 
+     optional uint64 need_score = 3; //需要的积分 
+     optional p_reward reward = 4; //奖励内容 
+} 
+
+message cs_wheel_play {
+     optional uint64 type = 1; //几连抽 
+} 
+
+message sc_wheel_play {
+     optional uint64 result = 1; //结果 
+     repeated p_reward reward_list = 2; //奖励内容 
+     optional uint64 new_score = 3; //新的积分 
+} 
+
+message cs_wheel_draw {
+     optional uint64 score = 1; //要领取的档位积分 
+} 
+
+message sc_wheel_draw {
+     optional uint64 result = 1; //操作结果 
+     optional p_reward reward = 2; //已经领取的奖励内容 
+     repeated uint64 new_draw_score = 3; //最新的已经领取的分数 
+} 
+
+message cs_wheel_rank_list {
+} 
+
+message sc_wheel_rank_list {
+     repeated p_wheel_rank rank_list = 1; //排行榜 
+} 
+
+message p_wheel_rank {
+     optional uint64 rank = 1; //排行 
+     optional string role_name = 2; //排行榜上的角色名字 
+     optional uint64 score = 3; //积分 
+} 
+
+message cs_wheel_lucky_man {
+} 
+
+message sc_wheel_lucky_man {
+     repeated string role_name = 1; //幸运玩家的名字 
+}
+
+message cs_digitalcore_info {
+} 
+
+message sc_digitalcore_info {
+     optional uint32 result = 1; 
+     repeated p_ger_core_info ger_coreinfo_lists = 2; //开启核心的列表 
+     optional int32 b_replace_consume = 3; //是否勾选替代消耗,1:是,任意其他值不是 
+} 
+
+message p_ger_core_info {
+     optional uint64 initid = 1; //宝贝id 
+     repeated p_core_info coreinfo_lists = 2; //开启核心的列表 
+} 
+
+message p_core_info {
+     optional int32 core_id = 1; //核心id 
+     optional int32 star = 2; //星 
+} 
+
+message cs_digitalcore_tupo {
+     optional uint64 gerid = 1; //宝贝id 
+     optional int32 core_id = 2; //核心id 
+} 
+
+message sc_digitalcore_tupo {
+     optional uint32 result = 1; 
+     optional p_ger_core_info ger_coreinfo = 2; 
+} 
+
+message cs_digitalcore_activation {
+     optional uint64 gerid = 1; //宝贝id 
+     optional int32 core_id = 2; //核心id 
+} 
+
+message sc_digitalcore_activation {
+     optional uint32 result = 1; 
+     optional p_ger_core_info ger_coreinfo = 2; 
+} 
+
+message cs_digitalcore_selreplace {
+     optional int32 b_replace_consume = 1; //是否勾选替代消耗,1:是,任意其他值不是 
+} 
+
+message sc_digitalcore_selreplace {
+     optional uint32 result = 1; 
+     optional int32 b_replace_consume = 2; //是否勾选替代消耗,1:是,任意其他值不是 
+}
+
+message cs_chicken_state {
+} 
+
+message sc_chicken_state {
+     optional uint64 state = 1; //当前活动状态 
+     optional uint64 next_sec = 2; //下次活动状态切换时间 
+} 
+
+message cs_chicken_rank_list {
+     optional uint64 type = 1; //查看的排行榜的类型 
+     optional uint64 offset = 2; //起始位置 
+} 
+
+message sc_chicken_rank_list {
+     optional uint64 rank = 1; //我的排行 0就是未上榜 
+     optional uint64 score = 2; //具体值 
+     repeated p_chicken_rank rank_list = 3; //排行榜具体内容 
+} 
+
+message p_chicken_rank {
+     optional uint64 rank = 1; //具体排名 
+     optional uint64 score = 2; //在排行榜的上的积分 
+     optional string role_name = 3; //玩家的名字 
+     optional uint64 server_id = 4; //逻辑服务器ID，需要根据平台进行转换 
+} 
+
+message cs_chicken_rank_reward {
+     optional uint64 type = 1; //查看的排行榜的类型 
+} 
+
+message sc_chicken_rank_reward {
+     repeated p_chicken_rank_reward rank_reward_list = 1; //排行榜的奖励内容 
+} 
+
+message p_chicken_rank_reward {
+     optional uint64 begin_rank = 1; //起始排名 
+     optional uint64 end_rank = 2; //结束排名 
+     optional p_reward reward = 3; //具体的奖励内容 
+} 
+
+message cs_chicken_sign {
+} 
+
+message sc_chicken_sign {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 avg_sign_sec = 2; //平均匹配时间 
+} 
+
+message cs_chicken_sign_cancel {
+} 
+
+message sc_chicken_sign_cancel {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message sc_chicken_wait_sync {
+} 
+
+message sc_chicken_sign_sync {
+     optional p_chicken_public role = 1; //匹配到的玩家的信息 
+} 
+
+message sc_chicken_begin {
+     optional uint64 buf_id = 1; //分配到的初始bufID 
+     repeated p_chicken_public player_list = 2; //所有玩家列表 
+     optional uint64 start_sec = 3; //对局开始的时间点 
+} 
+
+message p_chicken_public {
+     optional uint64 role_id = 1; //玩家ID 
+     optional string role_name = 2; //玩家的名字 
+     optional uint64 icon = 3; //玩家头像 
+     optional uint64 vip_lv = 4; //vip等级 
+     optional uint64 server_id = 5; //逻辑服务器ID 
+     optional uint64 trainer = 6; //训练师头像 
+} 
+
+message cs_chicken_set_line {
+     repeated p_lineup line = 1; //设置的阵容 
+} 
+
+message sc_chicken_set_line {
+     optional uint64 result = 1; //设置的结果 
+     repeated p_lineup line = 2; //设置的阵容 
+} 
+
+message cs_chicken_init {
+} 
+
+message sc_chicken_init {
+     optional uint64 result = 1; //结果 
+     optional p_chicken_summary my_summary = 2; //自己的基础信息 
+     repeated p_chicken_player player_list = 3; //所有玩家的当前状态，死人就已经从本局删掉了 
+     repeated p_chicken_public player_info = 4; //本局参与玩家列表的基础信息，只会发这一次，后面都是通过roleid关联 
+     optional uint64 round = 5; //当前在第几个圈 
+     optional uint64 next_round_sec = 6; //这个圈缩完的时间 
+} 
+
+message p_chicken_summary {
+     optional uint64 fight_power = 1; //当前战斗力 
+     optional uint64 hp_percent = 2; //当前血量万分比 
+     optional uint64 kill_num = 3; //击杀数 
+     optional p_attr attr_list = 4; //当前buf状态 
+     optional uint64 init_buf_id = 5; //初始bufID 
+} 
+
+message p_chicken_player {
+     optional uint64 role_id = 1; //玩家的roleID 
+     optional uint64 pos = 2; //玩家当前位置，无论是据点还是出生点都是平级的，就算在移动，到到之前他都是在出发点 
+     optional uint64 state = 3; //玩家当前的状态 
+     optional uint64 target = 4; //目标位置 
+     optional uint64 arrive_sec = 5; //到达时间 
+     optional uint64 show_ger = 6; //显示宝贝的typeid 
+     optional uint64 stage = 7; //显示的阶段 
+     optional uint64 hp_percent = 8; //血量万分比 
+     optional uint64 clothes = 9; //时装状态 
+     optional sint64 expiresec = 10;//时装的到期时间 
+} 
+
+message cs_chicken_fort {
+     optional uint64 fort_id = 1; //据点ID 
+} 
+
+message sc_chicken_fort {
+     optional uint64 fort_id = 1; //据点ID 
+     optional uint64 next_ref_sec = 2; //下次结算时间 
+     repeated uint64 play_list = 3; //当前据点中的玩家RoleID列表，具体玩家信息从init消息中取 
+     optional p_attr box_buf = 4; //盒子里的buf 
+     optional uint64 buf_id = 5; //盒子里的bufID 
+} 
+
+message cs_chicken_replay {
+} 
+
+message sc_chicken_replay {
+     repeated p_chicken_replay replays = 1; //战报列表 
+} 
+
+message p_chicken_replay {
+     optional uint64 replay_id = 1; //录像ID 
+     optional string atk_role_name = 2; //进攻方名字 
+     optional string def_role_name = 3; //防守方的名字 
+     optional uint64 result = 4; //结果 
+} 
+
+message cs_chicken_view_replay {
+     optional uint64 replay_id = 1; 
+} 
+
+message sc_chicken_view_replay {
+     optional uint64 result = 1; // 请求结果 
+     optional p_fight_struct replay = 2; // 战斗录像 
+} 
+
+message sc_chicken_fort_fight {
+     optional uint64 win_role_id = 1; //进攻方ID 
+     optional uint64 lose_role_id = 2; //防守方的ID 
+} 
+
+message sc_chicken_fort_fight_win {
+     optional string tar_role_name = 1; //对手名字 
+     optional uint64 new_kill_num = 2; //新的人头数 
+     optional p_attr add_attr = 3; //新增的buf 
+     optional uint64 new_hp_percent = 4; //新的血量万分比 
+} 
+
+message sc_chicken_fort_fight_lose {
+     optional string killer = 1; //杀死你的人 
+     optional uint64 kill_num = 2; //自己的人头数 
+     optional uint64 life_time = 3; //生存时间 
+     optional uint64 rank = 4; //排名 
+     optional p_reward base_reward = 5; //基础奖励 
+     optional p_reward kill_reward = 6; //击杀奖励 
+} 
+
+message sc_chicken_win {
+     optional uint64 kill_num = 1; //击杀数 
+     optional uint64 life_time = 2; //生存时间 
+     optional p_reward base_reward = 3; //基础奖励 
+     optional p_reward kill_reward = 4; //击杀奖励 
+} 
+
+message sc_chicken_round {
+     optional uint64 round = 1; //当前是第几轮 
+     optional uint64 next_round_sec = 2; //当前圈缩完的时间 
+} 
+
+message sc_chicken_play_sync {
+     optional p_chicken_player player = 1; //玩家状态 
+} 
+
+message sc_chicken_summary_sync {
+     optional p_chicken_summary player = 1; //自己的状态 
+} 
+
+message cs_chicken_ask {
+} 
+
+message sc_chicken_ask {
+     optional uint64 result = 1; //结果 
+} 
+
+message cs_chicken_move {
+     optional uint64 target = 1; //目标地点 
+} 
+
+message sc_chicken_move {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message cs_chicken_box {
+} 
+
+message sc_chicken_box {
+     optional uint64 result = 1; //首胜箱子的状态 
+     optional uint64 join_times = 2; //今天的参与次数 
+     optional p_reward config_reward = 3; //配置的奖励内容 
+     optional uint64 need_times = 4; //获取奖励需要的次数 
+} 
+
+message cs_chicken_box_draw {
+} 
+
+message sc_chicken_box_draw {
+     optional uint64 result = 1; //领取结果 
+     optional p_reward reward = 2; //领取的奖励内容 
+} 
+
+message cs_chicken_leave {
+} 
+
+message sc_chicken_leave {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message cs_chicken_eat_buf {
+} 
+
+message sc_chicken_eat_buf {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 buf_id = 2; //buf的ID 
+     optional p_attr attr = 3; //获得到的buf的具体值 
+}
+
+message cs_precious_info {
+} 
+
+message sc_precious_info {
+     repeated p_precious preciouslist = 1; // 刻印列表 
+} 
+
+message p_precious {
+     optional uint64 preciousid = 1; // 宝石id 
+     optional uint64 tmpid = 2; // 模板ID 
+     optional uint64 exp = 4; // 宝石的经验值 
+     optional uint64 level = 5; // 宝石等级 
+     optional uint64 equipid = 6; // 宝石被镶嵌的gerid 0则未被镶嵌 
+     optional uint64 pos = 7; // 宝石被镶嵌到装备的某个槽位 0则未被镶嵌 
+} 
+
+message cs_precious_imbue {
+     optional uint64 equipid = 1; // 镶嵌到具体的gerid上 
+     optional uint64 pos = 2; // 刻印所在对应装备的某个位置 
+     optional uint64 preciousid = 3; // 被镶嵌的刻印id 
+} 
+
+message sc_precious_imbue {
+     optional uint64 result = 1; 
+} 
+
+message cs_precious_unload {
+     optional uint64 preciousid = 1;// 刻印id 
+} 
+
+message sc_precious_unload {
+     optional uint64 result = 1; 
+} 
+
+message cs_precious_uprank {
+     optional uint64 preciousid = 1; //需要升级的刻印id 
+     repeated uint64 cost_ids = 2; //消耗刻印的id列表 
+} 
+
+message sc_precious_uprank {
+     optional uint64 result = 1; 
+} 
+
+message sc_precious_notify {
+     repeated p_precious newlist = 1; // 新增列表 
+     repeated p_precious updatelist = 2; // 更新列表 
+     repeated p_precious deletelist = 3; // 删除列表 
+} 
+
+message cs_gather_info {
+} 
+
+message sc_gather_info {
+     repeated p_gather gatherlist = 1; // 激活合体列表 
+     repeated p_npc npclist = 2; // 激活材料npc列表 
+     optional uint64 dun_lv = 3; // 关卡当前等级，有了就只能直接挑战没才能选 
+     optional uint64 today_harm = 4; // 今天的伤害 
+     optional bool is_complete = 5; // 今天是否已经完成副本 
+     optional uint64 max_lv = 6; // 当前可选择的关卡最大等级 
+     optional uint64 dun_id = 7; // 关卡ID 
+} 
+
+message cs_gather_npc_uplevel {
+     optional uint64 npcid = 1; // id 
+} 
+
+message sc_gather_npc_uplevel {
+     optional uint64 result = 1; 
+} 
+
+message cs_gather_npc_through {
+     optional uint64 npcid = 1; // id 
+} 
+
+message sc_gather_npc_through {
+     optional uint64 result = 1; 
+} 
+
+message cs_gather_enhance {
+     optional uint64 gatherid = 1; // id 
+     optional uint64 enhanceid = 2; //enhanceid 
+} 
+
+message sc_gather_enhance {
+     optional uint64 result = 1; 
+} 
+
+message cs_gather_npc_unlock {
+     optional uint64 npcid = 1; // id 
+} 
+
+message sc_gather_npc_unlock {
+     optional uint64 result = 1; 
+} 
+
+message cs_gather_enhance_reset {
+     optional uint64 gatherid = 1; // id 
+} 
+
+message sc_gather_enhance_reset {
+     optional uint64 result = 1; 
+} 
+
+message sc_gather_notify {
+     repeated p_gather newlist = 1; // 新增列表 
+     repeated p_gather updatelist = 2; // 更新列表 
+     repeated p_gather deletelist = 3; // 删除列表 
+} 
+
+message sc_gather_npc_notify {
+     repeated p_npc newlist = 1; // 新增列表 
+     repeated p_npc updatelist = 2; // 更新列表 
+     repeated p_npc deletelist = 3; // 删除列表 
+} 
+
+message p_gather {
+     optional p_ger gather = 1; // 合体 
+     optional uint64 costpoint = 2; // 已消耗能力点数 
+     repeated p_gather_extra extra = 3; // 合体的额外属性 
+} 
+
+message p_npc {
+     optional uint64 npcid = 1; // id 
+     optional uint64 level = 2; // 等级 
+     optional uint64 point = 3; // 能力点 
+     optional uint64 count = 4; // 突破次数 
+} 
+
+message p_gather_extra {
+     optional uint64 id = 1; // id 
+     optional uint64 level = 2; // 等级 
+} 
+
+message cs_gather_fight_request {
+     optional uint64 gatherid = 1; //选择的合体宝贝 
+     optional uint64 pos = 2; //宝贝所在位置 
+     optional uint64 level = 3; //选择的战斗难度 
+} 
+
+message sc_gather_fight_request {
+     optional uint64 result = 1; //操作结果 
+     optional p_fight_struct fight_struct = 2; // 战斗结构 
+} 
+
+message cs_gather_fight_report {
+     optional p_fight_struct fight_struct = 1; // 战斗结构 
+} 
+
+message sc_gather_fight_report {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 harm_val = 2; //造成的伤害 
+     optional bool is_win = 3; //是否获胜 
+} 
+
+message cs_horse_info {
+} 
+
+message sc_horse_info {
+     optional uint64 result = 1; 
+     optional int32 stage = 2; // 当前处于哪个阶段 
+     optional uint64 run_time = 3; // 开跑时间 
+} 
+
+message p_votes_info {
+     optional uint64 trainerid = 1; // 
+     optional int32 votes = 2; // 
+     optional uint64 sec = 3; // 最近一次操作时间 
+} 
+
+message cs_horse_selectinfo {
+} 
+
+message sc_horse_selectinfo {
+     optional uint64 result = 1; 
+     repeated p_votes_info votes_info = 2; // 所有玩家投票 
+     repeated p_votes_info self_votes = 3; // 玩家自己的投票 
+} 
+
+message p_odds_info {
+     optional uint64 trainerid = 1; // 
+     optional p_reward money_spent = 2; // 
+     optional uint64 sec = 3; // 最近一次操作时间 
+} 
+
+message cs_horse_guessinfo {
+} 
+
+message sc_horse_guessinfo {
+     optional uint64 result = 1; 
+     repeated p_odds_info odds_list = 2; 
+     optional uint64 my_most_trainerid = 3; // 我投票的最多的训练师 
+     optional int32 extra_odds = 4; // 额外赔率 
+     repeated p_track_ret track_ret_list = 5; // 跑道 
+     repeated p_odds_info self_odds = 6; // 自己下注信息 
+} 
+
+message p_inspireinfo {
+     optional uint64 trainerid = 1; // 
+     optional int32 inspire_num = 2; // 
+     optional int32 fly_num = 3; // 起飞次数 
+     optional uint64 sec = 4; // 最近一次起飞cd时间 
+} 
+
+message cs_horse_inspireinfo {
+} 
+
+message sc_horse_inspireinfo {
+     optional uint64 result = 1; 
+     repeated p_inspireinfo inspireinfo = 2; // 
+     repeated p_track_ret track_ret_list = 3; // 跑道 
+     repeated p_odds_ret_info odds_ret_list = 4; // 最终赔率 
+     repeated p_inspireinfo self_inspire = 5; // 自己的鼓舞信息 
+} 
+
+message sc_horse_notify_inspire_fly {
+     optional uint64 trainerid = 1; // 
+} 
+
+message p_simulat_info {
+     optional int32 minute = 1; // 
+     repeated p_rank_info rank_info = 2; 
+} 
+
+message p_rank_info {
+     optional uint64 trainerid = 1; // 
+     optional int32 rank = 2; // 
+} 
+
+message cs_horse_real_match {
+} 
+
+message sc_horse_real_match {
+     optional uint64 result = 1; 
+     repeated p_simulat_info simulat_list = 2; 
+     repeated p_rank_info real_rank = 3; 
+     repeated p_track_ret track_ret_list = 4; // 跑道 
+} 
+
+message cs_horse_selection {
+     optional uint64 trainerid = 1; // 
+} 
+
+message sc_horse_selection {
+     optional uint64 result = 1; 
+     optional uint64 my_trainerid = 2; // 我投票的训练师 
+     optional int32 my_votes = 3; // 我的投票数 
+} 
+
+message cs_horse_precom_guess {
+     optional uint64 trainerid = 1; // 
+     optional int32 count = 2; // 竞猜次数 
+} 
+
+message sc_horse_precom_guess {
+     optional uint64 result = 1; 
+     optional uint64 my_trainerid = 2; // 我竞猜的训练师 
+     optional int32 extra_odds = 3; // 额外赔率 
+     optional int32 count = 4; // 竞猜次数 
+     optional p_reward money = 5; // 消耗钱 
+     repeated p_odds_info odds_list = 6; 
+} 
+
+message cs_horse_inspire {
+     optional uint64 trainerid = 1; // 
+     optional int32 count = 2; // 鼓舞次数 
+} 
+
+message sc_horse_inspire {
+     optional uint64 result = 1; 
+     optional uint64 my_trainerid = 2; // 我鼓舞的训练师 
+     optional int32 inspire_count = 3; 
+     optional p_reward money = 4; // 消耗的货币 
+} 
+
+message sc_horse_notify_stage {
+     optional int32 stage = 1; // 当前处于哪个阶段 
+} 
+
+message cs_horse_leave {
+} 
+
+message sc_horse_leave {
+     optional uint64 result = 1; 
+} 
+
+message cs_horse_record {
+} 
+
+message sc_horse_record {
+     optional uint64 result = 1; 
+     repeated p_record_info record_list = 2; // 
+} 
+
+message p_record_info {
+     optional uint64 time = 1; // 
+     optional int32 stage = 2; // 
+     optional p_reward money_spent = 3; // 投入的货币 
+     optional p_reward money_gains = 4; // 收益的货币 
+} 
+
+message p_track_ret {
+     optional uint64 trainerid = 1; // 
+     optional int32 track = 2; // 
+} 
+
+message p_odds_ret_info {
+     optional int32 rank = 1; // 
+     optional uint64 trainerid = 2; // 
+} 
+
+message cs_horse_enter {
+} 
+
+message sc_horse_enter {
+     optional uint64 result = 1; 
+}
+
+message cs_fextreme_box {
+} 
+
+message sc_fextreme_box {
+     optional uint64 family_win_count = 1; //公会累计单次活动内获胜次数 
+     optional uint64 end_sec = 2; //此次活动结束时间 
+}
+
+message cs_homefight_info {
+} 
+
+message sc_homefight_info {
+     optional uint64 left_times = 1; //剩余挑战次数 
+     optional uint64 boss_type = 2; //Boss的TypeID 
+     optional bool in_team = 3; //是否在组队状态 
+     optional bool in_dungeon = 4; //是否在关卡中 
+     optional bool is_open = 5; //活动是否开启 
+} 
+
+message cs_homefight_team {
+} 
+
+message sc_homefight_team {
+     optional p_homefight_team team = 1; 
+} 
+
+message p_homefight_team {
+     optional uint64 dungeon_lv = 1; //关卡难度 
+     optional bool is_open = 2; //房间是否开放 
+     repeated p_homefight_member members = 3; //队员信息 
+} 
+
+message p_homefight_member {
+     optional uint64 role_id = 1; //玩家ID 
+     optional string role_name = 2; //玩家的名字 
+     optional uint64 icon = 3; //玩家头像 
+     optional uint64 vip_lv = 4; //vip等级 
+     optional p_ger_summary ger = 5; //宝贝的TypeID 
+     optional uint64 power = 6; //宝贝的战斗力 
+     optional bool is_ready = 7; //是否已经准备 
+     optional bool is_caption = 8; //是不是队长 
+} 
+
+message cs_homefight_dungeon {
+} 
+
+message sc_homefight_dungeon {
+     optional uint64 end_sec = 1; //副本结束时间 
+     optional uint64 stage = 2; //副本阶段 
+     repeated p_homefight_member_dt members = 3; //副本中的队友 
+     optional uint64 dungeon_fort = 4; //副本所在的据点 
+     optional uint64 boss_dungeon = 5; //boss对应的关卡ID 
+} 
+
+message p_homefight_member_dt {
+     optional uint64 role_id = 1; //角色ID 
+     optional string role_name = 2; //角色名 
+     optional uint64 ger_type = 3; //宝贝的TypeID 
+     optional uint64 power = 4; //宝贝的战斗力 
+     optional uint64 hp_percent = 5; //血量万分比 
+     optional uint64 state = 6; //状态 
+     optional uint64 pos = 7; //当前位置 
+     optional uint64 tar_pos = 8; //目标位置 
+     optional uint64 arrive_sec = 9; //到达的时间 
+     optional uint64 reborn_sec = 10; //复活时间 
+     repeated uint64 buf_list = 11; //已购买的buf列表 
+     optional uint64 harm_val = 12; //伤害值 
+     optional uint64 fort_id = 13; //如果在据点里时，具体的据点ID 
+     optional uint64 atk_pos = 14; //攻击的位置 
+} 
+
+message cs_homefight_fort {
+     optional uint64 fort_id = 1; //要查看的据点的ID 
+} 
+
+message sc_homefight_fort {
+     optional uint64 fort_id = 1; //据点ID 
+     repeated p_homefight_dungeon dungeon_list = 2; //关卡列表 
+} 
+
+message p_homefight_dungeon {
+     optional uint64 dungeon_id = 1; //关卡ID 
+     optional uint64 pos = 2; //界面中的位置 
+     optional uint64 atk_end_sec = 3; //攻击保护的时间 
+     optional bool is_down = 4; //是否已经攻破 
+} 
+
+message cs_homefight_shop {
+} 
+
+message sc_homefight_shop {
+     repeated p_homefight_sell bought_list = 1; //已购买的buf列表 
+} 
+
+message p_homefight_sell {
+     optional uint64 sell_id = 1; //商品ID 
+     optional uint64 buy_times = 2; //购买次数 
+} 
+
+message cs_homefight_create_team {
+} 
+
+message sc_homefight_create_team {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_quick_join {
+} 
+
+message sc_homefight_quick_join {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_join_team {
+     optional uint64 tar_role_id = 1; //邀请人的RoleID 
+} 
+
+message sc_homefight_join_team {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_set_open {
+     optional bool is_open = 1; //是否开放 
+} 
+
+message sc_homefight_set_open {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_kick {
+     optional uint64 tar_id = 1; //角色ID 
+} 
+
+message sc_homefight_kick {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message sc_homefight_kick_notify {
+} 
+
+message cs_homefight_mark_ready {
+     optional bool is_ready = 1; //是否准备 
+} 
+
+message sc_homefight_mark_ready {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_new_team {
+} 
+
+message sc_homefight_new_team {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_change_ger {
+     optional uint64 ger_id = 1; //选择的合体宝贝的ID 
+} 
+
+message sc_homefight_change_ger {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_set_level {
+     optional uint64 level = 1; //选择的难度 
+} 
+
+message sc_homefight_set_level {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_team team = 2; //队伍信息 
+} 
+
+message cs_homefight_start {
+} 
+
+message sc_homefight_start {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message cs_homefight_leave {
+} 
+
+message sc_homefight_leave {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message cs_homefight_invite {
+     optional uint64 tar_role = 1; //邀请的人的RoleID 
+     optional string content = 2; //消息内容 
+} 
+
+message sc_homefight_invite {
+     optional uint64 result = 1; //操作结果 
+} 
+
+message sc_homefight_team_sync {
+     optional p_homefight_team team = 1; //队伍信息 
+} 
+
+message cs_homefight_move {
+     optional uint64 tar_pos = 1; //目标位置 
+} 
+
+message sc_homefight_move {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_member_dt new_role = 2; //操作后的玩家新状态 
+} 
+
+message cs_homefight_buy {
+     optional uint64 sell_id = 1; //商品ID 
+} 
+
+message sc_homefight_buy {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_member_dt new_role = 2; //操作后的玩家新状态 
+     repeated p_homefight_sell bought_list = 3; //已购买的buf列表 
+} 
+
+message cs_homefight_request {
+     optional uint64 fort_id = 1; //所在据点ID 
+     optional uint64 pos = 2; //点击的位置 
+} 
+
+message sc_homefight_request {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 pos = 2; //点击的位置 
+     optional p_fight_struct fight_struct = 3; //战斗结构 
+} 
+
+message cs_homefight_report {
+     optional uint64 fort_id = 1; //据点ID 
+     optional uint64 pos = 2; //据点中的位置 
+     optional p_fight_struct fight_struct = 3; //战斗结果 
+} 
+
+message sc_homefight_report {
+     optional uint64 result = 1; //操作结果 
+     optional uint64 pos = 2; //怪物在的位置 
+     optional bool attacker_win = 3; //是否胜利 
+} 
+
+message cs_homefight_fight_boss {
+} 
+
+message sc_homefight_fight_boss {
+     optional uint64 result = 1; //操作结果 
+     optional p_fight_struct fight_struct = 2; //战斗录像 
+     optional uint64 harm_val = 3; //伤害 
+     optional uint64 harm_percent = 4; //伤害量万分比 
+} 
+
+message cs_homefight_back {
+} 
+
+message sc_homefight_back {
+     optional uint64 result = 1; //操作结果 
+     optional p_homefight_member_dt new_role = 2; //新的角色状态 
+} 
+
+message sc_homefight_dungeon_notify {
+     optional uint64 fort_id = 1; //据点ID 
+} 
+
+message sc_homefight_role_notify {
+     optional p_homefight_member_dt new_role = 1; //新的玩家信息 
+} 
+
+message cs_homefight_boss {
+} 
+
+message sc_homefight_boss {
+     optional uint64 atker = 1; //攻击者的roleid 
+     optional uint64 hp_percent = 2; //血量万分比 
+} 
+
+message sc_homefight_end {
+     optional bool is_win = 1; //是否获胜 
+     optional p_reward reward = 2; //奖励内容 
+     repeated p_homefight_member_dt all_member = 3; //所有人的最终数据 
+     optional p_reward extra_reward = 4; //最佳的奖励内容 
+     optional uint64 used_sec = 5; //用的时间 
+     optional uint64 dungeon_lv = 6; //关卡难度等级 
+} 
+
+message sc_homefight_state {
+     optional uint64 state = 1; //活动状态 
+} 
+
+message sc_homefight_battle_end {
+}
+
+message cs_choicefight_info {
+} 
+
+message sc_choicefight_info {
+     optional bool is_normal_act = 1; //普通模式-是否已激活 
+     optional uint64 curn_chapterid = 2; //---------当前章节ID 
+     optional uint64 curn_buffid = 3; //---------当前buffID 
+     repeated uint64 normal_dungeonid_list = 4; //---------完成关卡ID列表 
+     optional uint64 choice_energy = 5; //---------当前拥有充能点 
+     optional uint64 next_add = 6; //---------下次恢复充能点时间戳 
+     optional uint64 hard_times = 7; //困难模式-已重置次数 
+     optional bool is_hard_act = 8; //---------是否已激活 
+     optional uint64 curh_chapterid = 9; //---------当前章节ID 
+     optional uint64 curh_buffid = 10; //---------当前buffID 
+     optional uint64 boss_fight = 11; //---------BOSS已挑战次数 
+     optional uint64 boss_buy = 12; //---------BOSS已购买次数 
+     repeated uint64 hard_dungeonid_list = 13; //---------完成关卡ID列表 
+     optional uint64 hard_buy = 14; //---------副本购买次数 
+} 
+
+message cs_choicefight_active {
+     optional uint64 type = 1; // 激活类型(1:普通模式,2:困难模式) 
+} 
+
+message sc_choicefight_active {
+     optional uint64 result = 1; // 结果 
+     optional uint64 chapterid = 2; // 章节ID 
+     optional uint64 buffid = 3; // buffID 
+     optional uint64 type = 4; // 类型 
+} 
+
+message sc_choicefight_recover {
+     optional uint64 choice_energy = 1; // 充能点 
+     optional uint64 next_add = 2; // 下次恢复充能点时间戳 
+} 
+
+message cs_choicefight_set_line {
+     optional uint64 type = 1; // 类型 
+     repeated p_lineup line = 2; // 要设置的阵容 
+} 
+
+message sc_choicefight_set_line {
+     optional uint64 result = 1; // 结果 
+     optional uint64 type = 2; // 类型 
+     repeated p_lineup line = 3; // 当前阵容 
+} 
+
+message cs_choicefight_line {
+     optional uint64 type = 1; // 类型 
+} 
+
+message sc_choicefight_line {
+     optional uint64 type = 1; // 类型 
+     repeated p_lineup line = 2; // 当前阵容 
+} 
+
+message cs_choicefight_fight_request {
+     optional uint64 type = 1; // 类型 
+     optional uint64 dungeonid = 2; // 关卡ID 
+} 
+
+message sc_choicefight_fight_request {
+     optional uint64 result = 1; // 结果 
+     optional uint64 type = 2; // 类型 
+     optional uint64 dungeonid = 3; // 关卡ID 
+     optional p_fight_struct fight_struct = 4; // 战斗结构 
+     optional p_reward reward = 5; // 掉落奖励预览 
+} 
+
+message cs_choicefight_report {
+     optional uint64 type = 1; // 类型 
+     optional uint64 dungeonid = 2; // 关卡ID 
+     optional p_fight_struct fight_struct = 3; // 战斗结构 
+} 
+
+message sc_choicefight_report {
+     optional uint64 result = 1; // 请求结果 
+     optional uint64 type = 2; // 类型 
+     optional uint64 dungeonid = 3; // 关卡ID 
+     optional bool is_win = 4; // 是否胜利 
+     optional bool is_pass = 5; // 是否通关 
+     optional p_reward reward = 6; // 关卡奖励 
+     optional p_reward pass_reward = 7; // 通关奖励 
+     optional p_reward extra_reward = 8; // 额外奖励 
+} 
+
+message cs_choicefight_reset {
+     optional uint64 type = 1; // 类型 
+} 
+
+message sc_choicefight_reset {
+     optional uint64 result = 1; // 结果 
+     optional uint64 type = 2; // 类型 
+} 
+
+message cs_choicefight_buy {
+} 
+
+message sc_choicefight_buy {
+     optional uint64 result = 1; // 结果 
+     optional uint64 boss_buy = 2; // BOSS已购买次数 
+} 
+
+message cs_choicefight_hard_buy {
+} 
+
+message sc_choicefight_hard_buy {
+     optional uint64 result = 1; // 结果 
+     optional uint64 hard_buy = 2; // 副本已购买次数 
+}
+
+message cs_gercard_info {
+     repeated uint64 ger_id_list = 1; //要查看的宝贝的ID列表 
+} 
+
+message sc_gercard_info {
+     repeated p_ger_card card_info = 1; //宝贝的卡槽信息 
+} 
+
+message cs_gercard_last {
+} 
+
+message sc_gercard_last {
+     optional p_last_wash last_wash = 1; //上次洗练结果 
+} 
+
+message p_last_wash {
+     optional uint64 ger_id = 1; //宝贝ID 
+     optional uint64 pos = 2; //卡牌位置 
+     optional uint64 type = 3; //洗练类型 
+     repeated p_ger_card_detail card_list = 4; //具体的洗练结果 
+} 
+
+message p_ger_card {
+     optional uint64 ger_id = 1; //宝贝ID 
+     repeated p_ger_card_detail card_list = 2; //具体的卡槽信息 
+} 
+
+message p_ger_card_detail {
+     optional uint64 pos = 1; //卡牌的位置 
+     optional uint64 colour = 2; //颜色 
+     optional p_ger_card_attr base_attr = 3; //基础属性 
+     repeated p_ger_card_attr extra_attrs = 4; //额外属性 
+} 
+
+message p_ger_card_attr {
+     optional uint64 index = 1; //属性的索引 
+     optional p_attr attr = 2; //具体的属性 
+     optional uint64 val = 3; //相对max的万分比 
+} 
+
+message cs_gercard_unlock {
+     optional uint64 ger_id = 1; //宝贝ID 
+     optional uint64 pos = 2; //位置 
+} 
+
+message sc_gercard_unlock {
+     optional uint64 result = 1; //操作结果 
+     optional p_ger_card new_card = 2; //新的宝贝的卡槽信息 
+} 
+
+message cs_gercard_wash {
+     optional uint64 ger_id = 1; //宝贝ID 
+     optional uint64 pos = 2; //位置 
+     optional uint64 type = 3; //洗的类型 
+     optional uint64 times = 4; //洗的次数 
+     repeated uint64 locked_pos = 5; //锁定的额外属性索引 
+} 
+
+message sc_gercard_wash {
+     optional uint64 result = 1; //操作结果 
+     repeated p_ger_card_detail card_list = 2; //具体的洗练结果 
+} 
+
+message cs_gercard_chose {
+     optional uint64 index = 1; //要选择的属性的索引 
+} 
+
+message sc_gercard_chose {
+     optional uint64 result = 1; //操作结果 
+     optional p_ger_card new_card = 2; //新的宝贝的卡槽信息 
+} 
+
+message cs_gercard_clean {
+} 
+
+message sc_gercard_clean {
+     optional uint64 result = 1; //操作结果 
+}
+

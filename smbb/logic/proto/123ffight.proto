@@ -1,0 +1,141 @@
+// 模块=公会战
+// 编号=123
+
+
+// 请求公会战概况(状态变化时会主动推)
+message cs_ffight_preview[id=12301] {
+}
+message sc_ffight_preview[id=12302] {
+	required 		uint64				state				=1; // 状态
+	// 0 := 没有加入公会
+	// 1 := 等待备战开始
+	// 2 := 备战正在进行
+	// 3 := 等待战斗开始
+	// 4 := 战斗正在进行
+	// 5 := 等待结算开始
+	// 6 := 结算正在进行
+	// 1 - 6状态循环切换
+}
+
+
+// 请求公会战详情(登录/进界面/状态变化时请求)
+message cs_ffight_detail[id=12303] {
+}
+message sc_ffight_detail[id=12304] {
+	required 		uint64				state				=1; // 状态
+	required 		uint64				etime 				=2; // 状态结束时间
+	required 		uint64				isign				=3; // (1:=已报名;2:=未报名)
+	repeated 		p_ffight_family 	self				=4; // 我方公会详情
+	repeated 		p_ffight_family 	enemy				=5; // 敌方公会详情
+}
+
+
+// 公会详情结构
+message p_ffight_family[id=12305] {
+	required 		uint64				platform 			=1; // 平台
+	// (1 := APP; 2 := 混服; 3 := 4399; 4 := 应用宝)
+	required 		uint64				serverid			=2; // 区号
+	required 		string				fname 				=3; // 公会名
+	required 		uint64				score 				=4; // 积分
+	required 		uint64				rating 				=5; // 段位
+	// 0 := 未上榜; 1 := 恒星级; 2 := 巨星级
+	// 3 := 行星级; 4 := 卫星级; 5 := 彗星级
+	repeated 		p_ffight_member		memberlist			=6; // 成员列表
+}
+// 成员详情结构
+message p_ffight_member[id=12306] {
+	required 		p_role_public		baseinfo			=1; // 基本信息
+	required 		uint64				winstar				=2; // 赢得星星数
+	required 		uint64				ownstar				=3; // 自己星星数
+	required 		uint64				attack_times		=4; // 攻击次数
+	repeated 		p_ffight_hist 		histlist			=5; // 战报列表
+}
+// 战报详情结构
+message p_ffight_hist[id=12307] {
+	required 		uint64				histid				=1; // 战报ID
+	required 		uint64				type 				=2; // (1:=我方为攻击;2:=我方为受击)
+	required 		string				atkname				=3; // 攻击方名字
+	required 		string				defname				=4; // 防御方名字
+	required 		uint64				result				=5; // 攻击结果(1:=胜利;2:=失败)
+	repeated		p_fight_struct		replay				=6; // 具体战斗录像
+	required 		uint64				addstar				=7; // 增加星星数
+	required 		uint64				timestamp			=8; // 战斗时间戳
+}
+
+
+// 请求带具体录像的战报
+message cs_ffight_hist_with_replay[id=12308] {
+	required 		uint64				tarid				=1; // 目标ID
+	required 		uint64				histid				=2; // 战报ID
+	required 		uint64				type				=3; // 请求类型
+	// 1 := 己方; 2 := 敌方
+}
+message sc_ffight_hist_with_replay[id=12309] {
+	repeated 		p_ffight_hist 		histinfo 			=1; // 具体战报
+}
+
+
+// 成员数据更新通知
+message sc_ffight_member_update[id=12310] {
+	required 		uint64				type				=1; // (1:=我方;2:=敌方)
+	repeated		p_ffight_member		updatelist 			=2; // 更新成员列表
+}
+
+
+// (副)会长请求报名
+message cs_ffight_signup[id=12311] {
+	repeated 		uint64				memberidlist		=1; // 参战ID列表
+}
+message sc_ffight_signup[id=12312] {
+	required 		uint64				result				=1; // 报名结果
+	// 1 := 成功
+	// 2 := 失败-非报名阶段
+	// 3 := 失败-已经报完名
+	// 4 := 失败-参战人数不足
+	// 5 := 失败-你未加入公会
+	// 6 := 失败-你不是管理员
+}
+
+
+// 请求攻击对方某人
+message cs_ffight_attack[id=12313] {
+	required 		uint64				enemyid				=1; // 对手ID
+}
+message sc_ffight_attack[id=12314] {
+	required 		uint64				result				=1; // 攻击结果
+	// 1 := 挑战胜利
+	// 2 := 挑战失败
+	// 3 := 失败-非战斗阶段
+	// 4 := 失败-未加入公会
+	// 5 := 失败-攻击次数已用完
+	// 6 := 失败-未被选中公会战
+	required 		uint64				addstar				=2; // 增加星星数
+	repeated 		p_ffight_hist 		histlist 			=3; // 战报(带录像)
+}
+
+
+// 请求上轮战报列表
+message cs_ffight_prev_hist_list[id=12315] {
+}
+message sc_ffight_prev_hist_list[id=12316] {
+	repeated 		p_ffight_family 	self				=1; // 我方公会详情
+	repeated 		p_ffight_family 	enemy				=2; // 敌方公会详情
+}
+
+
+// 请求公会积分排行榜
+message cs_ffight_tops[id=12317,route=family_fight_server] {
+	required 		uint64				neednum				=1; // 公会数量
+}
+message sc_ffight_tops[id=12318] {
+	repeated		p_ffight_top		toplist				=1; // 排行榜单
+}
+message p_ffight_top[id=12319] {
+	required 		uint64				platform 			=1; // 平台
+	// (1 := APP; 2 := 混服; 3 := 4399; 4 := 应用宝)
+	required 		uint64				serverid			=2; // 区号
+	required 		string				fname 				=3; // 公会名
+	required 		uint64				score 				=4; // 积分
+	required 		uint64				rank 				=5; // 排名
+}
+

@@ -1,0 +1,65 @@
+// 货币模块
+// 编号=108
+
+
+// 请求货币信息
+message cs_money_info[id=10801] {
+}
+message sc_money_info[id=10802] {
+    repeated p_money moneylist = 1; // 货币列表
+}
+message p_money[id=10803] {
+    optional uint64 typeid = 1; // 模板ID
+    optional uint64 number = 2; // 货币数量
+}
+
+// 货币更新通知
+message sc_money_notify[id=10804] {
+    repeated p_money newlist    = 1; // 新增列表
+    repeated p_money updatelist = 2; // 更新列表
+    repeated p_money deletelist = 3; // 删除列表
+}
+
+
+// 请求开启宝箱
+message cs_money_openbox[id=10805]{
+    repeated uint64 typeid = 1; // 模板ID
+    repeated uint64 number = 2; // 开启数量
+}
+message sc_money_openbox[id=10806]{
+    optional uint64 result = 1; // 开启结果
+    // 1 := 宝箱开启成功
+    // 2 := 失败-数量错误
+    // 3 := 失败-配置异常
+    optional p_reward reward = 2; // 具体奖励
+}
+
+
+// 请求出售货币
+message cs_money_sell[id=10807] {
+    repeated p_money moneylist    = 1; // 要出售的物品列表
+}
+message sc_money_sell[id=10808] {
+    optional uint64 result = 1; // 出售结果
+    // 1 := 成功
+    // 2 := 失败-该货币不能出售
+    // 3 := 失败-该货币数量不足
+    optional p_reward reward = 2; // 具体奖励
+}
+
+// 请求购买货币
+message cs_money_buy[id=10809] {
+    optional uint64 typeid = 1; // 模板ID
+    optional uint64 number = 2; // 货币数量
+}
+message sc_money_buy[id=10810] {
+    optional uint64 result = 1; // 出售结果
+    // 1 := 成功
+    // 2 := 失败-该货币不能购买
+    // 3 := 失败-需要的货币数量不足
+    optional p_reward reward = 2; // 具体奖励
+}
+
+
+
+

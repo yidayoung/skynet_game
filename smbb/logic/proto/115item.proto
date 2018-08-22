@@ -1,0 +1,71 @@
+
+// 道具模块
+// 编号=115
+
+
+//宝箱开启
+message cs_item_box_open[id=11523]{
+	optional		uint64				type_id=1;			//宝箱type_id
+	optional		uint64				num=2;				//开启数量
+}
+
+message sc_item_box_open[id=11524]{
+	optional		uint64				result=1;			//结果
+	//1、宝箱开启成功
+	//2、异常：宝箱数量错误
+	//3、异常：配置异常，没有这个宝箱类型
+	optional		p_reward			reward=2;			//开出来的东西
+}
+
+
+//一键开宝箱
+message cs_item_box_open_onekey[id=11527] {
+    repeated        p_money             boxlist                 =1; // 需要一键开宝箱列表
+}
+message sc_item_box_open_onekey[id=11528] {
+    optional        uint64                result                  =1; // 是否满背包(1:否,255:是)
+    optional        int64               number                  =2; // 成功开启数量
+    repeated        p_reward            reward                  =3; // 开出来的东西
+}
+
+message cs_item_chosebox_open[id=11529]{
+    optional        uint64              box_type_id             =1; //宝箱ID
+    optional        uint64              reward_id               =2; //奖励ID
+    optional        uint64              num                     =3; //开箱数量
+}
+message sc_item_chosebox_open[id=11530]{
+    optional        uint64              result                  =1; //操作结果
+    // 1 := 成功
+    // 2 := 失败-宝箱不足
+    // 3 := 失败-宝箱类型不存在
+    // 4 := 失败-奖励ID不存在
+    optional		p_reward			reward                  =2;	//开出来的东西
+}
+
+message cs_item_chosebox_view[id=11531]{
+    optional        uint64              box_type_id             =1; //宝箱ID
+}
+message sc_item_chosebox_view[id=11532]{
+    optional        uint64              result                  =1; //结果
+    // 1 := 成功
+    // 3 := 失败-宝箱类型不存在
+    repeated        p_item_chosebox     reward_list             =2; //箱子内容
+}
+
+message p_item_chosebox[id=11533]{
+    optional        uint64              rewardid                =1; //奖励ID
+    optional        p_reward			reward                  =2;	//奖励内容
+}
+
+// 使用道具增加体力、次数等
+message cs_item_use[id=11534]{
+    optional      uint64          typeid      = 1; // 道具typeid
+    optional      uint64          num         = 2; // 使用数量
+}
+
+message sc_item_use[id=11535]{
+    optional      uint64          result      = 1; // 结果
+    // 1 := 成功
+    // 2 := 失败-道具类型不对
+    // 3 := 失败-数量不足
+}

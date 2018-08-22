@@ -1,0 +1,177 @@
+// 模块 - 异界追击
+// 编号 - 14600
+
+// 请求进入异界
+message cs_chaser_enter[id=14601]{
+}
+
+message sc_chaser_enter[id=14602]{
+	optional    uint64        result       = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-等级不够
+	// 3 := 失败-未开启
+	optional    bool          is_open      = 2; // 活动是否开启
+	optional    bool          is_teamup    = 3; // 是否组队
+	// true  := 已组队,进入准备界面
+	// false := 未组队,进入主界面
+	optional    uint64        chaser_times = 4; // 今日已挑战次数
+	repeated    p_ger_summary mon_list     = 5; // 怪物列表   
+	repeated    p_chaser      chaser_list  = 6; // 玩家列表 
+	optional    uint64        teamid       = 7; // 队伍ID
+	optional    uint64        startsec     = 8; // 活动开始时间
+	optional    uint64        endsec       = 9; // 活动结束时间
+}
+
+// 异界追击玩家信息
+message p_chaser[id=14603]{
+	optional    p_role_public   role_public  = 1; // 角色信息
+	repeated    p_ger_summary   ger_list     = 2; // 出战宝贝列表
+	optional 	uint64 			serverid   	 = 3;
+	optional    uint64          team_speed   = 4; // 行动值
+}
+
+// 创建组队
+message cs_chaser_new_teamup[id=14604]{
+}
+
+message sc_chaser_new_teamup[id=14605]{
+	optional    uint64          result       = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-等级不够无法创建
+	// 3 := 失败-活动已结束
+	// 4 := 失败-今日已挑战过
+	// 5 := 失败-创建队伍失败
+	repeated    p_chaser        chaser_list  = 2; // 玩家列表
+	optional    uint64          teamid      = 3; // 队伍ID
+}
+
+// 快速加入
+message cs_chaser_quick_join[id=14606]{
+}
+
+message sc_chaser_quick_join[id=14607]{
+	optional     uint64         result      = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-活动已结束
+	// 3 := 失败-今日已完成挑战
+	// 4 := 失败-已加队伍
+	// 5 := 失败-创建队伍失败
+	repeated     p_chaser       chaser_list = 2; // 玩家列表
+	optional     uint64         teamid      = 3; // 队伍ID
+}
+
+// 请求离队
+message cs_chaser_leave[id=14608]{
+}
+
+message sc_chaser_leave[id=14609]{
+	optional    uint64          result       = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已挑战成功,不能离队
+	// 3 := 失败-活动已结束
+}
+
+// 邀请
+message cs_chaser_invite[id=14610]{
+	
+}
+
+message sc_chaser_invite[id=14611]{
+	optional    uint64         result        = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-队伍已满
+	// 3 := 失败-邀请冷却
+	// 4 := 失败-活动已结束
+}
+
+// 加入组队
+message cs_chaser_join[id=14612]{
+	optional    uint64         teamid        = 1; // 队伍id
+}
+
+message sc_chaser_join[id=14613]{
+	optional    uint64         result        = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-等级不够,功能未开启
+	// 3 := 失败-活动已结束
+	// 4 := 失败-今日已完成挑战
+	// 5 := 失败-已加入其它队伍
+	// 6 := 失败-队伍已销毁
+	// 7 := 失败-等级差距过大,无法加入
+	// 8 := 失败-队伍已满
+	// 9 := 失败-没有可上阵宝贝
+	repeated    p_chaser       chaser_list  = 2; // 玩家列表
+	optional    uint64         teamid       = 3; // 队伍ID
+}
+
+// 更换宝贝
+message cs_chaser_ger_exchange[id=14614]{
+	optional     uint64        gerid       = 1; // 上阵宝贝id
+	optional     uint64        tarpos      = 2; // 上阵位置
+}
+
+message sc_chaser_ger_exchange[id=14615]{
+	optional     uint64        result      = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-活动已结束
+	// 3 := 失败-该宝贝已上阵
+	repeated     p_chaser      chaser_list = 2; // 玩家列表
+}
+
+// 进入布阵
+message cs_chaser_embattle[id=14616]{
+}
+
+message sc_chaser_embattle[id=14617]{
+	optional    uint64         result        = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-活动已结束
+	// 3 := 失败-队伍人数不足,无法进入
+	// 4 := 失败-已完成挑战
+	repeated    p_chaser       chaser_list   = 2; // 玩家列表
+}
+
+// 宝贝换位
+message cs_chaser_ger_movpos[id=14618]{
+	optional    uint64          gerid        = 1; // 换位宝贝id
+	optional    uint64          tarpos       = 2; // 目标位置                       
+}
+
+message sc_chaser_ger_movpos[id=14619]{
+	optional    uint64          result       = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-活动已结束
+	repeated    p_chaser        chaser_list  = 2; // 玩家列表
+}
+
+// 请求战斗
+message cs_chaser_fight[id=14620]{
+}
+
+message sc_chaser_fight[id=14621]{
+	optional    uint64          result       = 1; //结果
+	// 1 := 成功
+	// 2 := 失败-活动已结束
+	// 3 := 失败-今日已完成挑战
+	optional    p_fight_struct  fight_struct = 2; // 战斗结构
+}
+
+// 战斗返回
+message cs_chaser_fight_back[id=14622]{
+	optional    p_fight_struct fight_struct  = 1; // 战斗结构
+}
+
+message sc_chaser_fight_back[id=14623]{
+	optional    uint64         result        = 1; // 结果
+	// 1 := 成功 
+	optional    bool           iswin         = 2; // 战斗结果
+	// true  := 成功
+	// false := 失败
+	optional    uint64         chaser_times  = 3; // 今日已挑战次数
+	optional    uint64         blood_percent = 4; // 血量百分比
+}
+
+// 组队更新
+message sc_chaser_notify[id=14624]{
+	repeated    p_chaser        chaser_list   = 1; // 玩家列表
+}

@@ -1,0 +1,321 @@
+// chicken 数据风暴  吃鸡 15600
+
+message cs_chicken_state[id=15601]{
+
+}
+
+message sc_chicken_state[id=15602]{
+    optional                uint64                  state           = 1; //当前活动状态
+    // 1 => 开启
+    // 2 => 观看
+    // 3 => 未开启 只有连接不到主服的时候才是未开启，理论上活动都是在开启或者观看阶段的
+    optional                uint64                  next_sec        = 2; //下次活动状态切换时间
+}
+
+
+message cs_chicken_rank_list[id=15603]{
+    optional                uint64                  type            = 1; //查看的排行榜的类型
+    // 1 => 吃鸡榜
+    // 2 => 击杀榜
+    optional                uint64                  offset          = 2; //起始位置
+}
+
+message sc_chicken_rank_list[id=15604]{
+    optional                uint64                  rank            = 1; //我的排行 0就是未上榜
+    optional                uint64                  score           = 2; //具体值
+    repeated                p_chicken_rank          rank_list       = 3; //排行榜具体内容
+}
+
+message p_chicken_rank[id=15605]{
+    optional                uint64                  rank            = 1; //具体排名
+    optional                uint64                  score           = 2; //在排行榜的上的积分
+    optional                string                  role_name       = 3; //玩家的名字
+    optional                uint64                  server_id       = 4; //逻辑服务器ID，需要根据平台进行转换
+}
+
+message cs_chicken_rank_reward[id=15606]{
+    optional                uint64                  type            = 1; //查看的排行榜的类型
+    // 1 => 吃鸡榜
+    // 2 => 击杀榜
+}
+
+message sc_chicken_rank_reward[id=15607]{
+    repeated                p_chicken_rank_reward   rank_reward_list= 1; //排行榜的奖励内容
+}
+
+message p_chicken_rank_reward[id=15631]{
+    optional                uint64                  begin_rank      = 1; //起始排名
+    optional                uint64                  end_rank        = 2; //结束排名
+    optional                p_reward                reward          = 3; //具体的奖励内容
+}
+
+
+message cs_chicken_sign[id=15608]{
+}
+
+message sc_chicken_sign[id=15609]{
+    optional                uint64                  result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 失败-不在活动开启时间内
+    // 3 => 当前还在对局中，不能直接进行下一局匹配
+    optional                uint64                  avg_sign_sec    = 2; //平均匹配时间
+}
+
+message cs_chicken_sign_cancel[id=15632]{
+}
+
+// 这条消息不管返回什么都要取消匹配
+message sc_chicken_sign_cancel[id=15633]{
+    optional                uint64                  result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 不在匹配
+    // 3 => 匹配失败
+}
+
+
+message sc_chicken_wait_sync[id=15640]{
+
+}
+
+// 这两个消息 无法一定保序，可能先收到sc_chicken_sign_sync再收到sc_chicken_wait_sync
+// 可以理解成如果收到了 sc_chicken_wait_sync 就从黑框开始，如果直接收到sc_chicken_sign_sync 那就跳过那个过程
+message sc_chicken_sign_sync[id=15641]{
+    optional                p_chicken_public        role            = 1; //匹配到的玩家的信息
+}
+
+// 匹配成功显示
+message sc_chicken_begin[id=15610]{
+    optional                uint64                  buf_id          = 1; //分配到的初始bufID
+    repeated                p_chicken_public        player_list     = 2; //所有玩家列表
+    optional                uint64                  start_sec       = 3; //对局开始的时间点
+}
+
+message p_chicken_public[id=15616]{
+    optional                uint64                  role_id         = 1; //玩家ID
+    optional                string                  role_name       = 2; //玩家的名字
+    optional                uint64                  icon            = 3; //玩家头像
+    optional                uint64                  vip_lv          = 4; //vip等级
+    optional                uint64                  server_id       = 5; //逻辑服务器ID
+    optional                uint64                  trainer         = 6; //训练师头像
+}
+
+message cs_chicken_set_line[id=15611]{
+    repeated                p_lineup                line            = 1; //设置的阵容
+}
+
+message sc_chicken_set_line[id=15612]{
+    optional                uint64                  result          = 1; //设置的结果
+    // 1 => 成功
+    // 2 => 布阵时间已过
+    // 3 => 不在对局中
+    repeated                p_lineup                line            = 2; //设置的阵容
+}
+
+//断线重连的时候才会用到，正常情况下匹配到后会主动推送sc
+message cs_chicken_init[id=15636]{
+
+}
+
+// 对局开始后的初始化消息，断线重连后也依赖这条消息进行初始化
+// 这条消息只会告诉所有玩家的状态
+// 如果玩家在房子里，则需要额外的请求一次房子的信息
+message sc_chicken_init[id=15613]{
+    optional                uint64                  result          = 1; //结果
+    // 1 => ok
+    // 2 => 对局已经结束
+    optional                p_chicken_summary       my_summary      = 2; //自己的基础信息
+    repeated                p_chicken_player        player_list     = 3; //所有玩家的当前状态，死人就已经从本局删掉了
+    repeated                p_chicken_public        player_info     = 4; //本局参与玩家列表的基础信息，只会发这一次，后面都是通过roleid关联
+    optional                uint64                  round           = 5; //当前在第几个圈
+    optional                uint64                  next_round_sec  = 6; //这个圈缩完的时间
+}
+
+message p_chicken_summary[id=15614]{
+    optional                uint64                  fight_power     = 1; //当前战斗力
+    optional                uint64                  hp_percent      = 2; //当前血量万分比
+    optional                uint64                  kill_num        = 3; //击杀数
+    optional                p_attr                  attr_list       = 4; //当前buf状态
+    optional                uint64                  init_buf_id     = 5; //初始bufID
+}
+
+
+
+//进入战场后的单个玩家的状态描述
+message p_chicken_player[id=15617]{
+    optional                uint64                  role_id         = 1; //玩家的roleID
+    optional                uint64                  pos             = 2; //玩家当前位置，无论是据点还是出生点都是平级的，就算在移动，到到之前他都是在出发点
+    optional                uint64                  state           = 3; //玩家当前的状态
+    // 1 => 出生点
+    // 2 => 正在向目标点移动
+    // 3 => 在房子中
+    // 4 => 已经死亡，死亡的在死亡的时候会进行同步，后续不再处理
+    optional                uint64                  target          = 4; //目标位置
+    optional                uint64                  arrive_sec      = 5; //到达时间
+    // 上面两个字段是用来配合移动状态使用
+    // 到达时间还扮演了cd计算的逻辑
+    optional                uint64                  show_ger        = 6; //显示宝贝的typeid
+    optional                uint64                  stage           = 7; //显示的阶段
+    optional                uint64                  hp_percent      = 8; //血量万分比
+    optional                uint64                  clothes         = 9; //时装状态
+    optional                sint64                  expiresec       = 10;//时装的到期时间
+    // -1表示永久，其他和当前时间算差值算过期时间
+}
+
+message cs_chicken_fort[id=15618]{
+    optional                uint64                  fort_id         = 1; //据点ID
+}
+
+message sc_chicken_fort[id=15619]{
+    optional                uint64                  fort_id         = 1; //据点ID
+    optional                uint64                  next_ref_sec    = 2; //下次结算时间
+    repeated                uint64                  play_list       = 3; //当前据点中的玩家RoleID列表，具体玩家信息从init消息中取
+    optional                p_attr                  box_buf         = 4; //盒子里的buf
+    optional                uint64                  buf_id          = 5; //盒子里的bufID
+}
+
+//查看自己的个人战报
+message cs_chicken_replay[id=15620]{
+}
+
+message sc_chicken_replay[id=15621]{
+    repeated                p_chicken_replay        replays         = 1; //战报列表
+}
+
+message p_chicken_replay[id=15622]{
+    optional                uint64                  replay_id       = 1; //录像ID
+    optional                string                  atk_role_name   = 2; //进攻方名字
+    optional                string                  def_role_name   = 3; //防守方的名字
+    optional                uint64                  result          = 4; //结果
+    // 1 => 攻方胜利
+    // 2 => 防守方胜利
+}
+
+message cs_chicken_view_replay[id=15630]{
+    optional                uint64                  replay_id       = 1;
+}
+
+message sc_chicken_view_replay[id=15623]{
+    optional                uint64                  result          = 1; // 请求结果
+    // 1 := 成功
+    // 2 := 失败
+    optional                p_fight_struct          replay          = 2; // 战斗录像
+}
+
+//在据点里有多个人时，刷新的时候会先给据点中的人广播fort_fight消息，同时主动推送新的据点内部信息
+message sc_chicken_fort_fight[id=15624]{
+    optional                uint64                  win_role_id     = 1; //进攻方ID
+    optional                uint64                  lose_role_id    = 2; //防守方的ID
+}
+
+//发生战斗且胜利的玩家才会收到这条消息的推送
+message sc_chicken_fort_fight_win[id=15625]{
+    optional                string                  tar_role_name   = 1; //对手名字
+    optional                uint64                  new_kill_num    = 2; //新的人头数
+    optional                p_attr                  add_attr        = 3; //新增的buf
+    optional                uint64                  new_hp_percent  = 4; //新的血量万分比
+}
+
+message sc_chicken_fort_fight_lose[id=15626]{
+    optional                string                  killer          = 1; //杀死你的人
+    optional                uint64                  kill_num        = 2; //自己的人头数
+    optional                uint64                  life_time       = 3; //生存时间
+    optional                uint64                  rank            = 4; //排名
+    optional                p_reward                base_reward     = 5; //基础奖励
+    optional                p_reward                kill_reward     = 6; //击杀奖励
+}
+
+//吃鸡的推送，排名那里的1/x 的X从init消息里取，player_info的长度就是
+message sc_chicken_win[id=15627]{
+    optional                uint64                  kill_num        = 1; //击杀数
+    optional                uint64                  life_time       = 2; //生存时间
+    optional                p_reward                base_reward     = 3; //基础奖励
+    optional                p_reward                kill_reward     = 4; //击杀奖励
+}
+
+// 缩圈的推送
+message sc_chicken_round[id=15628]{
+    optional                uint64                  round           = 1; //当前是第几轮
+    optional                uint64                  next_round_sec  = 2; //当前圈缩完的时间
+}
+
+//有玩家移动时的全局推送
+message sc_chicken_play_sync[id=15629]{
+    optional                p_chicken_player        player          = 1; //玩家状态
+}
+
+message sc_chicken_summary_sync[id=15639]{
+    optional                p_chicken_summary       player          = 1; //自己的状态
+}
+
+//玩家重新登陆上来的时候用来问询是否有已经在参与的对局，只在点进界面的时候发
+message cs_chicken_ask[id=15634]{
+
+}
+
+//如果确认有对局，要连进来的时候要发送cs_chicken_init来获得对局的基础信息
+message sc_chicken_ask[id=15635]{
+    optional                uint64                  result          = 1; //结果
+    // 1 => 有存在的当前对局
+    // 2 => 没有存在的对局
+}
+
+message cs_chicken_move[id=15637]{
+    optional                uint64                  target          = 1; //目标地点
+}
+
+//如果移动成功了 会有全局推送消息sc_chicken_play_sync
+message sc_chicken_move[id=15638]{
+    optional                uint64                  result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 未参与
+    // 3 => 目标点不可达
+    // 4 => 离开冷却中
+    // 5 => 当前据点有其他玩家不能离开
+    // 6 => 正在移动中
+    // 7 => 玩家已经死亡
+}
+
+message cs_chicken_box[id=15642]{
+}
+
+message sc_chicken_box[id=15643]{
+    optional                uint64                  result          = 1; //首胜箱子的状态
+    // 1 => 未领取
+    // 2 => 已领取
+    optional                uint64                  join_times      = 2; //今天的参与次数
+    optional                p_reward                config_reward   = 3; //配置的奖励内容
+    optional                uint64                  need_times      = 4; //获取奖励需要的次数
+}
+
+message cs_chicken_box_draw[id=15644]{
+}
+
+message sc_chicken_box_draw[id=15645]{
+    optional                uint64                  result          = 1; //领取结果
+    // 1 => 成功
+    // 2 => 还未完成
+    // 3 => 已经领取
+    optional                p_reward                reward          = 2; //领取的奖励内容
+}
+
+message cs_chicken_leave[id=15646]{
+}
+
+message sc_chicken_leave[id=15647]{
+    optional                uint64                  result          = 1; //操作结果
+    // 1 => 成功，没有对局也会提示成功
+    // 2 => 还存活
+}
+
+message cs_chicken_eat_buf[id=15648]{
+}
+
+message sc_chicken_eat_buf[id=15649]{
+    optional                uint64                  result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 对局已结束
+    // 3 => 不在据点中
+    // 4 => 据点中没有buf
+    optional                uint64                  buf_id          = 2; //buf的ID
+    optional                p_attr                  attr            = 3; //获得到的buf的具体值
+}

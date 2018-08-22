@@ -1,0 +1,335 @@
+// 争霸协议
+// 编号=112
+
+
+
+// 获取争霸基本信息(客户端首先需要发送的协议)
+message cs_hegemony_info[id=11201] {
+}
+message sc_hegemony_info[id=11202] {
+    optional uint64 state = 1; // 活动状态
+    // 1 := 报名押注阶段
+    // 2 := 预赛进行阶段
+    // 3 := 决赛进行阶段
+    // 4 := 活动结束阶段
+    optional uint64 ijoin = 2; // 能否参与
+    // 1 := 可以
+    // 2 := 战队等级不足
+    // 3 := 活动还未开启
+}
+
+
+// 客户端获取到自身状态为报名押注阶段时，需要
+// 发送该条协议来获取具体的报名相关信息
+message cs_hegemony_signup_info[id=11203] {
+}
+message sc_hegemony_signup_info[id=11204] {
+    optional uint64 signup_state = 1; // 报名状态
+    // 1 := 已报名
+    // 2 := 未报名
+    optional p_hegemony_struct champion = 2; // 冠军角色信息
+    optional uint64 signup_number = 3; // 报名人数
+    optional uint64 signup_limit = 4; // 报名人数上限
+    optional uint64 hegemony_start = 5; // 争霸开始时间
+    optional uint64 hegemony_end = 6; // 争霸结束时间
+    optional uint64 betting_state = 7; // 押注状态
+    // 正数代表押注目标的RoleID，0代表还没进行押注
+}
+
+
+// 争霸功能中使用的简易结构
+message p_hegemony_struct[id=11207] {
+    optional uint64 roleid = 1; // 角色ID
+    optional p_role_public baseinfo = 2; // 基本数据
+    repeated p_ger_summary prelilist = 3; // 预赛阵容
+    repeated p_ger_summary finallist = 4; // 决赛阵容
+    optional uint64 betting_number = 5; // 押注人数
+    optional uint64 win_count = 6; // 胜场次数
+    optional uint64 lose_count = 7; // 败场次数
+    optional uint64 points = 8; // 积分
+    optional uint64 rank = 9; // 排名
+    optional uint64 betting_rate = 10; //压注后的赔率
+}
+
+
+// 客户端请求报名
+message cs_hegemony_signup_request[id=11210] {
+}
+message sc_hegemony_signup_request[id=11211] {
+    optional uint64 result = 1; // 报名结果
+    // 1 := 报名请求成功
+    // 2 := 报名人数限制
+    // 3 := 不能重复报名
+    // 4 := 非报名时间段
+}
+
+
+// 客户端请求阵容
+message cs_hegemony_gerlist_info[id=11212] {
+}
+message sc_hegemony_gerlist_info[id=11213] {
+    repeated p_ger_summary prelilist = 1; // 预赛阵容
+    repeated p_ger_summary finallist = 2; // 决赛阵容
+}
+
+
+// 客户端调整阵容
+message cs_hegemony_gerlist_adjust[id=11214] {
+    repeated uint64 preli_gerid_list = 1; // 预赛宝贝 ID 列表
+    repeated uint64 preli_order_list = 2; // 预赛宝贝顺序列表
+    repeated uint64 final_gerid_list = 3; // 决赛宝贝 ID 列表
+    repeated uint64 final_pos_list = 4; // 决赛宝贝站位列表
+}
+message sc_hegemony_gerlist_adjust[id=11215] {
+    optional uint64 result = 1; // 调整结果
+    // 1 := 调整成功
+    // 2 := 调整失败
+}
+
+
+// 客户端请求押注相关信息
+message cs_hegemony_betting_info[id=11208] {
+}
+message sc_hegemony_betting_info[id=11209] {
+    optional uint64 betting_state = 1; // 押注状态
+    // 正数代表押注目标的RoleID，0代表还没进行押注
+    repeated p_hegemony_struct candidates = 2; // 候选列表
+}
+
+
+// 点击查看押注目标详细信息(阵容为上届的)
+message cs_hegemony_betting_detail[id=11216] {
+    optional uint64 target = 1; // 目标角色ID
+}
+message sc_hegemony_betting_detail[id=11217] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 成功
+    // 2 := 失败
+    optional p_hegemony_struct detail = 2; // 详细信息
+}
+
+
+// 请求进行押注
+message cs_hegemony_betting_request[id=11218] {
+    optional uint64 target = 1; // 目标角色ID
+}
+message sc_hegemony_betting_request[id=11219] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 成功
+    // 2 := 失败-已经进行了押注
+    // 3 := 失败-押注对象不存在
+    // 4 := 失败-货币不足
+}
+
+
+// 请求预赛相关信息
+message cs_hegemony_preli_info[id=11220] {
+}
+message sc_hegemony_preli_info[id=11221] {
+    optional uint64 round = 1; // 预赛场次
+    optional uint64 round_endsec = 2; // 该场次何时结束
+    repeated p_hegemony_preli_hist hist_list = 3; // 预赛战报
+    repeated p_hegemony_preli_result result_list = 4; // 预赛结果
+}
+message sc_hegemony_preli_notify[id=11222] {
+    repeated p_hegemony_preli_hist add_hist_list = 1; // 新增预赛战报
+    repeated p_hegemony_preli_result add_result_list = 2; // 新增预赛结果
+}
+
+
+// 请求决赛相关信息
+message cs_hegemony_final_info[id=11223] {
+}
+message sc_hegemony_final_info[id=11224] {
+    optional uint64 round = 1; // 决赛场次
+    optional uint64 round_endsec = 2; // 该场次何时结束
+    repeated p_hegemony_final_hist hist_list = 3; // 决赛战报
+    repeated p_hegemony_final_vsinfo vsinfo_list = 4; // 决赛对阵
+}
+message sc_hegemony_final_notify[id=11225] {
+    repeated p_hegemony_final_hist add_hist_list = 1; // 新增决赛战报
+}
+
+
+// 请求战报回顾数据
+message cs_hegemony_hist_info[id=11226] {
+}
+message sc_hegemony_hist_info[id=11227] {
+    repeated p_hegemony_preli_hist preli_hist_list = 1; // 预赛战报
+    repeated p_hegemony_final_hist final_hist_list = 2; // 决赛战报
+    repeated p_hegemony_final_hist final_hist_all = 3; // 所有决赛战报
+}
+
+
+// 请求争霸排行榜
+message cs_hegemony_tops_info[id=11228] {
+    optional uint64 offset = 1; // 起始位置(分批请求)
+}
+message sc_hegemony_tops_info[id=11229] {
+    repeated p_hegemony_struct tops_list = 1; // 排行榜列表
+    optional p_hegemony_struct self_info = 2; // 自己的数据
+}
+
+
+// 预赛战报以及结果结构
+message p_hegemony_preli_hist[id=11230] {
+    optional uint64 atk_id = 1; // 攻击者ID
+    optional uint64 def_id = 2; // 防御者ID
+    optional string atk_name = 3; // 攻击者名字
+    optional string def_name = 4; // 防御者名字
+    optional uint64 atk_icon = 5; // 攻击者头像
+    optional uint64 def_icon = 6; // 防御者头像
+    optional uint64 result = 7; // (1:=攻击方胜利,2:=防御方胜利,3:=攻击方弃权,4:=攻击方轮空)
+    optional uint64 draw_box = 8; // 宝箱领取时间
+    optional uint64 round = 9; // 所属轮数
+    optional uint64 histid = 10; // 战报ID
+    optional p_fight_struct replay = 11; // 战斗录像
+    optional uint64 timestamp = 12; // 战报生成时间
+}
+message p_hegemony_preli_result[id=11231] {
+    optional p_hegemony_struct baseinfo = 1; // 基本信息
+}
+
+
+// 决赛赛战报以及结果结构
+message p_hegemony_final_hist[id=11232] {
+    optional uint64 atk_id = 1; // 攻击者ID
+    optional uint64 def_id = 2; // 防御者ID
+    optional string atk_name = 3; // 攻击者名字
+    optional string def_name = 4; // 防御者名字
+    optional uint64 atk_icon = 5; // 攻击者头像
+    optional uint64 def_icon = 6; // 防御者头像
+    optional uint64 result = 7; // (1:=攻击方胜利,2:=防御方胜利,3:=进攻方放弃,4:=进攻方轮空)
+    optional uint64 draw_box = 8; // 宝箱领取时间
+    optional uint64 round = 9; // 所属轮数
+    optional uint64 histid = 10; // 战报ID
+    optional p_fight_struct replay = 11; // 战斗录像
+    optional uint64 timestamp = 12; // 战报生成时间
+}
+message p_hegemony_final_vsinfo[id=11233] {
+    optional p_hegemony_struct atk_info = 1; // 攻击基本信息
+    optional p_hegemony_struct def_info = 2; // 防御基本信息
+}
+
+
+// 查看自己的战报战斗录像回放
+message cs_hegemony_replay_self[id=11234] {
+    optional uint64 histid = 1; // 战报ID
+}
+message sc_hegemony_replay_self[id=11235] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 成功
+    // 2 := 失败
+    optional p_fight_struct replay = 2; // 战斗录像
+}
+
+
+// 查看决赛的战报战斗录像回放
+message cs_hegemony_replay_final[id=11236] {
+    optional uint64 histid = 1; // 战报ID
+}
+message sc_hegemony_replay_final[id=11237] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 成功
+    // 2 := 失败
+    optional p_fight_struct replay = 2; // 战斗录像
+}
+
+
+// 请求进行兑换
+message cs_hegemony_exchange[id=11238] {
+    optional uint64 exchangeid = 1; // 兑换ID
+}
+message sc_hegemony_exchange[id=11239] {
+    optional uint64 result = 1; // 兑换结果
+    // 1 := 成功
+    // 2 := 失败-兑换ID不合法
+    // 3 := 失败-自身货币不足
+    optional p_reward reward = 2; // 奖励
+}
+
+
+// 状态更新推送
+message sc_hegemony_state_update[id=11240] {
+    optional uint64 state = 1; // 具体状态
+    // 1 := 报名押注阶段
+    // 2 := 预赛进行阶段
+    // 3 := 决赛进行阶段
+    // 4 := 活动结束阶段
+}
+
+
+// 请求进行领奖
+message cs_hegemony_draw_reward[id=11241] {
+    optional uint64 histid = 1; // 战报ID
+}
+message sc_hegemony_draw_reward[id=11242] {
+    optional uint64 result = 1; // 领奖结果
+    // 1 := 成功
+    // 2 := 失败-该战报ID不合法
+    // 3 := 失败-该战报不能领奖
+    // 4 := 失败-该战报已领过奖
+    optional p_reward reward = 2; // 奖励
+}
+
+
+//-----------------------------------------------活动分割-----------------------------------------
+message cs_hegemony_activity_info[id=14243]{
+
+}
+
+message sc_hegemony_activity_info[id=14244]{
+    optional        uint64              endtime                 =1;//开服活动的结束时间,如果是0则表示没开放,下面的字段也不会有
+    repeated        p_activity          activity                =2;//当前活动内容
+    optional        uint64              drawtime                =3;//什么时候可以领取结算奖励
+    optional        p_reward            reward                  =4;//结算满额度奖励
+    optional        bool                isdraw                  =5;//当前是否已经领取过结算奖励
+}
+
+message cs_hegemony_activity_draw[id=14245]{
+    optional        uint64              activityid              =1;//活动id
+    optional        uint64              drawid                  =2;//drawid
+}
+
+message sc_hegemony_activity_draw[id=14246]{
+    optional        uint64                result                  =1; // 领取结果
+    // 1 := 成功
+    // 2 := 失败-活动不存在
+    // 3 := 失败-子项不存在
+    // 4 := 失败-不满足条件
+    // 5 := 失败-次数上限
+    repeated        p_activity            newact                  =2; // 新信息
+
+}
+
+message cs_hegemony_activity_drawend[id=14247]{
+
+}
+
+message sc_hegemony_activity_drawend[id=14248]{
+    optional        uint64              result                  =1;
+    //1 := 成功
+    //2 := 活动没开启
+    //3 := 已经领取过
+    //4 := 还没到领取时间
+    optional        p_reward            reward                  =2;//具体领到的奖励内容
+}
+
+
+message sc_hegemony_activity_notify[id=14249]{
+    repeated        p_activity          activity                =1;//改变了的活动内容
+}
+
+
+message cs_hegemony_join_view[id=14250]{
+
+}
+
+message cs_hegemony_leave_view[id=14251]{
+
+}
+
+
+
+
+

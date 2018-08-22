@@ -1,0 +1,65 @@
+// 模块=task
+// 编号=11700
+
+
+// 请求主线任务列表
+message cs_task_trunk[id=11701] {
+}
+message sc_task_trunk[id=11702] {
+    repeated      p_task           tasklist            =1; // 任务列表
+}
+
+
+// 请求日常任务列表
+message cs_task_daily[id=11703] {
+}
+message sc_task_daily[id=11704] {
+    repeated      p_task           tasklist            =1; // 任务列表
+}
+
+
+// 任务结构
+message p_task[id=11705] {
+    optional      uint64           taskid              =1; // 任务ID
+    optional      uint64           progress            =2; // 任务进度
+    optional      uint64           subtid              =3; // 子任务ID
+    optional      uint64           trigger             =4; // 是否触发(0:=未触发;1:=已触发)
+    optional      uint64           endsec              =5; // 任务结束时间
+}
+
+
+// 通知前端任务变化
+message sc_task_notify[id=11706] {
+    repeated      p_task           newlist             =1; // 新增列表
+    repeated      p_task           updatelist          =2; // 更新列表
+    repeated      p_task           deletelist          =3; // 删除列表
+}
+
+
+// 请求领取任务奖励
+message cs_task_draw[id=11707] {
+    optional      uint64          taskid              =1; // 任务ID
+}
+message sc_task_draw[id=11708] {
+    optional      uint64          result              =1; // 领取结果
+    // 1 := 成功
+    // 2 := 失败-无该任务
+    // 3 := 失败-还未触发
+    // 4 := 失败-任务已结束
+    optional      p_reward        reward              =2; // 奖励内容
+}
+
+// 一键领取任务奖励
+message cs_task_one_draw[id=11709] {
+    optional      uint64          type    = 1; // 任务类型
+    // 1 := 日常
+    // 2 := 主线
+}
+
+message sc_task_one_draw[id=11710] {
+    optional      uint64          result  = 1; // 结果
+    // 1 := 成功
+    // 2 := 失败
+    optional      p_reward        reward  = 2; // 奖励内容    
+}
+

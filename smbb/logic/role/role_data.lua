@@ -17,7 +17,7 @@ end
 
 local data_set = {}
 local data_meta = {
-    __index = function(table, index)
+    __index    = function(table, index)
         -- 只有key是 ROLE_DATA_LIST 一员到时候才做get
         if ROLE_DATA_LIST[index] ~= nil then
             local cur_val = rawget(table, index)
@@ -137,6 +137,18 @@ end
 ---@param is_dirty boolean
 function role_data.set_role_extra(info, is_dirty)
     set_info(ROLE_DATA_LIST.role_extra.key, info, is_dirty)
+end
+
+---@return sign_info
+function role_data.get_sign_info()
+    return get_info(ROLE_DATA_LIST.sign_info.key)
+end
+
+---set_sign_info
+---@param info sign_info
+---@param is_dirty boolean
+function role_data.set_sign_info(info, is_dirty)
+    set_info(ROLE_DATA_LIST.sign_info.key, info, is_dirty)
 end
 
 return role_data

@@ -1,0 +1,11 @@
+// 公会极限战场宝箱16000
+
+message cs_fextreme_box[id=16001]{
+
+}
+
+message sc_fextreme_box[id=16002]{
+    optional                uint64                  family_win_count = 1; //公会累计单次活动内获胜次数
+    optional                uint64                  end_sec          = 2; //此次活动结束时间
+    // 0 表示已经结束
+}

@@ -14,6 +14,7 @@ DATABASE_TABLES = {
     mail_info = "mail_info",
     ger_info = "role_ger",
     role_extra = "role_extra",
+    sign_info = "role_sign",
 }
 
 SHARE_TABLES = {

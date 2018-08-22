@@ -1,0 +1,139 @@
+// 模块 - 小游戏
+// 编号 - 14700
+
+// 请求小游戏数据
+message cs_sgame_info[id=14701]{
+	optional uint64		type=1; //小游戏类型
+	// 1：= 打老鼠
+	// 2: = 接宝物
+	// 3：= 挖宝箱
+	// 4: = 娃娃机
+}
+
+
+message sc_sgame_info[id=14702]{
+	optional uint64   result =1;
+	// 1 := 成功
+	// 2 := 失败-等级不够
+	optional     sgame_base_info sgame_base = 2; //对应小游戏基础信息
+	optional     uint64          canusenum  = 3; //小游戏当前可用次数（所有小游戏公用同一个次数）
+	optional     uint64          totalnum   = 4; //小游戏当日总共可用次数
+	optional     uint64          buy_times  = 5; //小游戏当日已购买次数
+}
+
+// 请求积分奖励
+message cs_sgame_reward[id=14703]{
+	optional uint64		type=1; //小游戏类型
+}
+
+message sc_sgame_reward[id=14704]{
+	optional uint64   result =1;
+	// 1 := 成功
+	repeated    p_sgame_reward  lists =2;//积分奖励列表
+}
+
+message p_sgame_reward[id=14705]{
+	optional uint64		id=1; // 积分档位ID
+	optional uint64		state=2;
+	// 0 := 未达成
+	// 1 := 可领取
+	// 2 := 已领取  
+	optional uint64		points=3; //需求积分
+	optional p_reward   reward=4; // 奖励列表
+}
+
+// 购买挑战次数
+message cs_sgame_buytimes[id=14706]{
+	optional uint64   type =1; // 游戏类型
+	optional uint64   times=2; // 购买次数
+}
+
+message sc_sgame_buytimes[id=14707]{
+	optional uint64		result=1;
+	// 1 := 成功
+	// 2 := 失败 - 等级不够
+	// 3 := 失败 - 购买次数已用完
+	// 4 := 失败 - 消耗不足
+	// 5 := 失败 - 购买次数非法
+	optional uint64		times=2;//购买次数
+}
+
+// 开始游戏
+message cs_sgame_enter[id=14708]{
+	optional uint64   type =1; // 游戏类型
+}
+
+message sc_sgame_enter[id=14709]{
+	optional uint64		result=1;
+	// 1 := 成功
+	// 2 := 失败-等级不够
+	// 3 := 失败-挑战次数不足
+}
+
+
+// 领取积分奖励
+message cs_sgame_draw[id=14710]{
+	optional uint64   type =1; //游戏类型
+	optional uint64   id =2; //积分奖励ID
+}
+
+message sc_sgame_draw[id=14711]{
+	optional uint64		result=1;
+	// 1 := 成功
+	// 2 := 失败-未达成
+	// 3 := 失败-已领取
+	optional p_reward   reward=2; //奖励
+}
+
+// 一键领取
+message cs_sgame_onekey[id=14712]{
+	optional uint64   type =1; // 游戏类型
+}
+
+message sc_sgame_onekey[id=14713]{
+	optional uint64		result=1;
+	// 1 := 成功
+	// 2 := 失败-当前没有可以领取的奖励
+	optional p_reward   reward=2; //奖励
+}
+
+// 通知前端更某个小游戏数据
+message sc_sgame_notify[id=14714]{
+	optional     sgame_base_info sgame_base = 1; //更某个小游戏数据
+}
+
+// 游戏结算
+message cs_sgame_over[id=14715]{
+	optional uint64   type =1; // 游戏类型
+	optional uint64   points=2;//获得积分
+	optional uint64   numbers=3;//获得宝箱数量
+	repeated rwd_id_and_number  lists=4;//获取奖励数量列表(备注：类型4中的碎片只需配置基础碎片即可)
+}
+
+message sc_sgame_over[id=14716]{
+	optional uint64		result=1;
+	// 1 := 成功
+	// 2 := 失败
+	optional uint64   points=2;//获得积分
+	optional p_reward   reward=3; //获得宝箱奖励
+}
+
+message sgame_base_info[id=14717]{
+	optional    uint64		type=1;//小游戏类型ID
+	optional 	uint64 		used_times =2;//当日已使用次数
+	optional    uint64 		cur_points =3;//当前积分
+	optional 	uint64		total_times  =4;//当日可挑战总次数
+	repeated    p_sgame_reward  lists=5;//积分列表	
+	optional    uint64      buy_times=6;//当日已购买次数
+}
+
+message rwd_id_and_number[id=14718]{
+	optional    uint64		id=1;//获取的奖励id(此处对应的是基础碎片tid)
+	optional 	uint64 		number =2;//获取的奖励数量
+}
+
+message sc_sgame_num_notify[id=14719]{
+	optional     uint64          canusenum  = 1;
+	optional     uint64          totalnum   = 2;
+	optional     uint64          buy_times  = 3; //小游戏当日已购买次数
+}

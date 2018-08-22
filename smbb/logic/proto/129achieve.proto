@@ -1,0 +1,65 @@
+// 模块 = achieve
+// 编号 = 12900
+
+// 请求养成类成就列表
+message cs_achieve_foster[id=12901] {
+}
+message sc_achieve_foster[id=12902] {
+    repeated     p_achieve       achievelist     = 1; // 成就列表
+}
+
+// 请求冒险类成就列表
+message cs_achieve_adventure[id=12903] {
+}
+
+message sc_achieve_adventure[id=12904] {
+	repeated     p_achieve       achievelist      = 1; // 成就列表
+}
+
+// 请求活动类成就列表
+message cs_achieve_activity[id=12905] {
+}
+
+message sc_achieve_activity[id=12906] {
+	repeated     p_achieve       achievelist      = 1; // 成就列表
+}
+
+// 成就结构
+message p_achieve[id=12907] {
+	optional     uint64          achieveid        = 1; // 成就ID
+	optional     uint64          progress         = 2; // 进度
+	optional     uint64          subaid           = 3; // 成就当前子ID
+	optional     uint64          state            = 4; // 成就状态(0:=未完成,1:=可领取,2:=已完成)
+    optional     uint64          numacc           = 5; // 累计完成的子成就数量
+}
+
+// 通知前端成就变化
+message sc_achieve_notify[id=12908] {
+    repeated      p_achieve       newlist         = 1; // 新增列表
+    repeated      p_achieve       updatelist      = 2; // 更新列表
+    repeated      p_achieve       deletelist      = 3; // 删除列表
+}
+
+// 请求领取成就奖励
+message cs_achieve_draw[id=12909] {
+    optional      uint64          achieveid       = 1; // 成就ID
+}
+message sc_achieve_draw[id=12910] {
+    optional      uint64          result          = 1; // 领取结果
+    // 1 := 成功
+    // 2 := 失败-无该成就
+    // 3 := 失败-还未完成
+    // 4 := 失败-已完成
+    optional      uint64          subaid          = 2; // 当前成就的子成就ID
+}
+
+// 一键领取任务奖励
+message cs_achieve_one_draw[id=12911] {
+}
+
+message sc_achieve_one_draw[id=12912] {
+    optional      uint64          result          = 1; // 结果
+    // 1 := 成功
+    // 2 := 失败
+    repeated      uint64          subaidlist      = 2; // 子成就ID列表    
+}

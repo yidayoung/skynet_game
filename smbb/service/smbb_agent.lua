@@ -13,7 +13,7 @@ smbb_util = require "logic.tool.smbb_util"
 smbb_id = require "logic.tool.smbb_id"
 reward_lib = require("logic.lib.reward_lib")
 smbb_mongo = require("logic.db.smbb_mongo")
-local logger = require("lualib.logger")
+logger = require("lualib.logger")
 
 require("logic.define.roledata_define")
 

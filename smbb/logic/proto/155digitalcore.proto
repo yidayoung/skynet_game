@@ -1,0 +1,70 @@
+// 数码核心 15500
+
+
+message cs_digitalcore_info[id=15501]{
+}
+
+message sc_digitalcore_info[id=15502]{
+    optional        uint32                  result                      = 1;
+    //0:系统错误
+    //1:成功
+    //2:没有开启
+    repeated        p_ger_core_info         ger_coreinfo_lists          = 2;        //开启核心的列表
+    optional        int32                   b_replace_consume           = 3;        //是否勾选替代消耗,1:是,任意其他值不是
+}
+
+message p_ger_core_info[id=15503]{
+    optional        uint64                  initid                      = 1;        //宝贝id
+    repeated        p_core_info             coreinfo_lists              = 2;        //开启核心的列表
+}
+
+message p_core_info[id=15504]{
+    optional        int32                   core_id                     = 1;        //核心id
+    optional        int32                   star                        = 2;        //星
+}
+
+message cs_digitalcore_tupo[id=15505]{
+    optional        uint64                  gerid                       = 1;        //宝贝id
+    optional        int32                   core_id                     = 2;        //核心id
+}
+
+message sc_digitalcore_tupo[id=15506]{
+    optional        uint32                  result                      = 1;
+    //0:系统错误
+    //1:成功
+    //2:没有开启
+    //3:材料不足
+    //4:已经满星
+    //5:gerid不存在
+    //6:没有该核心
+    optional        p_ger_core_info         ger_coreinfo                = 2;
+}
+
+message cs_digitalcore_activation[id=15507]{
+    optional        uint64                  gerid                       = 1;        //宝贝id
+    optional        int32                   core_id                     = 2;        //核心id
+}
+
+message sc_digitalcore_activation[id=15508]{
+    optional        uint32                  result                      = 1;
+    //0:系统错误
+    //1:成功
+    //2:条件不足
+    //3:已经开启
+    //4:没有该核心
+    //5:等级不足
+    //6:gerid不存在
+    //7:当前核心id不支持
+    optional        p_ger_core_info         ger_coreinfo                = 2;
+}
+
+message cs_digitalcore_selreplace[id=15509]{
+    optional        int32                   b_replace_consume           = 1;        //是否勾选替代消耗,1:是,任意其他值不是
+}
+
+message sc_digitalcore_selreplace[id=15510]{
+    optional        uint32                  result                      = 1;
+    //0:系统错误
+    //1:成功
+    optional        int32                   b_replace_consume           = 2;        //是否勾选替代消耗,1:是,任意其他值不是
+}

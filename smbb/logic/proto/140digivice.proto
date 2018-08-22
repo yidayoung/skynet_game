@@ -1,0 +1,120 @@
+// 数码机协议
+// 编号 = 140
+
+// 请求数码机信息
+message cs_digivice_info[id=14001]{
+}
+
+message sc_digivice_info[id=14002]{
+	optional      uint64        result = 1; // 结果 
+	// 1 := 成功
+	// 2 := 失败-功能未开启
+	repeated      p_digivice    diglist = 2; // 数码机列表
+	optional      p_attr        sumattr = 3; // 全体数码机总的强化&洗炼属性
+}
+
+// 数码机结构
+message p_digivice[id=14003]{
+	optional      uint64        digid      = 1; // 第X代
+	optional      uint64        level      = 2; // 等级
+	optional      uint64        exp        = 3; // 经验
+	repeated      p_refine      reflist    = 4; // 洗炼列表
+	optional      bool          isopen     = 5; // 数码机是否开启
+	repeated      p_dig_cond    condlist   = 6; // 数码机开启条件
+	optional      p_attr        digattr    = 7; // 数码机强化总属性
+}
+
+// 数码机洗炼结构
+message p_refine[id=14004]{
+	optional      uint64        refid       = 1; // 洗炼ID 
+	optional      uint64        state       = 2; // 洗炼状态
+	// 0 := 未解锁
+	// 1 := 正常状态
+	// 2 := 普通洗炼待替换属性状态
+	// 3 := 十次洗炼待替换属性状态
+	repeated      p_refine_attr attrlist    = 3; // 洗炼子属性列表
+	repeated      p_refine_attr tmplist     = 4; // 洗炼临时列表(属性待替换状态下使用)
+}
+
+// 数码机洗炼子属性结构
+message p_refine_attr[id=14005]{
+	optional      uint64       attrid      = 1; // 子属性ID 
+	optional      uint64       value       = 2; // 子属性值
+}
+
+// 数码机强化
+message cs_digivice_reinforce[id=14006]{
+	optional      uint64      digid        = 1; // 第X代
+	optional      uint64      type         = 2; // 强化方式
+	// 1 := 普通强化
+	// 2 := 十次强化
+}
+
+message sc_digivice_reinforce[id=14007]{
+	optional      uint64      result       = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-数码机还未解锁
+	// 3 := 失败-已强化到最高等级
+	// 4 := 失败-消耗不足
+}
+
+// 数码机更新
+message sc_digivice_notify[id=14008]{
+	repeated      p_digivice   newlist     = 1; // 新增列表
+	repeated      p_digivice   updatelist  = 2; // 更新列表
+	repeated      p_digivice   deletelist  = 3; // 删除列表
+	optional      p_attr       sumattr     = 4; // 全体数码机总的强化&洗炼属性
+}
+
+// 数码机属性洗炼
+message cs_digivice_refine[id=14009]{
+	optional      uint64       digid       = 1; // 数码机ID
+	optional      uint64       refid       = 2; // 洗炼ID 
+	optional      uint64       type        = 3; // 洗炼类型
+	// 1 := 普通洗炼
+	// 2 := 十次洗炼
+	repeated      uint64       locklist    = 4; // 锁定的attrid列表
+}
+
+message sc_digivice_refine[id=14010]{
+	optional      uint64       result      = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-数码机未解锁
+	// 3 := 失败-洗炼模块未解锁
+	// 4 := 失败-锁定的属性个数错误
+	// 5 := 失败-配置错误,属性不属于洗炼模块
+	// 6 := 失败-消耗不足
+}
+
+// 洗炼属性替换
+message cs_digivice_replace[id=14011]{
+	optional      uint64       digid      = 1; // 数码机ID
+	optional      uint64       refid      = 2; // 洗炼ID
+	optional      uint64       type       = 3; // 洗炼类型(同上) 
+	repeated      p_refine_attr replist   = 4; // 替换列表
+}
+
+message sc_digivice_replace[id=14012]{
+	optional      uint64       result     = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-数码机未解锁
+	// 3 := 失败-洗炼模块未解锁
+}
+
+message p_dig_cond[id=14013]{
+	optional      bool        ismeet      = 1; // 是否满足
+	optional      string      digcond     = 2; // 开启条件
+}
+
+// 放弃替换属性
+message cs_digivice_replace_giveup[id=14014]{
+	optional      uint64      digid       = 1; // 数码机ID 
+	optional      uint64      refid       = 2; // 洗炼ID
+}
+
+message sc_digivice_replace_giveup[id=14015]{
+	optional      uint64      result      = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-数码机未解锁
+	// 3 := 失败-洗炼模块未解锁
+}

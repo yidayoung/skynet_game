@@ -1,0 +1,104 @@
+// 16300 宝贝卡片系统
+
+message cs_gercard_info[id=16301]{
+    repeated        uint64              ger_id_list = 1; //要查看的宝贝的ID列表
+}
+
+message sc_gercard_info[id=16302]{
+    repeated        p_ger_card          card_info   = 1; //宝贝的卡槽信息
+
+}
+
+message cs_gercard_last[id=16313]{
+}
+
+message sc_gercard_last[id=16314]{
+    optional        p_last_wash         last_wash   = 1; //上次洗练结果
+    // 这个字段可能没有，没有就是没有遗留的洗练结果
+}
+
+message p_last_wash[id=16315]{
+    optional        uint64              ger_id      = 1; //宝贝ID
+    optional        uint64              pos         = 2; //卡牌位置
+    optional        uint64              type        = 3; //洗练类型
+    repeated        p_ger_card_detail   card_list   = 4; //具体的洗练结果
+}
+
+message p_ger_card[id=16303]{
+    optional        uint64              ger_id      = 1; //宝贝ID
+    repeated        p_ger_card_detail   card_list   = 2; //具体的卡槽信息
+}
+
+message p_ger_card_detail[id=16304]{
+    optional        uint64              pos         = 1; //卡牌的位置
+    optional        uint64              colour      = 2; //颜色
+    optional        p_ger_card_attr     base_attr   = 3; //基础属性
+    repeated        p_ger_card_attr     extra_attrs = 4; //额外属性
+}
+
+message p_ger_card_attr[id=16316]{
+    optional        uint64              index       = 1; //属性的索引
+    optional        p_attr              attr        = 2; //具体的属性
+    optional        uint64              val         = 3; //相对max的万分比
+}
+
+message cs_gercard_unlock[id=16305]{
+    optional        uint64              ger_id      = 1; //宝贝ID
+    optional        uint64              pos         = 2; //位置
+}
+
+message sc_gercard_unlock[id=16306]{
+    optional        uint64              result      = 1; //操作结果
+    // 1 => 成功
+    // 2 => 条件未达成
+    // 3 => 宝贝不存在
+    // 4 => 位置不合法
+    optional        p_ger_card          new_card    = 2; //新的宝贝的卡槽信息
+}
+
+message cs_gercard_wash[id=16307]{
+    optional        uint64              ger_id      = 1; //宝贝ID
+    optional        uint64              pos         = 2; //位置
+    optional        uint64              type        = 3; //洗的类型
+    // 1 => 洗颜色
+    // 2 => 洗数值
+    optional        uint64              times       = 4; //洗的次数
+    repeated        uint64              locked_pos  = 5; //锁定的额外属性索引
+    // 0 是基础那条， 1 2 就是额外 那两条
+}
+
+message sc_gercard_wash[id=16308]{
+    optional        uint64              result      = 1; //操作结果
+    // 1 => 成功
+    // 2 => 货币不足
+    // 3 => 宝贝不存在
+    // 4 => 位置不合法
+    // 5 => 类型不合法
+    // 6 => 上次洗练结果未处理
+    // 7 => 锁定位置过多
+    repeated        p_ger_card_detail   card_list   = 2; //具体的洗练结果
+}
+
+// 这里条件成立的假设就是，所有洗练开始前必须没有洗练结果遗留
+message cs_gercard_chose[id=16309]{
+    optional        uint64              index       = 1; //要选择的属性的索引
+    // 从1 开始
+}
+
+message sc_gercard_chose[id=16310]{
+    optional        uint64              result      = 1; //操作结果
+    // 1 => 成功
+    // 2 => 不存在洗练结果
+    // 3 => 索引不合法
+    optional        p_ger_card          new_card    = 2; //新的宝贝的卡槽信息
+}
+
+//放弃当前保存的洗练结果，sc消息 等不等都行
+message cs_gercard_clean[id=16311]{
+}
+
+message sc_gercard_clean[id=16312]{
+    optional        uint64              result      = 1; //操作结果
+    // 1 => 成功
+    // 消息永远返回成功即时真的失败了
+}

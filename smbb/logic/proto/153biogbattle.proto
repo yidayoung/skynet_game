@@ -1,0 +1,209 @@
+// 模块 - role_biogbattle
+// 编号 - 编号 15300
+
+message streng_record[id=15301]{
+    optional     int32                biogid               =   1; // 剧情id
+    optional     int32                streng_exp           =   2; // 强化模块经验值
+    optional     int32                streng_level         =   3; // 强化模块等级
+}
+
+message p_biog_record[id=15302]{
+    optional     int32                biogid               =   1; // 剧情id
+    optional     int32                streng_exp           =   2; // 强化模块经验值
+    optional     int32                streng_level         =   3; // 强化模块等级
+    repeated     uint64               chapteridrecord_list =   4; // 已经完成的章节id
+    optional     uint64               chapterid            =   5; // 选择的章节
+}
+
+// 传记信息
+message cs_biogbattle_info[id=15303]{
+}
+
+// 传记信息
+message sc_biogbattle_info[id=15304]{
+    optional     int32                result         =   1;
+    // 0 := 系统错误
+    // 1 := 成功
+    // 2 := 数据不存在
+    repeated     p_biog_record        biogid_list    =   2; // 可供选择的剧情id列表
+    optional     int32                biogid         =   3; // 已选择的剧情id(0表示没有选择)
+    repeated     streng_record        streng_list    =   4; // 强化模块信息
+}
+
+// 选择剧情
+message cs_biogbattle_select[id=15305]{
+    optional     int32                biogid         =   1; // 选择的剧情id
+    optional     uint64               chapterid      =   2;
+}
+
+// 选择剧情
+message sc_biogbattle_select[id=15306]{
+    optional     int32                result         =   1;
+    // 0 := 系统错误
+    // 1 := 成功
+    // 2 := 失败-biogid不存在
+    // 3 := 已经选择
+    // 4 := 数据不存在
+    // 5 := 章节不存在
+    // 6 := 章节选择错误
+    // 7 := 等级不足
+    optional     int32                biogid         =   2; // 选择的剧情id
+    optional     uint64               chapterid      =   3;
+    repeated     p_dungeon_box_reward dungeon_box_reward   =   4;
+}
+
+// 商品
+message p_commodity_info[id=15307]{
+    optional     int32                commodity_id   =   1; // 商品id
+    optional     p_reward             commodity_src  =   2; // 商品
+    optional     p_reward             commodity_dest =   3; // 商品
+}
+
+// 商店通知
+message sc_biogbattle_shopopen[id=15308]{
+    repeated     p_commodity_info     commodity_list =   1; // 商品
+    optional     uint64               chapterid      =   2;
+    optional     p_reward             shop_refresh_cost        = 3; // 
+}
+
+// 商店关闭
+message cs_biogbattle_shopclose[id=15309]{
+}
+
+// 商店关闭
+message sc_biogbattle_shopclose[id=15310]{
+    optional     int32                result         =   1;
+    // 0 := 系统错误
+    // 1 := 成功
+}
+
+// 商店交换
+message cs_biogbattle_exchange[id=15311]{
+    optional     int32                commodity_id   =   1;
+    optional     uint64               chapterid      =   2;
+}
+
+// 商店交换
+message sc_biogbattle_exchange[id=15312]{
+    optional     int32                result         =   1;
+    // 0 := 系统错误
+    // 1 := 成功
+    // 2 := 商品id不存在
+    // 3 := 货币不足
+    // 4 := 商品已经关闭
+    // 5 := 还没有选择剧情 或者 章节错误
+    // 6 := 改剧情没有商品
+    // 7 := 已经买过该商品
+    optional     int32                commodity_id   =   2;
+    optional     uint64               chapterid      =   3;
+}
+
+// 商店刷新
+message cs_biogbattle_shoprefresh[id=15313]{
+    optional     uint64               chapterid      =   1;
+    optional     uint64               commodity_id   =   2;
+}
+
+// 商店刷新
+message sc_biogbattle_shoprefresh[id=15314]{
+    optional     int32                result         =   1;
+    // 0 := 系统错误
+    // 1 := 成功
+    // 3 := 货币不足
+    // 4 := 商品已经关闭
+    // 5 := 还没有选择剧情 或者 章节错误
+    // 6 := 改剧情没有商品
+    // 7 := commodity_id没找到
+    optional     p_commodity_info     new_commodity  =   2; // 商品
+    optional     uint64               chapterid      =   3;
+    optional     p_reward             next_need_money        = 4; // 
+}
+
+// 关卡奖励
+message p_dungeon_box_reward[id=15316]{
+    optional     uint64                dungeonid     =   1;
+    optional     p_reward              reward        =   2;
+}
+
+// 章节信息
+message cs_biogbattle_chapterinfo[id=15317]{
+    optional     uint64               chapterid          =   1;
+}
+
+// 章节信息
+message sc_biogbattle_chapterinfo[id=15318]{
+    optional     int32                result               =   1;
+    // 0 := 系统错误
+    // 1 := 成功
+    // 2 := 当前剧情还没有选择
+    // 3 := 前面章节没有完成
+    repeated     uint64               todaydungeonid_list  =   2; // 今天已经完成的关卡id
+    repeated     uint64               rwddungeon_list      =   3; // 已经领取宝箱的关卡id
+    repeated     uint64               dungeonidrecord_list =   4; // 历史已经完成的关卡id
+    repeated     p_dungeon_box_reward dungeon_box_reward   =   5;
+    repeated     uint64               enter_war_ger_list   =   6;
+}
+
+// 战斗
+message cs_biogbattle_fight[id=15319]{
+    optional     uint64               chapterid          =   1;
+    optional     uint64               dungeonid          =   2;
+    repeated     uint64               geridlist          =   3;
+    repeated     uint64               poslist            =   4;
+}
+
+// 战斗
+message sc_biogbattle_fight[id=15320]{
+    optional            int32                result              = 1; // 挑战结果
+    // 1 := 成功
+    // 2 := 当前剧情还没有选择 或者 章节错误
+    // 3 := 章节选择错误
+    // 4 := 关卡选择错误
+    // 5 := 位置锁定
+    // 7 := 重复宝贝上阵
+    optional            p_fight_struct       fight_struct        = 2; // 战斗
+    optional            p_reward             fight_reward        = 3; // 击杀的奖励
+    optional            int32                streng_exp          = 4; // 强化模块经验值
+    optional            uint64               addrolexp           = 5; // 增加主角经验
+    optional            uint64               addgerexp           = 6; // 增加宝贝经验
+    repeated            uint64               enter_war_ger_list  = 7;
+    optional            int32                streng_level        = 8; // 强化等级
+}
+
+// 领箱子奖励
+message cs_biogbattle_openbox[id=15321]{
+    optional     uint64                      dungeonid           =   1;
+}
+
+// 领箱子奖励
+message sc_biogbattle_openbox[id=15322]{
+    optional            int32                result              = 1; // 挑战结果
+    // 0 := 系统错误
+    // 1 := 成功
+    // 2 := 关卡没有通关
+    // 3 := 当前剧情还没有选择
+    // 4 := 奖励已经领取
+    optional            uint64               dungeonid           = 2;
+    optional            p_reward             reward              = 3; // 奖励
+}
+
+// 布阵
+message cs_biogbattle_disposal[id=15325]{
+    optional        uint64                  dungeonid            = 1;
+    optional        p_lineup                line1                = 2;
+    optional        p_lineup                line2                = 3;
+}
+
+// 布阵
+message sc_biogbattle_disposal[id=15326]{
+    optional            int32                result              = 1; // 挑战结果
+    // 0 := 系统错误
+    // 1 := 成功
+    // 2 := 重复上阵
+    repeated            p_ger_summary        atk_ger_list        = 2;
+    repeated            p_ger_summary        def_ger_list        = 3;
+    optional            uint64               atkteam_speed       = 4; // 行动值
+    optional            uint64               atkteam_power       = 5; // 战斗力
+    optional            uint64               defteam_speed       = 6; // 行动值
+    optional            uint64               defteam_power       = 7; // 战斗力
+}

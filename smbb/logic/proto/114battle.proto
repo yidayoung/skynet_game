@@ -1,0 +1,271 @@
+/*
+ * 战役模块
+ */
+
+// 请求战役信息
+message cs_battle_info[id=11401] {
+    repeated uint64 battleid_list = 1; // 战役ID列表
+}
+message sc_battle_info[id=11402] {
+    repeated p_battle battle_list = 1; // 战役列表
+}
+message p_battle[id=11403] {
+    optional uint64 battleid = 1; // 战役ID(1 := 主线; 2 := 精英)
+    optional uint64 progress = 2; // 当前进度(已通过的最大关卡ID)
+    repeated p_chapter chapter_list = 3; // 章节简略信息预览列表
+    optional uint64 maxstory = 4; // 已播放过的最大剧情关卡ID
+    optional bool is_open = 5; // 是否开启
+    optional uint64 cha_times = 6; // 特殊战役挑战次数
+    optional uint64 last_cha_sec = 7; // 上次挑战特殊副本时间
+}
+
+
+// 请求章节信息
+message cs_battle_chapter[id=11404] {
+    optional uint64 chapterid = 1; // 章节ID
+}
+message sc_battle_chapter[id=11405] {
+    optional p_chapter chapter = 1; // 章节信息
+}
+message p_chapter[id=11406] {
+    optional uint64 chapterid = 1; // 章节ID
+    optional uint64 startotal = 2; // 星星总数
+    optional uint64 rewardcnt = 3; // 领奖次数
+    repeated p_dungeon dungeon_list = 4; // 关卡详细数据信息列表
+}
+
+
+// 关卡数据结构
+message p_dungeon[id=11407] {
+    optional uint64 dungeonid = 1; // 关卡ID
+    optional uint64 cha_times = 2; // 挑战次数
+    optional uint64 starcount = 3; // 星星数量
+    optional uint64 rewardcnt = 4; // 领奖次数
+    optional uint64 cha_total = 5; // 累计挑战
+    optional uint64 reset_times = 6; //重置次数
+}
+
+
+// 战役数据更新
+message sc_battle_update[id=11408] {
+    repeated p_battle battle_list = 1; // 战役列表
+}
+
+
+// 请求挑战关卡操作
+message cs_battle_fight_request[id=11409] {
+    optional uint64 dungeonid = 1; // 关卡ID
+}
+message sc_battle_fight_request[id=11410] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未解锁
+    // 3 := 失败-挑战次数限制
+    // 4 := 失败-剩余体力不足
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional p_fight_struct fight_struct = 3; // 战斗结构
+    optional p_reward drop_reward_view = 4; // 掉落奖励预览
+    optional uint64 addrolexp = 5; // 增加主角经验
+    optional uint64 addgerexp = 6; // 增加宝贝经验
+}
+
+
+// 上报挑战关卡结果
+message cs_battle_fight_report[id=11411] {
+    optional uint64 dungeonid = 1; // 关卡ID
+    optional p_fight_struct fight_struct = 2; // 战斗结构
+}
+message sc_battle_fight_report[id=11412] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未解锁
+    // 3 := 失败-挑战次数限制
+    // 4 := 失败-剩余体力不足
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional bool attacker_win = 3; // 是否胜利
+    optional uint64 starcount = 4; // 星星数量
+    optional uint64 addrolexp = 5; // 增加主角经验
+    optional uint64 addgerexp = 6; // 增加宝贝经验
+    optional p_reward reward = 7; // 其余奖励信息
+    repeated bool star_array = 8; // 每颗星星有没有
+}
+
+
+// 请求领取章节星星奖励
+message cs_battle_chapter_reward[id=11413] {
+    optional uint64 chapterid = 1; // 章节ID
+}
+message sc_battle_chapter_reward[id=11414] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-章节还未解锁
+    // 3 := 失败-星星数量不足
+    // 4 := 失败-奖励已经领完
+    // 5 := 失败-没有星星奖励
+    optional uint64 chapterid = 2; // 章节ID
+    optional p_reward reward = 3; // 具体奖励信息
+}
+
+
+// 请求领取首次通关奖励
+message cs_battle_dungeon_reward[id=11415] {
+    optional uint64 dungeonid = 1; // 关卡ID
+}
+message sc_battle_dungeon_reward[id=11416] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未解锁
+    // 3 := 失败-星星数量不足
+    // 4 := 失败-奖励已经领完
+    // 5 := 失败-没有通关奖励
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional p_reward reward = 3; // 具体奖励信息
+}
+
+
+// 请求进行关卡扫荡
+message cs_battle_fight_sweep[id=11417] {
+    optional uint64 dungeonid = 1; // 关卡ID
+    optional uint64 sweep_num = 2; // 扫荡次数
+}
+message sc_battle_fight_sweep[id=11418] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未解锁
+    // 3 := 失败-挑战次数限制
+    // 4 := 失败-剩余体力不足
+    // 5 := 失败-扫荡次数非法
+    // 6 := 失败-还未三星通关
+    // 7 := 失败-战队等级限制
+    // 8 := 失败-战队VIP限制
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional uint64 real_sweep_num = 3; // 实际扫荡次数
+    optional uint64 sweep_num = 4; // 扫荡次数
+    optional uint64 addrolexp = 5; // 增加主角经验
+    optional uint64 addgerexp = 6; // 增加宝贝经验
+    optional p_reward normal_reward = 7; // 普通奖励信息
+    optional p_reward extra_reward = 8; // 额外奖励信息
+}
+
+
+// 请求剧情关卡战斗阵容
+message cs_battle_story_fight[id=11419] {
+    optional uint64 dungeonid = 1; // 关卡ID
+}
+message sc_battle_story_fight[id=11420] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional p_fight_struct fight_struct = 3; // 战斗结构
+}
+
+
+// 请求挑战特殊关卡操作
+message cs_battle_fight_request2[id=11421] {
+    optional uint64 dungeonid = 1; // 关卡ID
+    repeated uint64 geridlist = 2; // 宝贝ID列表, [compatible] 060版本废弃保留做兼容
+    repeated uint64 poslist = 3; // 宝贝站位列表, [compatible] 060版本废弃保留做兼容
+    optional uint64 trainerid = 4; // 训练师ID
+}
+message sc_battle_fight_request2[id=11422] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未开启
+    // 3 := 失败-挑战次数限制
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional p_fight_struct fight_struct = 3; // 战斗结构
+}
+
+
+// 上报挑战特殊关卡结果
+message cs_battle_fight_report2[id=11423] {
+    optional uint64 dungeonid = 1; // 关卡ID
+    optional p_fight_struct fight_struct = 2; // 战斗结构
+}
+message sc_battle_fight_report2[id=11424] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未开启
+    // 3 := 失败-挑战次数限制
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional bool attacker_win = 3; // 是否胜利
+    optional uint64 starcount = 4; // 星星数量
+    optional p_reward reward = 5; // 其余奖励信息
+    repeated bool star_array = 6; // 每颗星星有没有
+    optional uint64 passing_rate = 7; // 通过率(万分比)
+}
+
+
+// 请求进行特殊关卡扫荡
+message cs_battle_fight_sweep2[id=11425] {
+    optional uint64 dungeonid = 1; // 关卡ID
+    optional uint64 sweep_num = 2; // 扫荡次数
+}
+message sc_battle_fight_sweep2[id=11426] {
+    optional uint64 result = 1; // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未开启
+    // 3 := 失败-挑战次数限制
+    // 4 := 失败-还未三星通关
+    // 5 := 失败-扫荡次数非法
+    optional uint64 dungeonid = 2; // 关卡ID
+    optional uint64 real_sweep_num = 3; // 实际扫荡次数
+    optional uint64 sweep_num = 4; // 扫荡次数
+    optional p_reward reward = 5; // 奖励信息
+}
+
+// 重置关卡挑战次数
+message cs_battle_fight_reset[id=11427]{
+    optional        uint64                  dungeonid           = 1; //关卡ID
+}
+
+message sc_battle_fight_reset[id=11428]{
+    optional        uint64                  result              = 1; //操作结果
+    // 1 := 成功
+    // 2 := 失败-关卡重置次数已经到了上限
+    // 3 := 失败-钻石不足
+    optional        p_dungeon               new_dungeon         = 2; //如果操作成功则刷新新的关卡信息
+}
+
+// 日常副本请求阵容
+message cs_battle_fight_line2[id=11429]{
+    optional        uint64                  battle_id           =1; //副本类型
+}
+
+
+message sc_battle_fight_line2[id=11430]{
+    optional        uint64                  battle_id           = 1; //副本类型
+    repeated        p_lineup                line                = 2; //当前阵容
+}
+
+message cs_battle_fight_set_line2[id=11431]{
+    optional        uint64                  battle_id           = 1; //副本类型
+    repeated        p_lineup                line                = 2; //要设置的阵容
+}
+
+message sc_battle_fight_set_line2[id=11432]{
+    optional        uint64                  result              = 1; //结果
+    // 0 := 内部错误
+    // 1 := 成功
+    // 2 := 失败-battleid不存在
+    // 宝贝不存在之类的不报错，到时候战斗的时候会体现出来
+    repeated        p_lineup                line                = 2; //当前阵容
+}
+message cs_battle_activity_list[id=11433]{
+}
+
+message p_battle_args[id=11435]{
+    optional        uint64                  type                =1; //活动类型
+    // 1 := 推图双倍经验
+    // 2 := 推图双倍物品奖励
+    // 3 := 日常副本额外挑战次数
+    // 4 := 日常副本双倍奖励
+    // 5 := 精英推图双倍经验
+    // 6 := 精英推图双倍物品奖励
+    optional        uint64                  value               =2; //具体值
+    // 除了挑战次数都是+其他都是乘
+}
+
+message sc_battle_activity_list[id=11434]{
+    repeated        p_battle_args           arg_list            =1; //参数列表
+}

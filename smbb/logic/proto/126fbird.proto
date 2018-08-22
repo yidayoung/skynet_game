@@ -1,0 +1,47 @@
+// 模块=family
+// 编号=121
+
+message cs_fbird_info[id=12601]{
+
+}
+
+message sc_fbird_info[id=12602]{
+    optional            uint64                  leftTimes = 1;              //剩余的挑战次数
+    optional            uint64                  todaybest = 2;              //今日的最佳成绩
+    optional            uint64                  rolebest  = 3;              //历史最佳战绩
+    optional            uint64                  coin      = 4;              //金币获得
+    optional            uint64                  gold      = 5;              //钻石获得
+    optional            uint64                  card      = 6;              //卡牌获得
+
+}
+
+message cs_fbird_rank[id=12603]{
+
+}
+
+message sc_fbird_rank[id=12604]{
+    repeated            p_fbird_rank             ranklist  = 1;              //排行榜
+}
+
+message p_fbird_rank[id=12605]{
+    optional            uint64                  rank      = 1;              //排名
+    optional            string                  rolename  = 2;              //角色名
+    optional            uint64                  score     = 3;              //得分
+}
+
+message cs_fbird_draw[id=12606]{
+    optional            uint64                  score     = 1;              //得分
+    optional            uint64                  coin      = 2;              //金币获得
+    optional            uint64                  gold      = 3;              //钻石获得
+    optional            uint64                  card      = 4;              //卡牌获得
+}
+
+message sc_fbird_draw[id=12607]{
+    optional            uint64                  result    = 1;              //操作结果
+    // 1 := 成功
+    // 2 := 次数不足
+    optional            uint64                  coin      = 2;              //金币获得
+    optional            uint64                  gold      = 3;              //钻石获得
+    optional            uint64                  card      = 4;              //卡牌获得
+
+}

@@ -1323,6 +1323,20 @@ function sc.sc_guide_list(guidelist) end
 ---@param deletelist p_guide[] @ 删除列表 
 function sc.sc_guide_notify(newlist, updatelist, deletelist) end
 
+---@param mix_1 uint64[] @ 混淆1 
+---@param arg_a uint64 @ 系数a 
+---@param mix_2 uint64[] @ 混淆2 
+---@param arg_b uint64 @ 常数b 
+---@param mix_3 uint64[] @ 混淆3 
+---@param arg_m uint64 @ 模数m 
+---@param mix_4 uint64[] @ 混淆4 
+---@param arg_x uint64 @ 初始x 
+---@param mix_5 uint64[] @ 混淆5 
+function sc.sc_handshake(mix_1, arg_a, mix_2, arg_b, mix_3, arg_m, mix_4, arg_x, mix_5) end
+
+---@param unixtime uint64 @ 时间戳 
+function sc.sc_heart(unixtime) end
+
 ---@param result uint64 @ 领取结果 
 ---@param newact p_activity[] @ 新信息 
 function sc.sc_hegemony_activity_draw(result, newact) end
@@ -2261,8 +2275,6 @@ function sc.sc_task_one_draw(result, reward) end
 
 ---@param tasklist p_task[] @ 任务列表 
 function sc.sc_task_trunk(tasklist) end
-
-function sc.sc_test_message() end
 
 ---@param result uint64 @操作结果 
 function sc.sc_trainer_chose(result) end

@@ -1,0 +1,48 @@
+// 135  签到模块
+
+message cs_sign_info[id=13501]{
+
+}
+
+message sc_sign_info[id=13502]{
+    optional                uint64                  month               =1;     //当前是几月
+    optional                bool                    can_sign            =2;     //当前是否可以签到
+    optional                uint64                  month_sign_times    =3;     //当前月份签到次数
+    repeated                p_sign_reward           rewardlist          =4;     //签到给予的奖励信息
+    optional                p_sign_add_reward       add_reward          =5;     //累计签到信息
+}
+
+message p_sign_reward[id=13503]{
+    optional                uint64                  multiNeedVip        =1;     //双倍需要的vip等级
+    optional                p_reward                reward              =2;     //奖励内容
+}
+
+message p_sign_add_reward[id=13504]{
+    optional                uint64                  signtimes           =1;     //累计签到次数
+    optional                uint64                  need_times          =2;     //领取当前累计签到奖励需要的次数
+    optional                p_reward                reward              =3;     //具体的奖励内容
+}
+
+
+message cs_sign_draw[id=13506]{
+
+}
+
+message sc_sign_draw[id=13507]{
+    optional                uint64                  result              =1;     //操作结果
+    // 1 := 成功
+    // 2 := 已经签到
+    optional                p_reward                reward              =2;     //成功后领取的奖励
+}
+
+message cs_sign_draw_add[id=13508]{
+
+}
+
+message sc_sign_draw_add[id=13509]{
+    optional                uint64                  result              =1;     //操作结果
+    // 1 := 成功
+    // 2 := 失败 天数不足
+    optional                p_reward                reward              =2;     //成功后领取的奖励
+    optional                p_sign_add_reward       new_add_reward      =3;     //新的累计签到信息
+}

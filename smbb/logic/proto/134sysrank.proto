@@ -1,0 +1,145 @@
+// 模块 = 系统排行榜
+// 编号 = 13400
+
+// 本服最强信息
+message p_top_ranker[id=13401]{
+	optional      uint64        roleid    = 1; // 角色id
+	optional      uint64        icon      = 2; // 角色icon
+	optional      string        rolename  = 3; // 角色名
+	optional      string        familyname= 4; // 所属工会名
+	optional      uint64        viplv     = 5; // 角色viplv
+}
+
+// 战斗力排行榜
+message cs_sysrank_fightpower[id=13402]{
+	optional      uint64        offset    = 1; // 偏移量
+}
+
+message sc_sysrank_fightpower[id=13403]{	
+	optional      uint64        result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已到榜尾
+	// 3 := 失败-空榜
+	optional      p_fight_power rank      = 2; // 玩家排行信息
+	optional      p_top_ranker  toprank   = 3; // 本服最强
+	repeated      p_fight_power ranklist  = 4; // 排行列表
+}
+
+// 战斗力信息
+message p_fight_power[id=13404]{
+	optional      uint64        rank      = 1; // 角色排名
+	optional      uint64        roleid    = 2; // 角色ID 
+	optional      string        rolename  = 3; // 角色名
+	optional      uint64        rolelv    = 4; // 战队等级
+	optional      uint64        power     = 5; // 攻击阵容战斗力     
+}
+
+// 冒险得星排行榜
+message cs_sysrank_advstar[id=13405]{
+	optional     uint64        offset     = 1; // 偏移量
+}
+
+message sc_sysrank_advstar[id=13406]{
+	optional      uint64       result     = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已到榜尾
+	// 3 := 失败-空榜
+	optional     p_adv_star    rank       = 2; // 玩家排行信息
+	optional     p_top_ranker  toprank    = 3; // 本服最强
+	repeated     p_adv_star    ranklist   = 4; // 排行列表
+}
+
+// 冒险得星信息
+message p_adv_star[id=13407]{
+	optional      uint64        rank      = 1; // 角色排名
+	optional      uint64        roleid    = 2; // 角色ID 
+	optional      string        rolename  = 3; // 角色名
+	optional      uint64        power     = 4; // 战斗力
+	optional      uint64        starnums  = 5; // 冒险得星数     
+}
+
+// 宝贝图鉴排行榜
+message cs_sysrank_gerpokdex[id=13408]{
+	optional     uint64         offset    = 1; // 偏移量
+}
+
+message sc_sysrank_gerpokdex[id=13409]{
+	optional      uint64        result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已到榜尾
+	// 3 := 失败-空榜
+	optional     p_ger_pokdex   rank      = 2; // 玩家排行信息
+	optional     p_top_ranker   toprank   = 3; // 本服最强
+	repeated     p_ger_pokdex   ranklist  = 4; // 排行列表
+}
+
+// 宝贝图鉴信息
+message p_ger_pokdex[id=13410]{
+	optional      uint64        rank      = 1; // 角色排名
+	optional      uint64        roleid    = 2; // 角色ID 
+	optional      string        rolename  = 3; // 角色名
+	optional      uint64        fatk      = 4; // 战队总先手值
+	optional      uint64        gernum    = 5; // 已有宝贝数量
+}
+
+// 争霸排行复用强哥已实现的,此处暂不处理
+
+// 最强宝贝排行榜
+message cs_sysrank_topger[id=13411]{
+	optional      uint64        offset    = 1; // 偏移量
+}
+
+message sc_sysrank_topger[id=13412]{
+	optional      uint64        result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已到榜尾
+	// 3 := 失败-空榜
+	optional      p_top_ger     rank      = 2; // 玩家排行信息
+	optional      p_top_ranker  toprank   = 3; // 本服最强
+	repeated      p_top_ger     ranklist  = 4; // 排行列表
+}
+
+// 最强宝贝信息
+message p_top_ger[id=13413]{
+	optional      uint64        rank      = 1; // 角色排名
+	optional      uint64        roleid    = 2; // 角色ID 
+	optional      string        rolename  = 3; // 角色名
+	optional      p_ger_summary gericon   = 4; // 宝贝头像信息
+	optional      uint64        gerpower  = 5; // 宝贝战斗力
+}
+
+// 最强公会排行榜
+message cs_sysrank_topfamily[id=13414]{
+	optional      uint64        offset    = 1; // 偏移量
+}
+
+message sc_sysrank_topfamily[id=13415]{
+	optional      uint64        result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已到榜尾
+	// 3 := 失败-没有公会
+	optional      p_top_family  rank      = 2; // 玩家排行信息
+	optional      p_top_ranker  toprank   = 3; // 本服最强
+	repeated      p_top_family  ranklist  = 4; // 排行列表
+}
+
+// 最强公会信息
+message p_top_family[id=13416]{
+	optional      uint64        rank      = 1; // 公会排名
+	optional      uint64        familyid  = 2; // 公会ID 
+	optional      string        familyname= 3; // 公会名
+	optional      uint64        familylv  = 4; // 公会等级
+	optional      uint64        familypower= 5; // 公会战斗力
+}
+
+// 工会信息
+message cs_sysrank_family_summary[id=13417]{
+	optional      uint64       familyid    = 1; // 工会id 
+}
+
+message sc_sysrank_family_summary[id=13418]{
+	optional      uint64         result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-工会不存在
+	optional      p_family_summary summary = 2; // 工会信息
+}

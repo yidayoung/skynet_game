@@ -87,9 +87,9 @@ function assertex(v, message)
         --这里有点危险，使用的时候loggerd必须在不然就gg
         if message then
             pcall(require("lualib.logger").error, message)
+            error(message)
         end
         pcall(require("lualib.logger").error, debug.traceback())
-        error(message)
     end
 end
 

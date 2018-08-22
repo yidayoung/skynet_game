@@ -1,0 +1,76 @@
+// 模块=图鉴养成
+// 编号=13000
+
+// 请求图鉴信息
+message cs_pokdex_info[id=13001]{
+}
+
+message sc_pokdex_info[id=13002]{
+	optional      uint64        result      = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-图鉴未开启(20级开启)
+	repeated      p_pokdex      pokdexes    = 2; // 宝贝图鉴信息
+}
+
+// 图鉴信息结构
+message p_pokdex[id=13003]{
+	optional      uint64         gerinitid  = 1; // 宝贝初始ID
+	optional      uint64         pokrank    = 2; // 品阶
+	optional      uint64         poklevel   = 3; // 等级
+	optional      uint64         pokfavor   = 4; // 好感度
+	optional      uint64         fatkacc    = 5; // 累计贡献的先手值
+	optional      uint64         isuprank   = 6; // 宝贝是否可升品
+	// 1 := 可升品
+	// 2 := 不可升品
+	// 3 := 满级满品 
+}
+
+// 图鉴养成
+message cs_pokdex_feed[id=13004]{
+	optional      uint64          gerinitid = 1; // 宝贝初始ID
+	repeated      p_money         foodlist  = 2; // 食物列表
+}
+
+message sc_pokdex_feed[id=13005]{
+	optional      uint64           result   = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-武将不存在
+	// 3 := 失败-消耗列表中有物品不是该武将专属食物
+	// 4 := 失败-消耗列表中有物品不足
+	// 5 := 失败-已达最高等级,请升品
+}
+
+// 图鉴一键使用
+message cs_pokdex_onekey_feed[id=13006]{
+	optional       uint64          gerinitid = 1; // 宝贝初始ID
+}
+
+message sc_pokdex_onekey_feed[id=13007]{
+	optional       uint64          result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-一键使用未开启(50级开启)
+	// 3 := 失败-已达到最高等级
+	// 4 := 失败-武将不存在
+	// 5 := 失败-无该武将专属食物
+}
+
+// 宝贝图鉴升品
+message cs_pokdex_uprank[id=13008]{
+	optional       uint64          gerinitid = 1; // 宝贝初始ID
+}
+
+message sc_pokdex_uprank[id=13009]{
+	optional       uint64          result    = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-武将不存在
+	// 3 := 失败-未达到当前品阶最大等级
+	// 4 := 失败-当前已是最大品阶
+	// 5 := 失败-好感度不足
+}
+
+// 通知前端新增图鉴
+message sc_pokdex_notify[id=13010] {
+    repeated      p_pokdex         newlist   = 1; // 新增列表
+    repeated      p_pokdex         updatelist= 2; // 更新列表
+    repeated      p_pokdex         deletelist= 3; // 删除列表
+}

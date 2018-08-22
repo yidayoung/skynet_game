@@ -1,0 +1,144 @@
+/*
+ * 战斗模块
+ */
+
+
+/*
+ * 战斗属性结构
+ */
+message p_fight_attr[id=10201] {
+    optional sint64 inithp = 1;
+    optional sint64 attack = 2;
+    optional sint64 phydef = 3;
+    optional sint64 magdef = 4;
+    optional sint64 critp = 5;
+    optional sint64 critp_reduce = 6;
+    optional sint64 critv = 7;
+    optional sint64 critv_reduce = 8;
+    optional sint64 blockp = 9;
+    optional sint64 blockp_reduce = 10;
+    optional sint64 blockv = 11;
+    optional sint64 hitp = 12;
+    optional sint64 miss = 13;
+    optional sint64 damage_deepen = 14;
+    optional sint64 damage_reduce = 15;
+    optional sint64 backhpv = 16;
+    optional sint64 atktohp = 17;
+    optional sint64 absorbp = 18;
+    optional sint64 absorbv = 19;
+    optional sint64 bouncep = 20;
+    optional sint64 bouncev = 21;
+    optional sint64 restrainv = 22;
+    optional sint64 speed = 23;
+}
+
+
+/*
+ * 战斗技能结构
+ */
+message p_fight_skill[id=10202] {
+    optional sint64 skill_id = 1;
+    optional sint64 skill_level = 2;
+}
+
+
+/*
+ * 战斗数码兽结构
+ */
+message p_fight_dgmon[id=10203] {
+    optional sint64 pos = 1; // 数码兽站位
+    optional sint64 typeid = 2; // 原始模板ID
+    optional string kind = 3; // 克制类别
+    optional sint64 level = 4; // 数码兽等级
+    optional sint64 rank = 5; // 数码兽品阶
+    optional sint64 star = 6; // 数码兽星级
+    optional p_fight_attr attr = 7; // 数码兽属性
+    optional sint64 hp = 8; // 数码兽血量
+    optional sint64 battle_power = 9; // 数码兽战力
+    repeated p_fight_skill enter_skills = 10; // 登场技能
+    repeated p_fight_skill fight_skills = 11; // 战斗技能
+    repeated p_fight_skill condi_skills = 12; // 条件技能
+    repeated p_fight_skill super_enter_skills = 13; // 进化登场技能
+    repeated p_fight_skill super_fight_skills = 14; // 进化战斗技能
+    repeated p_fight_skill super_condi_skills = 15; // 进化条件技能
+    optional p_fight_skill transform_skill = 16; // 变身技能
+    optional sint64 transform_max_round = 17; // 最大变身回合数
+    optional sint64 transform_type_id = 18; // 变身形态
+    optional bool is_boss = 19; // 是否是BOSS
+    optional sint64 base_evolve_level = 20; // 常驻形态
+    optional sint64 boom_skill = 21; // 曝气技能ID
+    optional sint64 show_stage = 22; // 装逼显示特效的阶段
+    optional sint64 clothes = 23; //时装状态 0 => 默认 1 => 激活特效
+    optional bool is_coward = 24; // 是否是胆小鬼
+}
+
+
+/*
+ * 战斗训练师动作
+ */
+message p_fight_sumer[id=10204] {
+    optional sint64 pos = 1; // 训练师出手位置
+    optional sint64 cur_round = 2; // 所在回合
+    optional sint64 cur_out = 3; // 并不懂 ???
+}
+
+
+/*
+ * 战斗通用结构
+ */
+message p_fight_struct[id=10205] {
+    repeated sint64 seed = 1; // 随机种子(三元组)
+    optional sint64 max_round_limit = 2; // 最大回合数限制
+    repeated p_fight_dgmon dgmon_list = 3; // 第一轮数码兽列表
+    repeated p_fight_sumer sumer_list = 4; // 第一轮训练师列表
+    repeated p_fight_dgmon dgmon_list2 = 5; // 第二轮数码兽列表
+    repeated p_fight_sumer sumer_list2 = 6; // 第二轮训练师列表
+    repeated p_fight_dgmon dgmon_list3 = 7; // 第三轮数码兽列表
+    repeated p_fight_sumer sumer_list3 = 8; // 第三轮训练师列表
+    repeated p_fight_poshp poshp_list = 9; // 位置血量列表
+    optional sint64 total_round = 10; // 总回合数
+    optional sint64 atk_trainer = 11; // 攻击方训练师
+    optional sint64 def_trainer = 12; // 受击方训练师
+    optional bool is_verify = 13; // 是否为验证
+    optional bool is_atk_auto = 14; // 攻击方是否为自动
+    optional bool is_def_auto = 15; // 防御方是否为自动
+    optional sint64 fight_type = 16; // 战斗类型
+    // 0 := 普通战斗
+    // 1 := 克隆战斗
+    optional sint64 battle_index = 17; // 打到了第几波
+    optional sint64 atk_teamspeed = 18; // 攻击方小队附加先手值
+    optional sint64 def_teamspeed = 19; // 防守方小队附加先手值
+    optional sint64 atk_mp = 20; // 攻击方的初始mp,如果是0表示使用配置的初始mp
+    optional sint64 left_mp = 21; // 攻击方的当前mp值 战斗结束的时候传回用
+    optional sint64 right_mp = 22; // 防守方的当前mp值 战斗结束的时候传回用
+}
+
+
+/*
+ * 请求demo战斗
+ */
+message cs_fight_demo[id=10206] {
+}
+message sc_fight_demo[id=10207] {
+    optional p_fight_struct fight_struct = 1; // 战斗结构
+}
+
+
+/*
+ * 上报demo战斗
+ */
+message cs_fight_demo_report[id=10208] {
+    optional p_fight_struct fight_struct = 1; // 战斗结构
+}
+
+
+/*
+ * 站位血量结构
+ */
+message p_fight_poshp[id=10209] {
+    optional sint64 pos = 1; // 站位
+    optional sint64 hp = 2; // 血量
+    optional sint64 max_hp =3; //最大血量
+}
+
+

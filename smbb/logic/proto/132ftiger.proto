@@ -1,0 +1,75 @@
+// 132 公会老虎机模块
+
+message cs_ftiger_info[id=13201]{
+
+}
+
+message sc_ftiger_info[id=13202]{
+    optional            uint64                  freetimes       = 1;          //已经使用的免费刷新次数
+    optional            uint64                  jointimes       = 2;          //参与次数
+    optional            uint64                  paytimes        = 3;          //付费刷新次数
+    optional            p_tiger                 tiger           = 4;          //当前老虎机的内容，如果没有这个字段说明没有在祈福状态
+}
+
+message p_tiger[id=13203]{
+    repeated            uint64                  numbers         = 1;          //老虎机当前的内容
+}
+
+message cs_ftiger_rank[id=13204]{
+
+}
+
+message sc_ftiger_rank[id=13205]{
+    repeated            p_tiger_rank            ranklist        = 2;          //排行榜信息
+}
+
+message p_tiger_rank[id=13206]{
+    optional            uint64                  rank            = 1;          //排行
+    optional            string                  name            = 2;          //玩家名字
+    optional            uint64                  cardnum         = 3;          //将魂获得数
+    optional            uint64                  usetimes        = 4;          //使用的祈福次数
+}
+
+message cs_ftiger_play[id=13207]{
+}
+
+message sc_ftiger_play[id=13208]{
+    optional            uint64                  result          = 1;           //操作结果
+    // 0 := 未知错误
+    // 1 := 成功
+    // 2 := 未加入联盟
+    // 3 := 次数不足
+    // 4 := 当前已经在祈福状态
+    optional            p_tiger                 tiger           = 2;           //刷新成功后的新的老虎机信息
+}
+
+message cs_ftiger_refresh[id=13209]{
+
+}
+
+message sc_ftiger_refresh[id=13210]{
+    optional            uint64                  result          = 1;            //操作结果
+    // 0 := 未知错误
+    // 1 := 成功
+    // 2 := 未加入联盟
+    // 3 := 刷新次数已到上限
+    // 4 := 当前不是祈福状态
+    // 5 := 刷新需要的消耗不足
+    // 6 := 已经不需要刷新了
+    optional            p_tiger                 tiger           = 2;            //刷新后的老虎机信息
+}
+
+message cs_ftiger_draw[id=13211]{
+
+}
+
+message sc_ftiger_draw[id=13212]{
+    optional            uint64                  result          = 1;            //操作后的结果
+    // 0 := 未知错误
+    // 1 := 成功
+    // 2 := 未加入联盟
+    // 3 := 当前不是祈福状态
+    optional            p_reward                reward          = 2;            //奖励
+}
+
+

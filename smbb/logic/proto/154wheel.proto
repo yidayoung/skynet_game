@@ -1,0 +1,104 @@
+// wheel 幸运转盘 15400
+
+
+message cs_wheel_state[id=15401]{
+}
+
+message sc_wheel_state[id=15402]{
+    optional        uint64                  state                       = 1;        //活动开启状态
+    // 1 => 开启
+    // 2 => 观看阶段
+    // 3 => 关闭
+    optional        uint64                  next_sec                    = 2;        //下次阶段切换的时间
+}
+
+message cs_wheel_config[id=15417]{
+}
+
+message sc_wheel_config[id=15418]{
+    optional        p_wheel_config          config_info                 = 1;        //活动配置相关信息
+}
+
+// 要是活动没开，下面的消息都不要发了
+message cs_wheel_info[id=15403]{
+}
+
+message sc_wheel_info[id=15404]{
+    optional        uint64                  my_score                    = 1;        //我的积分
+    optional        uint64                  free_times                  = 2;        //可免费抽取的次数
+    repeated        uint64                  times_reward_draw           = 3;        //已经领取的次数奖励，可领取的自己用当前积分和配置算
+}
+
+message p_wheel_config[id=15405]{
+    repeated        p_money                 one_cost                    = 1;        //抽取1次的花费
+    repeated        p_money                 ten_cost                    = 2;        //抽取10次的花费
+    repeated        p_reward                box_list                    = 3;        //转盘上的格子的奖励列表
+    repeated        p_wheel_box             times_box_list              = 4;        //次数奖励盒子信息
+    optional        p_reward                lucky_reward                = 5;        //幸运奖励
+    repeated        p_wheel_rank_reward     rank_reward_list            = 6;        //排行榜奖励
+    optional        uint64                  luck_need                   = 7;        //幸运奖励入场需要的基础积分
+}
+
+message p_wheel_box[id=15406]{
+    optional        uint64                  need_times                  = 1;        //领取需要的次数
+    optional        p_reward                reward                      = 2;        //奖励具体内容
+}
+
+message p_wheel_rank_reward[id=15407]{
+    optional        uint64                  begin_rank                  = 1;        //奖励起始排名
+    optional        uint64                  end_rank                    = 2;        //奖励结束排名
+    optional        uint64                  need_score                  = 3;        //需要的积分
+    optional        p_reward                reward                      = 4;        //奖励内容
+}
+
+message cs_wheel_play[id=15408]{
+    optional        uint64                  type                        = 1;        //几连抽
+    // 1 => 单抽
+    // 2 => 十连
+    // 3 => 免费
+}
+
+message sc_wheel_play[id=15409]{
+    optional        uint64                  result                      = 1;        //结果
+    // 1 => 成功
+    // 2 => 活动未开启
+    // 3 => 货币不足
+    // 4 => 类型非法
+    // 5 => 免费次数不足
+    repeated        p_reward                reward_list                 = 2;        //奖励内容
+    optional        uint64                  new_score                   = 3;        //新的积分
+}
+
+message cs_wheel_draw[id=15410]{
+    optional        uint64                  score                       = 1;        //要领取的档位积分
+}
+
+message sc_wheel_draw[id=15411]{
+    optional        uint64                  result                      = 1;        //操作结果
+    // 1 => 领取成功
+    // 2 => 活动未开启
+    // 3 => 没有可领取的积分奖励
+    // 4 => 没有对应档位
+    // 5 => 该档位已经领取过
+    optional        p_reward                reward                      = 2;        //已经领取的奖励内容
+    repeated        uint64                  new_draw_score              = 3;        //最新的已经领取的分数
+}
+
+message cs_wheel_rank_list[id=15412]{
+}
+
+message sc_wheel_rank_list[id=15413]{
+    repeated        p_wheel_rank            rank_list                   = 1;        //排行榜
+}
+
+message p_wheel_rank[id=15414]{
+    optional        uint64                  rank                        = 1;        //排行
+    optional        string                  role_name                   = 2;        //排行榜上的角色名字
+    optional        uint64                  score                       = 3;        //积分
+}
+
+message cs_wheel_lucky_man[id=15415]{
+}
+message sc_wheel_lucky_man[id=15416]{
+    repeated        string                  role_name                   = 1;        //幸运玩家的名字
+}

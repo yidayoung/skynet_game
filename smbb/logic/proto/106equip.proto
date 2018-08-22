@@ -1,0 +1,105 @@
+// 装备模块
+// 编号=106
+
+
+// 获取所有装备信息
+message cs_equip[id=10604] {
+}
+message sc_equip[id=10605] {
+    repeated        p_equip              equiplist               =1; // 装备列表
+}
+message p_equip[id=10606] {
+    optional        uint64               equipid                 =1; // 装备ID
+    optional        uint64               typeid                  =2; // 模板ID
+    optional        uint64               rank                    =3; // 装备品阶
+    optional        uint64               exp                     =4; // 装备的经验值
+    optional        uint64               level                   =5; // 装备等级
+    optional        uint64               star                    =6; // 装备星级
+    optional        uint64               pos                     =7; // 装备位置
+    optional        uint64               gerid                   =8; // 被装备的武将id
+    optional        p_attr               attr                    =9; // 装备属性
+    repeated        p_equip_precious     precious_info           =10; // 装备插槽信息 
+    repeated        p_destiny             destinys                 =11; // 激活天命的id列表
+}
+
+// 装备更新通知
+message sc_equip_notify[id=10608] {
+    repeated        p_equip             newlist                 =1; // 新增列表
+    repeated        p_equip             updatelist              =2; // 更新列表
+    repeated        p_equip             deletelist              =3; // 删除列表
+}
+
+
+// 请求强化装备
+message cs_equip_uplevel[id=10617] {
+    optional        uint64                equipid                 =1; // 装备ID
+    optional        uint64                onekey                  =2; // 是否一键
+    // 1 := 是
+    // 2 := 否
+}
+message sc_equip_uplevel[id=10618] {
+    optional        uint64                result                  =1; // 强化结果
+    // 1 := 成功
+    // 2 := 失败-无此装备
+    // 3 := 失败-等级限制
+    // 4 := 失败-货币不足
+    // 5 := 失败-onkey参数错误
+    // 0 := 失败-未知错误
+}
+
+// 请求进阶装备
+message cs_equip_uprank[id=10619] {
+    optional        uint64               equipid                  =1; // 装备ID
+}
+message sc_equip_uprank[id=10620] {
+    optional        uint64                result                  =1; // 进阶结果
+    // 1 := 成功
+    // 2 := 失败-无此装备
+    // 3 := 失败-目标品阶无配置
+    // 4 := 失败-货币不足
+    // 5 := 失败-装备等级不足
+    // 6 := 失败-战队等级不足
+    // 7 := 失败-已到最高品阶
+    // 0 := 失败-未知错误
+}
+
+// 请求进阶装备，也就是装备觉醒
+message cs_equip_upstar[id=10621] {
+    optional        uint64               equipid                 =1; // 装备ID
+}
+message sc_equip_upstar[id=10622] {
+    optional        uint64                result                  =1; // 进阶结果
+    // 1 := 成功
+    // 2 := 失败-无此装备
+    // 3 := 失败-目标品阶无配置
+    // 4 := 失败-货币不足
+    // 5 := 失败-装备等级不满足需求
+    // 6 := 失败-已到最高星级
+    // 0 := 失败-未知错误
+}
+
+message cs_equip_eat[id=10623]{
+    optional        uint64               equipid                 =1; // 装备ID
+    repeated        p_money              foodlist                =2; // 材料装备列表
+}
+
+message sc_equip_eat[id=10624]{
+    optional        uint64                result                  =1; // 进阶结果
+    // 1 := 成功
+    // 2 := 失败-无此装备
+    // 3 := 失败-装备不支持此类操作
+    // 4 := 失败-货币不足（发送的消耗和背包不符合）
+    // 5 := 失败-装备品阶不足
+    // 0 := 失败-未知错误
+}
+
+message p_equip_precious[id=10625] {
+    optional        uint64               pos                     =1; // 位置 
+    optional        uint64               preciousid              =2; // 镶嵌的刻印uid，0则未镶嵌
+    optional        uint64               tmpid                   =3; // 镶嵌的刻印模板id
+}
+
+message p_destiny[id=10626] {
+    optional        uint64               destinyid                =1; // 位置 
+    optional        uint64               level                   =2; // 天命等级
+}

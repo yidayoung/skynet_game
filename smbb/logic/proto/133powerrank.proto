@@ -1,0 +1,51 @@
+// 模块=powerrank
+// 编号=13300
+
+message cs_powerrank_open[id=13301]{
+}
+
+message sc_powerrank_open[id=13302]{
+	optional		uint64			start_time=1;		//开启时间戳
+	optional		uint64			end_time=2;			//结束时间戳
+	optional		uint64			priority=3;			//活动优先级
+	optional		string			icon=4;				//图标
+	optional		string			title=5;			//名称
+	optional		string			content=6;			//内容
+	optional		uint64			is_open=7;			//是否是开服活动
+	//1是，2不是
+	optional        uint64          rewardger=8;        //奖励的武将的typeid
+	optional        uint64          max_power=9;        //历史最高战斗力,不显示用来算奖励那是不是已完成
+}
+
+message cs_powerrank_list[id=13303]{
+}
+
+//有可能会同步调用失败（系统错误），所以加一个result字段,失败了就用本地缓存的如果没有就显示空
+message sc_powerrank_list[id=13304]{
+	optional	uint64				result=1;
+	//1--成功
+	repeated	p_powerrank			rank_list=2;       //战斗力排行榜
+	repeated	p_powerrank_reward	reward_list=3;     //战斗力排行给的奖励
+	repeated    p_powerrank_achv_reward achv_list=4;   //战斗力到达多少后给的奖励
+	required    uint64              my_rank = 5;       //自己的排名要是没上榜就是0
+}
+
+message p_powerrank[id=13305]{
+    optional        uint64          rank        =1;
+	optional		uint64			power       =2;
+	optional		string			role_name   =3;
+	optional		uint64			level       =4;
+	optional		uint64			role_id     =5;
+}
+
+message p_powerrank_reward[id=13306]{ 
+	optional		uint64			begin_rank=1;
+	optional		uint64			end_rank=2;
+	optional		p_reward		reward=3;
+}
+
+message p_powerrank_achv_reward[id=13307]{
+    optional        uint64          power       =1; //档位需要的战斗力
+    optional        p_reward        reward      =2; //奖励内容
+
+}

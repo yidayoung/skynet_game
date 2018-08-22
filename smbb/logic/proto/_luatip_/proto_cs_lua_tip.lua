@@ -1295,8 +1295,6 @@ function cs.cs_task_one_draw(type) end
 
 function cs.cs_task_trunk() end
 
-function cs.cs_test_message() end
-
 ---@param typeid uint64 @要选择的训练师的typeid 
 ---@param type uint64 @对应的是防守阵容还是进攻阵容 
 function cs.cs_trainer_chose(typeid, type) end

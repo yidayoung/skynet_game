@@ -1,0 +1,46 @@
+// 充值红包协议
+// 编号 = 137
+
+// 请求红包信息
+message cs_renvelope_info[id=13701]{
+}
+
+message sc_renvelope_info[id=13702]{
+	optional      uint64         result     = 1; // 结果
+	// 1 := 成功 
+	// 2 := 失败-等级不够,功能未开启
+	optional      uint64         robtimes   = 2; // 今日已抢次数
+	optional      p_renvelope    envelope   = 3; // 红包结构
+	optional      uint64         isrob      = 4; // 是否已抢过当前红包
+}
+
+// 红包结构
+message p_renvelope[id=13703]{
+	optional      uint64        renvelopeid   = 1; // 当前红包id
+	optional      uint64        renvelopecase = 2; // 当前红包档次
+	optional      uint64        rentimes      = 3; // 红包已抢次数
+}
+
+// 抢红包
+message cs_renvelope_rob[id=13704]{
+	optional      uint64        envelopeid  = 1; // 红包id
+}
+
+message sc_renvelope_rob[id=13705]{
+	optional      uint64        result      = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-已抢过
+	// 3 := 失败-手慢无
+	// 4 := 失败-今日次数已用完
+	// 5 := 失败-没红包,下次赶早
+	optional      p_reward      reward      = 2; // 红包奖励
+}
+
+// 小红点
+message sc_renvelope_xhd[id=13706]{
+	optional     uint64         ctimes      = 1; // 红包可抢次数
+}
+
+// 小红点请求协议
+message cs_renvelope_xhd[id=13707]{
+}

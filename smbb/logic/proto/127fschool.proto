@@ -1,0 +1,88 @@
+// 模块=fboss
+// 编号=127
+
+//查看自己的公会训练所信息
+message cs_fschool_info[id=12701]{
+
+}
+
+message sc_fschool_info[id=12702]{
+    optional            uint64                    acceleratetime  =1;       //已经使用的加速次数
+    repeated            p_fshool_desk             desks           =2;       //课桌，所有解锁的桌子都会回
+    repeated            string                    rolenames       =3;       //给你加速的人的名字
+    repeated            uint64                    cansendroles    =4;       //可被赠送的角色列表
+}
+
+message p_fshool_desk[id=12703]{
+    optional            uint64                    pos             =1;       //位置
+    optional            p_school_ger              ger             =2;       //桌子上的宝贝
+}
+
+message p_school_ger[id=12704]{
+    optional            uint64                    gerid           =1;       //宝贝ID
+    optional            uint64                    level           =2;       //宝贝等级
+    optional            uint64                    exp             =3;       //宝贝的经验值
+    optional            uint64                    typeid          =4;       //宝贝的typeid
+    optional            uint64                    normalstage     =5;       //宝贝的常驻形态
+    optional            uint64                    clothes         =6;       //时装状态
+    optional            sint64                    expiresec       =7;       //时装的到期时间
+    // -1表示永久，其他和当前时间算差值算过期时间
+}
+
+message cs_fschool_setger[id=12705]{
+    optional            uint64                    pos             =1;       //桌子位置
+    optional            uint64                    gerid           =2;       //宝贝ID
+}
+
+message sc_fschool_setger[id=12706]{
+    optional            uint64                    result          =1;       //操作结果
+    // 1 := 成功
+    // 2 := 宝贝id不存在
+    // 3 := 桌子位置未解锁
+    optional            p_fshool_desk             new_desk        =2;       //新的桌子信息
+}
+
+message cs_fschool_viewother[id=12707]{
+    optional            uint64                    roleid          =1;       //角色ID
+}
+
+message sc_fschool_viewother[id=12708]{
+    optional            uint64                    result          =1;       //操作结果
+    // 1 := 成功
+    // 2 := 玩家不存在
+    // 3 := 玩家没有工会
+    optional            uint64                    acceleratedtime =2;       //被加速次数
+    repeated            p_fshool_desk             desks           =3;       //课桌，所有解锁的桌子都会回
+}
+
+message cs_fschool_accelerate[id=12709]{
+    optional            uint64                    roleid          =1;       //角色ID
+    optional            uint64                    pos             =2;       //选择加速的位置
+    optional            uint64                    gerid           =3;       //要加速的宝贝ID
+}
+
+message sc_fschool_accelerate[id=12710]{
+    optional            uint64                    result          =1;       //操作结果
+    // 1 := 成功
+    // 2 := 信息不一致
+    // 3 := 没有加入联盟
+    // 4 := 对方可被赠送次数已满
+    // 5 := 自己的可加速次数已经用光
+    optional            uint64                   tarroleid        =2;       //目标角色ID
+    // 这里如果是信息不一致或者其他异常就用这个id在view他一下
+    repeated            p_fshool_desk            new_desk         =3;       //新的桌子信息
+    optional            p_reward                 reward           =4;       //加速成功后的奖励
+}
+
+message cs_fschool_accelerate_auto[id=12711]{
+
+}
+message sc_fschool_accelerate_auto[id=12712]{
+    optional            uint64                    result          =1;       //操作结果
+    // 1 := 成功
+    // 2 := 没有加入联盟
+    // 3 := 自己的可加速次数已经用光
+    // 4 := 联盟内没有可加速的人
+    optional            string                   tar_rolename     =2;       //新的桌子信息
+    optional            p_reward                 reward           =3;
+}

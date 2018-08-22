@@ -1,0 +1,251 @@
+// 活动模块
+// 编号=119
+
+
+// 请求预览列表
+message cs_activity_preview[id=11901] {
+}
+message sc_activity_preview[id=11902] {
+    repeated        p_actiview          prelist                 =1; // 预览列表
+}
+message p_actiview[id=11903] {
+    optional        uint64               actid                   =1; // 活动ID
+    optional        string              name                    =2; // 活动名称
+    optional        uint64               class                   =3; // 活动类型
+    // 1 := 单笔充值
+    // 2 := 累计充值
+    // 3 := 充值签到
+    // 4 := 限时打折
+    // 5 := 消耗有礼
+    // 6 := 道具兑换
+    // 7 := 连续充值
+    // 8 := 成长基金
+    // 9 := 折扣礼包
+    // 10 := 等级礼包
+    // 11 := 冲级活动
+    // 12 := 首充有奖
+    // 13 := 战力礼包
+    // 14 := 普通展示
+    // 15 := Vip礼包
+    // 16 := 限时进阶
+    // 17 := 续充有奖
+    // 18 := 选择领奖
+    // 19 := 精灵培养
+    // 20 := 活跃活动
+    // 21 := 活跃活动2
+    // 24 := 天天折扣
+    repeated        string              icon                    =4; // 活动图标
+    optional        uint64               endtime                 =5; // 结束时间
+    optional        uint64               priority                =6; // 优先级
+    optional        uint64                is_kaifu                =7; // (1 := 开服活动; 2 := 其它活动)
+}
+
+
+// 预览更新通知
+message sc_activity_notify[id=11904] {
+    repeated        p_actiview          newlist                 =1; // 新增列表
+    repeated        p_actiview          updatelist              =2; // 更新列表
+    repeated        p_actiview          deletelist              =3; // 删除列表
+}
+
+
+// 请求活动详情
+message cs_activity_info[id=11905] {
+    repeated        uint64               idlist                  =1; // ID列表
+}
+message sc_activity_info[id=11906] {
+    repeated        p_activity          actlist                 =1; // 活动列表
+}
+message p_activity[id=11907] {
+    optional        uint64               actid                   =1; // 活动ID
+    optional        string              name                    =2; // 活动名称
+    optional        uint64               class                   =3; // 活动类型
+    repeated        string              icon                    =4; // 活动图标
+    optional        uint64               endtime                 =5; // 结束时间
+    // Unix时间戳，0 表示永不结束
+    optional        uint64               refresh                 =6; // 刷新时间
+    // Unix时间戳，0 表示永不刷新
+    optional        string              desc                    =7; // 活动描述
+    repeated        p_actidraw          drawlist                =8; // 子项列表
+    repeated        p_actiarg           args                    =9; // 附加参数
+    // (2 := 累计充值)时，[{1,累计充值数量}]；
+    // (3 := 充值签到)时，[{1,当日累充数量},{2,累充天数}]；
+    // (5 := 消耗有礼)时，[{TypeID,已经消耗的数目}]；
+    // (7 := 连续充值)时，[{第几天,当日累充数量}]；
+    // (8 := 成长基金)时，[{1,购买次数}]
+    // (17 := 续充有奖)时，[{1,充值次数}]
+    // (20 := 活跃活动)时，[{子项ID,当前进度}]
+    // (22 := 月度充值活动)时，[{子项ID,剩余的天数}]
+    // (27 := 积天消费红包)时，[{DrawID,奖励的货币数量}]；
+    // 其余活动类型时附加参数传空表。
+    repeated        p_actiarg           condition               =10; // 附加条件
+    // (3 := 充值签到)时，[{1,每日最少充值数额}]；
+    // (7 := 连续充值)时，[{1,每日最少充值数额}]；
+    // (8 := 成长基金)时，[{1,购买截止时间},{2,最低VIP等级},{3,购买消耗钻石}]；
+    // (9 := 折扣礼包)时，[{VIP等级,折扣(百分比)}]；
+    // (15 := Vip礼包)时，[{1,所需VIP等级}]；
+    // (20 := 活跃活动)时，[{1,是第几天的任务}]
+    // (21 := 活跃活动2)时，[{任务类型,所需目标}]
+    // (22 := 活跃活动2)时，[{1,充值后增加的天数}]
+    // (24 := 天天折扣)时，[{1,最低人物等级},{2,最低VIP等级}]；
+    // (27 := 积天消费红包)时，[{1,当天是活动第几天},{2,奖励的货币类型}]；
+    // 其余活动类型时附加参数传空表。
+    optional        uint64               starttime               =11; // 开始时间
+    // Unix时间戳，0 表示永不结束
+    optional        uint64               priority                =12; // 优先级
+    optional        uint64                is_kaifu                =13; // (1 := 开服活动; 2 := 其它活动)
+}
+
+message p_actidraw[id=11908] {
+    optional        uint64               drawid                  =1; // 子项ID
+    optional        string              desc                    =2; // 子项描述
+    optional        uint64               numlimit                =3; // 次数限制
+    repeated        p_actiarg           condition               =4; // 领取条件
+    // (1 := 单笔充值)时，[{1,所需单笔充值}]；
+    // (2 := 累计充值)时，[{1,所需累计充值}]；
+    // (3 := 充值签到)时，[{1,所需累计充值天数}]；
+    // (4 := 限时打折)时，[{货币TypeID,货币购买所需数量}]；
+    // (5 := 消耗有礼)时，[{货币TypeID,货币消耗所需数量}]；
+    // (6 := 道具兑换)时，[{货币TypeID,货币购买所需数量}]；
+    // (7 := 连续充值)时，[{1,所需连续充值天数}]；
+    // (8 := 成长基金)时，[{1,所需角色等级}]；
+    // (9 := 折扣礼包)时，[{货币TypeID,货币购买所需数量(原价)}]；
+    // (10 := 等级礼包)时，[{1,所需角色等级}]；
+    // (11 := 冲级活动)时，[{1,所需角色等级}]；
+    // (12 := 首充有奖)时，[{1,所需首充次数}]；
+    // (13 := 战力礼包)时，[{1,所需角色战力}]；
+    // (14 := 普通展示)时，不会有领取项；
+    // (15 := Vip礼包)时，[{货币TypeID,货币购买所需数量}]；
+    // (16 := 限时进阶)时，[{1,所需进阶值}]；
+    // (17 := 续充有奖)时，[{1,所需充值次数}]；
+    // (18 := 选择领奖)时，[{1,所需单笔充值}]；
+    // (19 := 精灵培养)时，[{1,精灵TypeID},{2,所需等级},{3,所需品阶},{4,所需形态}]；
+    // (20 := 活跃活动)时，[{任务类型,所需目标}]；
+    // (21 := 活跃活动2)时，[{任务类型,所需目标}]。
+    // (22 := 月度充值)时，[{1,需要的充值}]。
+    // (24 := 天天折扣)时，[{1,第几天},{2,是否vip标志(1是 2不是)},{3,最低人物等级},{4,最低VIP}{5,货币id},{6,原价},{7,折扣}]
+    // (27 := 积天消费红包)时，[{1,领取需要第几天},{2,返还的万分比},{3,最高返还数量}]；
+    optional        p_reward             reward                  =5; // 领取奖励
+    optional        uint64               state                   =6; // 是否可领
+    // 0 := 不可领
+    // 1 := 可以领
+    optional        uint64               number                  =7; // 领取次数
+}
+message p_actiarg[id=11909] {
+    optional        uint64               type                    =1; // 参数类型
+    optional        uint64               value                   =2; // 参数数值
+}
+
+
+// 请求活动领取
+message cs_activity_draw[id=11910] {
+    optional        uint64               actid                   =1; // 活动ID
+    optional        uint64               drawid                  =2; // 子项ID
+}
+message sc_activity_draw[id=11911] {
+    optional        uint64                result                  =1; // 领取结果
+    // 1 := 成功
+    // 2 := 失败-活动不存在
+    // 3 := 失败-子项不存在
+    // 4 := 失败-不满足条件
+    // 5 := 失败-次数上限
+    repeated        p_activity          newact                  =2; // 新信息
+}
+
+
+// 请求购买成长基金
+message cs_activity_czjj_buy[id=11912] {
+    optional        uint64               actid                   =1; // 对应活动ID
+}
+message sc_activity_czjj_buy[id=11913] {
+    optional        uint64                result                  =1; // 购买结果
+    // 1 := 购买成功
+    // 2 := 失败-已经购买过
+    // 3 := 失败-货币不足
+    // 4 := 失败-VIP等级不足
+    // 5 := 失败-活动不存在
+    // 6 := 失败-时间已过期
+    optional        uint64               actid                   =2; // 对应活动ID
+}
+
+
+// 活跃活动预览(只做展示用)
+message cs_activity_active_view[id=11914] {
+}
+message sc_activity_activy_view[id=11915] {
+    repeated        p_active_week       weeklist                =1; // 每周的结构
+}
+message p_active_week[id=11916] {
+    optional        string              title                   =1; // 标题
+    optional        uint64               starttime               =2; // 起始时间
+    optional        uint64               endtime                 =3; // 结束时间
+    repeated        p_active_days       dayslist                =4; // 每天的结构
+    repeated        p_reward            shipmoney               =5; // 飞船奖励预览
+}
+message p_active_days[id=11917] {
+    optional        string              title                   =1; // 标题
+    repeated        p_actidraw          drawlist                =2; // 每项的结构
+    optional        uint64               starttime               =3; // 起始时间
+    optional        uint64               endtime                 =4; // 结束时间
+}
+
+// 开服活动部分
+message cs_activity_kaifu[id=11918]{
+
+}
+
+message sc_acitivity_kaifu[id=11920]{
+    optional        uint64              endtime                 =1;//开服活动的结束时间,如果是0则表示没开放
+    repeated        p_activity          activity                =2;//当前活动内容
+    optional        uint64              drawtime                =3;//什么时候可以领取结算奖励
+    optional        p_reward            reward                  =4;//结算满额度奖励
+    optional        bool                isdraw                  =5;//当前是否已经领取过结算奖励
+}
+
+// 奖励领取还是走activiy_draw,上面告诉活动id和具体的drawid
+// 结算奖励领取
+message cs_activity_kaifu_draw[id=11921]{
+    optional        uint64              activityid              =1;//活动id
+    optional        uint64              drawid                  =2;//drawid
+}
+
+message sc_activity_kaifu_draw[id=11922]{
+    optional        uint64                result                  =1; // 领取结果
+    // 1 := 成功
+    // 2 := 失败-活动不存在
+    // 3 := 失败-子项不存在
+    // 4 := 失败-不满足条件
+    // 5 := 失败-次数上限
+    repeated        p_activity            newact                  =2; // 新信息
+
+}
+
+message cs_activity_kaifu_drawend[id=11923]{
+
+}
+
+message sc_activity_kaifu_drawend[id=11924]{
+    optional        uint64              result                  =1;
+    //1 := 成功
+    //2 := 活动没开启
+    //3 := 已经领取过
+    //4 := 还没到领取时间
+    optional        p_reward            reward                  =2;//具体领到的奖励内容
+}
+
+
+message sc_acitivity_kaifu_notify[id=12925]{
+    repeated        p_activity          activity                =1;//改变了的活动内容
+}
+// %% 活跃活动中的任务类型定义
+//-define(ACTIVITY_ACTIVE_TYPE_ROLE_LEVEL,  		1).		% 战队等级上升
+//-define(ACTIVITY_ACTIVE_TYPE_BATTLE_NORAML,  		2).		% 普通副本进度
+//-define(ACTIVITY_ACTIVE_TYPE_BATTLE_HARD,     	3).		% 精英副本进度
+//-define(ACTIVITY_ACTIVE_TYPE_GER_RANKN_NUM,  		4).	    % 多少个精灵进阶到指定阶
+//-define(ACTIVITY_ACTIVE_TYPE_GER_STARN_NUM,  		5).	    % 多少个精灵升到指定星
+//-define(ACTIVITY_ACTIVE_TYPE_EQUIP_RANKN_NUM,  	6).	    % 多少个装备进阶到指定阶
+//-define(ACTIVITY_ACTIVE_TYPE_EQUIP_STARN_NUM,  	7).	    % 多少个装备升到指定星
+//-define(ACTIVITY_ACTIVE_TYPE_PVP_RANK,  		    8).	    % pvp到达多少名
+//-define(ACTIVITY_ACTIVE_TYPE_PVP_SCORE,  		    9).	    % pvp积分到多少
+//-define(ACTIVITY_ACTIVE_TYPE_TRIAL_RANK,  		10).	% pvp到达多少名
+//-define(ACTIVITY_ACTIVE_TYPE_TRIAL_SCORE,  		11).	% pvp积分到多少

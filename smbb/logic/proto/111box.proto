@@ -1,0 +1,108 @@
+//模块=box
+//编号=11100
+
+message cs_box_info[id=11101]{ 
+}
+
+message sc_box_info[id=11102]{
+	optional    uint64       result   = 1;
+	// 1 := 成功
+	// 2 := 等级不够
+	optional	p_box_info	 box_info = 2;
+}
+
+message cs_box_select[id=11103]{ 
+	optional	uint64		select_type = 1;	//选取的抽取种类
+	// 1 := 数码币扭蛋
+	// 2 := 数码币十连扭
+	// 3 := 钻石扭蛋
+	// 4 := 钻石十连扭
+	// 5 := 数码币免费扭蛋
+	// 6 := 钻石免费扭蛋
+	// 7 := 神秘扭蛋
+	// 8 := 数码币百连抽
+}
+
+message sc_box_select[id=11104]{
+	optional	uint64		 result       = 1;
+	// 1 := 成功
+	// 2 := 数码币不足
+	// 3 := 钻石不足
+	// 4 := 数码币免费时间未到
+	// 5 := 钻石免费时间未到
+	// 6 := vip等级不够
+	optional	uint64		  select_type  = 2;
+	repeated	p_box_reward  reward_list  = 3;
+	optional	p_box_info	  box_info     = 4;
+	optional	p_reward	  fix_reward   = 5;
+}
+
+message p_box_info[id=11105]{ 
+	optional    uint64      one_item        = 1; // 数码币单扭价格
+	optional    uint64      ten_item        = 2; // 数码币十扭价格
+	optional    uint64      hun_item        = 3; // 数码币百扭价格
+	optional    uint64      gold_free_cool  = 4; // 钻石免费单扭冷却时间
+	optional    uint64      item_free_times = 5; // 数码币单扭免费次数
+	optional	uint64		item_free_cool  = 6; // 数码币免费单扭冷却时间
+	optional	uint64		one_gold        = 7; // 钻石单扭价格
+	optional	uint64		ten_gold        = 8; // 钻石十扭价格
+	optional    uint64      gold_ten_dis    = 9; // 钻石十扭打折
+	optional	uint64		gold_free_times = 10; // 钻石单扭免费次数
+	optional    uint64      gold_one_dis    = 11;// 钻石单扭打折
+	optional    uint64      mystery_gold    = 12;// 神秘扭蛋价格
+	optional    uint64      mystery_dis     = 13;// 神秘扭蛋打折
+	optional    uint64      one_dis_start   = 14;// 钻石单扭打折起始时间
+	optional    uint64      one_dis_end     = 15;// 钻石单扭打折结束时间
+	optional    uint64      ten_dis_start   = 16;// 钻石十扭打折起始时间
+	optional    uint64      ten_dis_end     = 17;// 钻石十扭打折结束时间
+	optional    uint64      mys_dis_start   = 18;// 神秘扭蛋打折起始时间
+	optional    uint64      mys_dis_end     = 19;// 神秘扭蛋打折结束时间
+	repeated    uint64      mys_hot_id      = 20;// 神秘扭蛋热点宝贝ID列表
+	optional    uint64      bide_lefttimes  = 21;// 必得宝贝剩余次数
+}
+
+// 开宝箱
+message cs_box_open_treasurebox[id=11106]{
+	optional     uint64     boxid           = 1; // 宝箱ID
+	optional     uint64     num             = 2; // 箱子数量
+}
+
+message sc_box_open_treasurebox[id=11107]{
+	optional     uint64     result          = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-背包中不存在该宝箱或数量不够
+	optional     p_reward   reward          = 2; // 奖励
+}
+
+// 抽卡奖励
+message p_box_reward[id=11108]{
+	optional    p_reward      reward     = 1; // 普通奖励
+	optional    uint64        gertypeid  = 2; // 宝贝TypeID
+	optional    uint64        stage      = 3; // 宝贝进化阶段
+	optional    uint64        reward_type= 4; // 奖励类型
+	// 0 := 普通奖励,不做任何处理  
+	// 1 := 抽到已拥有的宝贝后的替换奖励
+	// 2 := 抽到已激活的进化皮肤后的替换奖励
+	// 3 := 宝贝奖励
+	// 4 := 进化皮肤奖励
+}
+
+//message p_box_log[id=11106]{
+//	optional	uint64		id=1;				//ID永远递增
+//	optional	string		role_name=2;		//玩家名
+//	repeated	uint64		ger_list=3;			//抽到的ger_type列表
+//	optional	uint64		time=4;				//抽取时间
+//	optional	uint64		select_type=5;		//抽取类型
+//}
+
+//message cs_box_state[id=11107]{
+//}
+
+//message sc_box_state[id=11108]{ 
+//	optional	uint64		start_time=1;
+//	optional	uint64		end_time=2;
+//	optional	uint64		priority=3;			//活动优先级
+//	optional	string		title=4;
+//	optional	string		content=5;
+//	optional	string		icon=6;
+//}

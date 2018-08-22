@@ -1,0 +1,137 @@
+// 模块=fboss
+// 编号=122
+
+//查询公会boss信息
+message cs_fboss_info[id=12201]{ 
+}
+
+message sc_fboss_info[id=12202]{ 
+	optional		uint64				result          =1;			//请求是否成功
+	//1---请求公会boss信息成功
+	//2---异常：还没有加入公会
+	optional        uint64              curdungeonid    =2;         //当前关卡ID
+	optional        uint64              nowhp_percent   =3;         //当前血量万分比
+	repeated        p_lineup            gerlist         =4;         //选中的阵容
+	optional        uint64              addattr         =5;         //增加的属性加成万分比
+	optional        uint64              leftatktimes    =6;         //剩余的挑战次数
+	repeated        uint64              drawdungeonids  =7;         //已经领取通关奖励的关卡
+}
+
+message cs_fboss_dungeon_detial[id=12203]{
+    optional        uint64              dungeonid       =1;         //关卡ID
+}
+message sc_fboss_dungeon_detial[id=12204]{
+    optional        uint64              result          =1;         //处理结果
+    // 1 := 成功
+    // 2 := 异常
+    optional        uint64              nowhp_percent   =2;         //当前剩余血量万分比
+    repeated        p_fboss3rank        ranklist        =3;         //该关卡的通关排行
+    optional        uint64              lastatkroleid   =4;         //上次攻击bos的角色ID
+    optional        uint64              lastatktime     =5;         //上次攻击bos的时间
+}
+
+message p_fboss3rank[id=12205]{
+    optional        string              familyname      =1;         //联盟名字
+    optional        uint64              nowhp_percent   =2;         //当前血量剩余万分比
+    optional        uint64              rank            =3;         //排行
+}
+
+
+message cs_fboss_rank[id=12206]{
+    optional        uint64              dungeonid       =1;         //关卡ID
+}
+
+message sc_fboss_rank[id=12207]{
+    optional        uint64              result          =1;         //操作结果
+    // 1 := 成功
+    // 2 := 没有联盟
+    repeated        p_fboss_rank        ranklist        =2;         //排行榜
+}
+
+message p_fboss_rank[id=12208]{
+    optional        uint64              rank            =1;         //排名
+    optional        string              rolename        =2;         //角色名字
+    optional        uint64              harmvalue       =3;         //伤害值
+}
+
+message cs_fboss_passrank[id=12209]{
+    optional        uint64              dungeonid       =1;         //关卡ID
+}
+
+message sc_fboss_passrank[id=12210]{
+    optional        uint64              result          =1;         //操作结果
+    // 1 := 成功
+    // 2 := 没有联盟
+    repeated        p_fboss_passrank    ranklist        =2;         //排行榜
+}
+
+message p_fboss_passrank[id=12211]{
+    optional        uint64              rank            =1;         //排名
+    optional        string              familyname      =2;         //联盟名字
+    optional        uint64              passsec         =3;         //通关时的unix时间
+}
+
+message cs_fboss_atk[id=12212]{
+    optional        uint64              dungeonid       =1;         //关卡ID
+}
+message sc_fboss_atk[id=12213]{
+    optional        uint64              result          = 1;        // 请求结果
+    // 1 := 请求成功
+    // 2 := 失败-关卡还未解锁
+    // 3 := 失败-挑战次数限制
+    // 4 := 关卡正在被其他玩家攻打
+    // 5 := bos已经死亡
+    // 6 := bos正在被攻打
+    // 7 := 失败友方整容为空
+    optional        uint64              dungeonid       = 2;        // 关卡ID
+    optional        p_fight_struct      fight_struct    = 3;        // 战斗结构
+    optional        uint64              curatkroleid    = 4;        //当前正在攻打bos角色ID
+    optional        uint64              lastatktime     = 5;        //上次攻击bos的时间
+}
+
+message cs_fboss_report[id=12218]{
+    optional        uint64              dungeonid       =1;         //关卡ID
+    optional        p_fight_struct      fight_struct    =2;         //战斗结构
+}
+
+message sc_fboss_report[id=12219]{
+    optional        uint64              result          =1;         //操作结果
+    // 1 := 成功
+    // 2 := 没有联盟
+    // 3 := 当前不是你在挑战
+    // 4 := 战斗已经超时
+    // 5 := 关卡ID不一致
+    optional        uint64              dungeonid       =2;         //关卡ID
+    optional        bool                attacker_win    =3;         //是否获胜
+    optional        p_reward            reward          =4;         //获得的奖励
+    optional        sint64              harm_percent    =5;         //造成的伤害的万分比，可能是负数
+    optional        sint64              harm_value      =6;         //造成的伤害，可能是负数
+}
+
+// 领取所有可以领取的通关奖励
+message cs_fboss_draw[id=12214]{
+    repeated        uint64              dungeonlist     =1;         //要领取奖励的关卡列表
+}
+message sc_fboss_draw[id=12215]{
+    optional        uint64              result          =1;         //操作结果
+    // 1 := 成功
+    // 2 := 没有加入联盟
+    // 3 := 有关卡奖励已经领取了
+    // 4 := 有关卡还没通关
+    optional        p_reward            reward          =2;         //奖励内容
+    repeated        uint64              dungeonlist     =3;         //已经领取奖励的关卡列表
+}
+
+message cs_fboss_setline[id=12216]{
+    repeated        p_lineup            linelist        =1;         //选择使用的武将列表
+}
+
+message sc_fboss_setline[id=12217]{
+    optional        uint64              result          =1;         //操作结果
+    repeated        p_lineup            linelist        =2;         //选择使用的武将列表
+}
+
+message sc_fboss_sync[id=12220]{
+    optional        uint64              curdungeonid    =1;         //当前关卡ID
+    optional        uint64              nowhp_percent   =2;         //当前血量万分比
+}

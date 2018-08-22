@@ -1,0 +1,59 @@
+// 登录协议
+// 编号=100
+
+
+// 请求登录
+message	cs_account_login[id=10001] {
+    optional uint64 accid = 1; // 账号ID
+    optional string accname = 2; // 账号名
+    optional uint64 deadline = 3; // 有效时间
+    optional string ticket = 4; // 验证密钥
+    optional uint64 svrid = 5; // 服务器ID
+    optional uint64 srctype = 6; // 渠道ID
+    optional string mac = 7; // MAC地址
+    optional string devid = 8; // 设备ID
+    optional string phone_model = 9; // 机型
+    optional string sys_version = 10; // 系统版本
+    optional uint64 subtype = 11; // 广告渠道
+    optional string ip_info = 12; // IP地址信息
+    optional uint64 fc_type = 13; // 财务渠道
+}
+message sc_account_login[id=10002] {
+    optional uint64 result = 1; // 登录结果
+    // 1 := 成功
+    // 2 := 失败-验证错误
+    // 3 := 失败-登录超时
+    // 4 := 失败-账号被封
+    // 5 := 失败-人数已满
+    // 6 := 失败-服务器ID
+    optional uint64 rstate = 2; // 当前状态
+    // 1 := 状态正常
+    // 2 := 未创建角色
+}
+
+
+// 创建角色
+message cs_account_create[id=10003] {
+    optional string rname = 1; // 角色名字
+    optional uint64 icon = 2; // 创建角色时初始训练师的显示id
+}
+message sc_account_create[id=10004] {
+    optional uint64 result = 1; // 结果
+    // 1 := 创建成功
+    // 2 := 失败-名字长度限制
+    // 3 := 失败-含有非法字符
+    // 4 := 失败-含有敏感词汇
+    // 5 := 失败-已有名字冲突
+    // 7 := 失败-icon不存在
+    // 8 := 失败-角色已经上锁
+    // 9 := 失败-icon不是整形
+}
+
+
+// 强制下线
+message sc_account_kick[id=10005] {
+    optional uint64 result = 1; // 原因
+    // 1 := 帐号异地登录
+    // 2 := 帐号已被封禁
+}
+

@@ -1,0 +1,373 @@
+//16100 守卫家园
+
+message cs_homefight_info[id=16101]{
+
+}
+
+message sc_homefight_info[id=16102]{
+    optional                    uint64                      left_times = 1; //剩余挑战次数
+    optional                    uint64                      boss_type  = 2; //Boss的TypeID
+    optional                    bool                        in_team    = 3; //是否在组队状态
+    optional                    bool                        in_dungeon = 4; //是否在关卡中
+    optional                    bool                        is_open    = 5; //活动是否开启
+}
+
+message cs_homefight_team[id=16103]{
+
+}
+
+message sc_homefight_team[id=16104]{
+    optional                    p_homefight_team            team        = 1;
+}
+
+message p_homefight_team[id=16117]{
+    optional                    uint64                      dungeon_lv  = 1; //关卡难度
+    optional                    bool                        is_open     = 2; //房间是否开放
+    repeated                    p_homefight_member          members     = 3; //队员信息
+}
+
+message p_homefight_member[id=16105]{
+    optional                    uint64                      role_id     = 1; //玩家ID
+    optional                    string                      role_name   = 2; //玩家的名字
+    optional                    uint64                      icon        = 3; //玩家头像
+    optional                    uint64                      vip_lv      = 4; //vip等级
+    optional                    p_ger_summary               ger         = 5; //宝贝的TypeID
+    optional                    uint64                      power       = 6; //宝贝的战斗力
+    optional                    bool                        is_ready    = 7; //是否已经准备
+    optional                    bool                        is_caption  = 8; //是不是队长
+}
+
+message cs_homefight_dungeon[id=16106]{
+
+}
+
+message sc_homefight_dungeon[id=16107]{
+    optional                    uint64                      end_sec     = 1; //副本结束时间
+    optional                    uint64                      stage       = 2; //副本阶段
+    repeated                    p_homefight_member_dt       members     = 3; //副本中的队友
+    optional                    uint64                      dungeon_fort= 4; //副本所在的据点
+    optional                    uint64                      boss_dungeon= 5; //boss对应的关卡ID
+}
+
+
+message p_homefight_member_dt[id=16108]{
+    optional                    uint64                      role_id     = 1; //角色ID
+    optional                    string                      role_name   = 2; //角色名
+    optional                    uint64                      ger_type    = 3; //宝贝的TypeID
+    optional                    uint64                      power       = 4; //宝贝的战斗力
+    optional                    uint64                      hp_percent  = 5; //血量万分比
+    optional                    uint64                      state       = 6; //状态
+    // 1 => 场景外站立
+    // 2 => 移动中
+    // 3 => 据点中站立
+    // 4 => 复活中
+    optional                    uint64                      pos         = 7; //当前位置
+    optional                    uint64                      tar_pos     = 8; //目标位置
+    optional                    uint64                      arrive_sec  = 9; //到达的时间
+    optional                    uint64                      reborn_sec  = 10; //复活时间
+    repeated                    uint64                      buf_list    = 11; //已购买的buf列表
+    optional                    uint64                      harm_val    = 12; //伤害值
+    optional                    uint64                      fort_id     = 13; //如果在据点里时，具体的据点ID
+    optional                    uint64                      atk_pos     = 14; //攻击的位置
+}
+
+message cs_homefight_fort[id=16109]{
+    optional                    uint64                      fort_id     = 1; //要查看的据点的ID
+}
+
+message sc_homefight_fort[id=16110]{
+    optional                    uint64                      fort_id      = 1; //据点ID
+    repeated                    p_homefight_dungeon         dungeon_list = 2; //关卡列表
+}
+
+message p_homefight_dungeon[id=16111]{
+    optional                    uint64                      dungeon_id      = 1; //关卡ID
+    optional                    uint64                      pos             = 2; //界面中的位置
+    optional                    uint64                      atk_end_sec     = 3; //攻击保护的时间
+    // 小于的当前时候就是有人打没打完，当做没人攻打已经超时
+    optional                    bool                        is_down         = 4; //是否已经攻破
+}
+
+message cs_homefight_shop[id=16112]{
+
+}
+
+message sc_homefight_shop[id=16113]{
+    repeated                    p_homefight_sell          bought_list     = 1; //已购买的buf列表
+}
+
+message p_homefight_sell[id=16114]{
+    optional                    uint64                      sell_id         = 1; //商品ID
+    optional                    uint64                      buy_times       = 2; //购买次数
+}
+
+message cs_homefight_create_team[id=16115]{
+
+}
+
+message sc_homefight_create_team[id=16116]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 已在队伍中
+    // 3 => 今天的参与次数已用完
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message cs_homefight_quick_join[id=16118]{
+
+}
+
+message sc_homefight_quick_join[id=16119]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 已在队伍中
+    // 3 => 今天的参与次数已用完
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message cs_homefight_join_team[id=16120]{
+    optional                    uint64                      tar_role_id     = 1; //邀请人的RoleID
+}
+
+message sc_homefight_join_team[id=16121]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 队伍不存在
+    // 3 => 今天的参与次数已用完
+    // 4 => 队伍已满
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+
+message cs_homefight_set_open[id=16122]{
+    optional                    bool                        is_open         = 1; //是否开放
+}
+
+message sc_homefight_set_open[id=16123]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 不在队伍中
+    // 3 => 不是队长
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message cs_homefight_kick[id=16124]{
+    optional                    uint64                      tar_id          = 1; //角色ID
+}
+
+//被T的人收到的是sc_homefight_kick_notify
+message sc_homefight_kick[id=16125]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 不在队伍中
+    // 3 => 不是队长
+    // 4 => 目标不在队伍中
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message sc_homefight_kick_notify[id=16147]{
+
+}
+
+message cs_homefight_mark_ready[id=16126]{
+    optional                    bool                        is_ready        = 1; //是否准备
+}
+
+message sc_homefight_mark_ready[id=16127]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 队伍不存在
+    // 3 => 不在队伍中
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message cs_homefight_new_team[id=16128]{
+
+}
+
+message sc_homefight_new_team[id=16129]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 3 => 无参与次数
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message cs_homefight_change_ger[id=16130]{
+    optional                    uint64                      ger_id          = 1; //选择的合体宝贝的ID
+}
+
+message sc_homefight_change_ger[id=16131]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 队伍不存在
+    // 3 => 不在队伍中
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message cs_homefight_set_level[id=16132]{
+    optional                    uint64                      level           = 1; //选择的难度
+}
+
+message sc_homefight_set_level[id=16133]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 队伍不存在
+    // 3 => 不是队长
+    // 4 => 难度不存在
+    optional                    p_homefight_team            team            = 2; //队伍信息
+}
+
+message cs_homefight_start[id=16134]{
+
+}
+
+message sc_homefight_start[id=16135]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 队伍不存在
+    // 3 => 不是队长
+    // 4 => 有人没准备
+    // 5 => 人数不足
+}
+
+message cs_homefight_leave[id=16154]{
+}
+
+message sc_homefight_leave[id=16155]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 队伍不存在
+    // 3 => 不在队伍中
+
+}
+
+message cs_homefight_invite[id=16158]{
+    optional                    uint64                      tar_role        = 1; //邀请的人的RoleID
+    optional                    string                      content         = 2; //消息内容
+}
+message sc_homefight_invite[id=16159]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => CD中
+    // 3 => 对方消息列表已满
+
+}
+
+
+message sc_homefight_team_sync[id=16136]{
+    optional                    p_homefight_team            team            = 1; //队伍信息
+}
+
+//-------------------------进场后的操作----------------------------
+message cs_homefight_move[id=16137]{
+    optional                    uint64                      tar_pos         = 1; //目标位置
+}
+
+message sc_homefight_move[id=16138]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 不在出生点
+    // 3 => 目标不合法
+    optional                    p_homefight_member_dt       new_role        = 2; //操作后的玩家新状态
+}
+
+//这个消息务必做转圈，没收到sc不允许干其他任何事情
+//因为是本地做的先扣钱，在去到主服做的加buf
+message cs_homefight_buy[id=16139]{
+    optional                    uint64                      sell_id         = 1; //商品ID
+}
+
+message sc_homefight_buy[id=16140]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 购买次数限制
+    // 3 => 货币不够
+    // 4 => 当前状态无法购买
+    optional                    p_homefight_member_dt       new_role        = 2; //操作后的玩家新状态
+    repeated                    p_homefight_sell            bought_list     = 3; //已购买的buf列表
+}
+
+message cs_homefight_request[id=16141]{
+    optional                    uint64                      fort_id         = 1; //所在据点ID
+    optional                    uint64                      pos             = 2; //点击的位置
+}
+
+message sc_homefight_request[id=16142]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 关卡不存在
+    // 3 => 关卡正在被其他人进攻
+    // 4 => 人物不在据点中
+    optional                    uint64                      pos             = 2; //点击的位置
+    optional                    p_fight_struct              fight_struct    = 3; //战斗结构
+}
+
+message cs_homefight_report[id=16143]{
+    optional                    uint64                      fort_id         = 1; //据点ID
+    optional                    uint64                      pos             = 2; //据点中的位置
+    optional                    p_fight_struct              fight_struct    = 3; //战斗结果
+}
+
+message sc_homefight_report[id=16144]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => 关卡不存在
+    // 3 => 信息不一致
+    optional                    uint64                      pos             = 2; //怪物在的位置
+    optional                    bool                        attacker_win    = 3; //是否胜利
+}
+
+message cs_homefight_fight_boss[id=16145]{
+
+}
+
+message sc_homefight_fight_boss[id=16146]{
+    optional                    uint64                      result          = 1; //操作结果
+    // 1 => 成功
+    // 2 => boss已经死亡
+    optional                    p_fight_struct              fight_struct    = 2; //战斗录像
+    optional                    uint64                      harm_val        = 3; //伤害
+    optional                    uint64                      harm_percent    = 4; //伤害量万分比
+}
+
+message cs_homefight_back[id=16148]{
+}
+
+message sc_homefight_back[id=16149]{
+    optional                    uint64                      result          = 1; //操作结果
+    optional                    p_homefight_member_dt       new_role        = 2; //新的角色状态
+}
+
+message sc_homefight_dungeon_notify[id=16150]{
+    optional                    uint64                      fort_id         = 1; //据点ID
+}
+
+message sc_homefight_role_notify[id=16151]{
+    optional                    p_homefight_member_dt       new_role        = 1; //新的玩家信息
+}
+
+message cs_homefight_boss[id=16152]{
+}
+
+// 将来boss被打了 也是这条消息更新
+message sc_homefight_boss[id=16153]{
+    optional                    uint64                      atker           = 1; //攻击者的roleid
+    optional                    uint64                      hp_percent      = 2; //血量万分比
+}
+
+message sc_homefight_end[id=16160]{
+    optional                    bool                        is_win          = 1; //是否获胜
+    optional                    p_reward                    reward          = 2; //奖励内容
+    repeated                    p_homefight_member_dt       all_member      = 3; //所有人的最终数据
+    optional                    p_reward                    extra_reward    = 4; //最佳的奖励内容
+    optional                    uint64                      used_sec        = 5; //用的时间
+    optional                    uint64                      dungeon_lv      = 6; //关卡难度等级
+}
+
+message sc_homefight_state[id=16161]{
+    optional                    uint64                      state           = 1; //活动状态
+}
+
+message sc_homefight_battle_end[id=16162]{
+
+}

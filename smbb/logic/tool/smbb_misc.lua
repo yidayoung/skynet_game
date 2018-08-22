@@ -7,7 +7,7 @@
 --
 
 local socket = require "skynet.socket"
-local smbb_pb = require "logic.proto.smbb_pb"
+local smbb_pb = require "logic.tool.smbb_pb"
 local skynet = require "skynet"
 local ets_lib = require("logic.lib.ets_lib")
 local logger = require("lualib.logger")

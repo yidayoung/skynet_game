@@ -1,0 +1,100 @@
+// 144 祈福
+
+message cs_pray_info[id=14401]{
+}
+
+message sc_pray_info[id=14402]{
+    optional                    uint32                      result = 1; //操作结果
+    //1:成功
+    //2:当前活动id不存在
+    //3:客户端显示信息不存在
+    optional                    uint64                      endtime = 2; //
+    optional                    uint64                      typeid  = 3; //本期宝贝的typeid
+    optional                    uint64                      self_score = 4; //自己的积分
+    repeated                    uint64                      draw_indexs = 5; //已经领取的积分奖励档位
+    optional                    p_reward                    one_cost = 6; //一次消耗
+    optional                    p_reward                    ten_cost = 7; //十次消耗
+    optional                    uint32                      count = 8; //当前祈福次数
+    optional                    uint32                      pray_state = 9; //当前祈福次数
+    optional                    uint32                      bfree = 10; //第一次单次祈福免费
+    optional                    p_client_show_info          client_show_info = 11; //客户端显示信息
+}
+
+
+message cs_pray_rank[id=14403]{
+    optional                    uint64                      rank_start   = 1; //开始位置
+    optional                    uint64                      rank_end     = 2; //结束位置
+}
+message sc_pray_rank[id=14404]{
+    optional                    uint32                      result = 1; //操作结果
+    //1:成功
+    //2:start或end错误
+    repeated                    p_pray_rank                 rank_list  = 2; //排行榜
+    optional                    uint64                      self_rank  = 3; //自己的排行
+    // 如果是0就是未上榜
+    optional                    uint64                      score      = 4; //自己的积分
+}
+
+message cs_pray_do[id=14405]{
+    optional                    uint32                      bten       = 1; //是否10次
+    optional                    uint64                      count      = 2; //祈福的次数
+}
+message sc_pray_do[id=14406]{
+    optional                    uint64                      result     = 1; //操作结果
+    // 1 := 成功
+    // 2 := 失败，消耗不足
+    // 3 := 活动未开放
+    // 4 := 次数不正确
+    // 5 := 活动不存在
+    optional                    p_reward                    reward     = 2; //奖励内容
+    optional                    uint64                      new_score  = 3; //新的积分
+    optional                    uint32                      count      = 4; //当前祈福次数
+    optional                    uint32                      bfree      = 5; //第一次单次祈福免费
+
+}
+
+// 领取该档位时会把该档位之前的奖励全部领取
+message cs_pray_draw[id=14407]{
+    optional                    uint64                      score      = 1; //要领取的断的积分
+}
+
+message sc_pray_draw[id=14408]{
+    optional                    uint64                      result     = 1; //结果
+    // 1 := 成功
+    // 2 := 失败，活动没开放
+    // 3 := 失败，已经领取过该档位
+    // 4 := 失败，领取条件未达成
+    // 5 := 失败，活动不存在
+    // 6 := 失败，逻辑错误
+    // 7 := 失败，不存在领奖积分
+    optional                    p_reward                    reward      = 2; //奖励内容
+    repeated                    uint64                      draw_indexs = 3; //已经领取的积分奖励档位
+}
+
+message sc_pray_state[id=14409]{
+    optional                    uint32                      pray_state  = 1; 
+}
+
+message p_pray_rank[id=14410]{
+    optional                    uint64                      roleid      = 1; //角色ID
+    optional                    string                      role_name   = 2; //角色名字
+    optional                    uint64                      score       = 3; //积分
+}
+
+message p_client_show_info[id=14411]{
+    repeated                    p_show_rank_info            show_rank_info_list = 1; //排名显示信息
+    repeated                    p_show_score_info           show_score_info_list = 2; //积分显示信息
+}
+
+message p_show_rank_info[id=14412]{
+    optional                    int32                       score = 1; //
+    optional                    int32                       beg_rank = 2; //
+    optional                    int32                       end_rank = 3; //
+    optional                    p_reward                    reward = 4; //
+}
+
+message p_show_score_info[id=14413]{
+    optional                    int32                       id = 1; //
+    optional                    int32                       score = 2; //
+    optional                    p_reward                    reward = 3; //
+}

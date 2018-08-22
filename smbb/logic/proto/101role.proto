@@ -1,0 +1,277 @@
+// 角色协议
+// 编号=101
+
+
+// 获取玩家角色信息
+message cs_role_info[id=10101] {
+}
+message sc_role_info[id=10102] {
+    optional p_role_info roleinfo = 1; // 角色信息
+}
+message p_role_info[id=10103] {
+    optional uint64 roleid = 1; // 角色ID
+    optional string rolename = 2; // 角色名
+    optional uint64 raccid = 3; // 账号ID
+    optional string accname = 4; // 账号名
+    optional uint64 familyid = 5; // 公会ID
+    optional string familyname = 6; // 公会名
+    optional uint64 icon = 7; // 头像ID
+    optional uint64 rolelv = 8; // 角色等级
+    optional uint64 roleexp = 9; // 角色经验
+    optional uint64 viplv = 10; // VIP等级
+    optional uint64 vipexp = 11; // VIP经验
+    optional uint64 atkpower = 12; // 进攻战斗力
+    optional uint64 defpower = 13; // 防御战斗力
+    optional uint64 lastlogin = 14; // 最近登录时间
+    optional uint64 lastlogout = 15; // 最近下线时间
+    optional uint64 srctype = 16; // 来源渠道
+    optional string subtype = 17; // 子渠道名
+    optional uint64 totalpaid = 18; // 累积付费
+    optional uint64 frame = 19; // 头像框
+    optional uint64 regtime = 20; // 注册时间
+}
+
+// 角色经验更新通知
+message sc_role_exp_notify[id=10104] {
+    optional uint64 rolelv = 1; // 现在角色等级
+    optional uint64 roleexp = 2; // 现在角色经验
+}
+
+// 获取角色公共信息
+message cs_role_public[id=10105] {
+    repeated uint64 roleidlist = 1; // 角色ID列表
+}
+message sc_role_public[id=10106] {
+    repeated p_role_public publiclist = 1; // 公共信息列表
+}
+message p_role_public[id=10107] {
+    optional uint64 roleid = 1; // 角色ID
+    optional string rolename = 2; // 角色名
+    optional uint64 familyid = 3; // 公会ID
+    optional string familyname = 4; // 公会名
+    optional uint64 icon = 5; // 头像ID
+    optional uint64 rolelv = 6; // 角色等级
+    optional uint64 viplv = 7; // VIP等级
+    optional uint64 atkpower = 8; // 进攻战斗力
+    optional uint64 defpower = 9; // 防御战斗力
+    optional uint64 lastlogout = 10; // 最近下线时间(0代表在线)
+    optional uint64 frame = 11; // 头像框
+    optional uint64 pvprank = 12; // pvp排名
+}
+
+// 获取玩家其它信息
+message cs_role_extra[id=10108] {
+}
+message sc_role_extra[id=10109] {
+    optional p_role_extra roleextra = 1; // 其它信息
+}
+message p_role_extra[id=10110] {
+    optional uint64 roleid = 1; // 角色ID
+    optional uint64 energy = 2; // 体力值
+    optional uint64 energy_next_recv = 3; // 下次体力回复时间
+    optional uint64 energy_buy_times = 4; // 今日体力购买次数
+    optional uint64 skill_point = 5; // 技能点
+    optional uint64 skill_point_next_recv = 6; // 下次技能点回复时间
+    optional uint64 skill_point_buy_times = 7; // 今日技能点购买次数
+    optional uint64 click_gold_times = 8; // 今日点金次数
+    optional uint64 firstatk = 9; // 战队先手值
+    optional uint64 mine_energy = 10; // 挖矿体力
+    optional uint64 mine_energy_next_recv = 11; // 下次挖矿体力回复时间
+    optional uint64 mine_energy_buy_times = 12; // 今日挖矿体力购买次数
+    repeated uint64 icon_list = 13; // 特殊头像icon list
+    optional uint64 cd_time_rename = 14; // 更名cd
+}
+
+// 角色体力更新通知
+message sc_role_energy_notify[id=10111] {
+    optional uint64 energy = 1; // 当前体力值
+    optional uint64 energy_next_recv = 2; // 下次体力回复时间
+}
+
+// 角色战力更新通知
+message sc_role_power_notify[id=10112] {
+    optional uint64 atkpower = 1; // 进攻战斗力
+    optional uint64 defpower = 2; // 防御战斗力
+}
+
+// 获取/设置玩家选项信息
+message cs_role_options[id=10113] {
+    repeated uint64 key_list = 1; // 键列表
+}
+message sc_role_options[id=10114] {
+    repeated p_option opt_list = 1; // 选项列表
+}
+message p_option[id=10115] {
+    optional uint64 key = 1; // 键
+    optional sint64 value = 2; // 值
+}
+message cs_role_setopt[id=10116] {
+    optional uint64 key = 1; // 键
+    optional sint64 value = 2; // 值
+}
+message sc_role_setopt[id=10117] {
+    optional uint64 result = 1; // 设置结果
+    // 1 := 设置成功
+    // 2 := 设置失败
+    optional uint64 key = 2; // 键
+    optional sint64 value = 3; // 值
+}
+
+
+// 设置玩家头像
+message cs_role_seticon[id=10118] {
+    optional uint64 newicon   = 1; // 新头像ID
+    optional int32  icon_type = 2; // 头像类型(1:普通玩家头像,2:普通宝贝头像,3:特殊头像)
+}
+message sc_role_seticon[id=10119] {
+    optional uint64 result = 1; // 设置结果
+    // 1 := 成功
+    // 2 := 不存在特殊头像
+    // 3 := 没在孩子身上找到头像
+    // 4 := 没在宝贝身上找到头像
+    // 5 := 等级不足
+    optional uint64 newicon = 2; // 新头像ID
+}
+
+// 请求购买体力
+message cs_role_buy_energy[id=10120] {
+    optional uint64 buy_cnt = 1; // 购买次数
+}
+message sc_role_buy_energy[id=10121] {
+    optional uint64 result = 1; // 购买结果
+    // 1 := 购买成功
+    // 2 := 失败-货币不足
+    // 3 := 失败-体力已达上限
+    // 4 := 失败-购买次数上限
+    optional uint64 energy = 2; // 新体力值
+    optional uint64 energy_buy_times = 3; // 新购买次数
+}
+
+// 请求使用主角经验道具
+message cs_role_exp_effect[id=10122] {
+    optional uint64 typeid = 1; // 类型ID
+    optional uint64 number = 2; // 使用数量
+}
+message sc_role_exp_effect[id=10123] {
+    optional uint64 result = 1; // 使用结果
+    // 1 := 使用成功
+    // 2 := 失败-道具不足
+    // 3 := 失败-道具不能提供主角经验
+    optional uint64 sumexp = 2; // 获得总经验
+}
+
+// 查看对方阵容
+message cs_role_fighters[id=10124] {
+    optional uint64 tarid = 1; // 对方ID
+}
+message sc_role_fighters[id=10125] {
+    repeated p_ger atklist = 1; // 进攻列表
+    repeated p_ger deflist = 2; // 防御列表
+    repeated p_equip equiplist = 3; // 装备列表
+    optional uint64  atkspeed = 4; // 攻击阵容先手值
+    optional uint64  defspeed = 5; // 防守阵容先手值
+}
+
+// 角色体力更新通知
+message sc_role_skillpoint_notify[id=10126] {
+    optional uint64 skillpoint = 1; // 当前体力值
+    optional uint64 skillpoint_next_recv = 2; // 下次体力回复时间
+}
+
+// 请求点金
+message cs_role_click_gold[id=10127] {
+    optional    uint64    click_cnt = 1; // 请求点金次数
+}
+
+message sc_role_click_gold[id=10128] {
+    optional uint64 result = 1; // 结果
+    // 1 := 成功
+    // 2 := 失败-等级不足
+    // 3 := 失败-点金次数已达上限
+    // 4 := 失败-货币不足
+    optional    uint64    new_click_times = 2; // 新点金次数
+    optional    uint64    crit = 3; // 暴击倍率
+    optional    uint64    critnum = 4; // 暴击次数 
+    optional    uint64    reward  = 5; // 奖励
+}
+
+// 玩家先手值更新
+message sc_role_firstatk_update[id=10129] {
+    optional    uint64    firstatk  = 1; // 新先手值
+}
+
+// 请求购买体力
+message cs_role_buy_skillpoint[id=10130] {
+    optional uint64 buy_cnt = 1; // 购买次数
+}
+message sc_role_buy_skillpoint[id=10131] {
+    optional uint64 result = 1; // 购买结果
+    // 1 := 购买成功
+    // 2 := 失败-货币不足
+    // 3 := 失败-体力已达上限
+    // 4 := 失败-购买次数上限
+    optional uint64 skillpoint = 2; // 新体力值
+    optional uint64 skillpoint_buy_times = 3; // 新购买次数
+}
+
+// 由于需求变更,增加一个请求先手值的协议(返回协议为sc_role_firstatk_update)
+message cs_role_firstatk_update[id=10132] {
+
+}
+
+
+// 挖矿角色体力更新通知
+message sc_role_mineenergy_notify[id=10133] {
+    optional uint64 mineenergy = 1; // 当前体力值
+    optional uint64 mineenergy_next_recv = 2; // 下次体力回复时间
+}
+
+// 请求购买体力
+message cs_role_buy_mineenergy[id=10134] {
+    optional uint64 buy_cnt = 1; // 购买次数
+}
+message sc_role_buy_mineenergy[id=10135] {
+    optional uint64 result = 1; // 购买结果
+    // 1 := 购买成功
+    // 2 := 失败-货币不足
+    // 3 := 失败-体力已达上限
+    // 4 := 失败-购买次数上限
+    optional uint64 mineenergy = 2; // 新体力值
+    optional uint64 mineenergy_buy_times = 3; // 新购买次数
+}
+
+// 更名
+message cs_role_rename[id=10136]{
+    optional     string               new_name             =   1;
+}
+
+message sc_role_rename[id=10137]{
+    optional     uint32               result               =   1;
+    //0:系统错误
+    //1:成功
+    //2:名字长度限制
+    //3:含有非法字符
+    //4:含有敏感词汇
+    //5:已有名字冲突
+    //6:等级不足
+    //7:cd时间没到
+    //8:更名卡不足
+    optional     string               new_name             =   2;
+    optional     uint64               cd_time              =   3;
+}
+
+// 使用换头像卡
+message cs_role_openhcard[id=10138]{
+    optional     int32                head_card_id         =   1;
+}
+
+message sc_role_openhcard[id=10139]{
+    optional     uint32               result               =   1;
+    //0:系统错误
+    //1:成功
+    //2:头像卡道具不足
+    //3:玩家已拥有头像,替换为一定的道具奖励
+    //4:该头像卡没有对应的icon
+    repeated     uint64               icon_list            =   2;
+    optional     p_reward             reward               =   3;
+}

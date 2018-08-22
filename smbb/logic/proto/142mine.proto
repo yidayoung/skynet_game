@@ -1,0 +1,300 @@
+//模块=mine
+//编号=14200
+
+
+// 请求挖矿主界面
+// 精力相关走role_extra 和体力类似
+message     cs_mine_info[id=14201]{
+}
+
+message     sc_mine_info[id=14202]{
+    optional            uint64                  result              =1; //请求挖矿主界面结果
+    // 1 => 打开成功
+    // 2 => 等级不足
+    repeated            p_money                 cur_buy_cost        =2; //直接去买矿的消耗
+    repeated            p_money                 cur_search_cost     =3; //搜索其他玩家的矿需要的消耗
+    repeated            p_mine_car              car_list            =4; //矿车的信息
+    optional            p_mine_atk_info         cur_atk_info        =5; //当前正在攻击的目标
+    // 这个字段没有的时候就是没有选中攻击的目标或者在攻击的矿已经被自动释放了
+    repeated            uint64                  used_geridList      =6;//当前已经使用宝贝
+    optional            p_mine_detail           tar_mine            =7;//对方的矿坑信息,只在有进攻目标的时候有值
+}
+
+message p_mine_atk_info[id=14229]{
+    optional            uint64                  cur_atk_roleid      =1; //当前正在攻击的目标
+    repeated            uint64                  dead_gerid_list     =2; //在当前攻击中已经死亡的宝贝列表
+    // 所有宝贝从 外面的宝贝列表中取
+    optional            uint64                  cur_atk_release     =3; //当前被攻击的对象的释放时间
+    // 这个时间到了这个矿他就不能再抢了
+
+}
+
+message p_mine_car[id=14203]{
+    optional            uint64                  pos                 =1; //位置
+    optional            uint64                  cur_type            =2; //当前矿的typeid
+    // 0 表示还没有矿,后面的字段也就没意义了
+    optional            bool                    is_mine             =3; //是不是自己的矿
+    optional            uint64                  dig_start_time      =4; //挖矿开始时间
+    optional            uint64                  reward_time         =5; //开采结束的时间
+    // 结束时间因为护矿的时候结束时间是根据主人的开始挖矿时间决定的所以不能用配置算出来
+    // 如果上面的挖矿开始时间是0而且这个矿是自己的这个 reward_time也就没意义了
+    // 但是如果是别人的时候就算自己不挖结束时间也是确定且有意义的
+    optional            p_reward                base_reward         =6; //基础收益
+    optional            uint64                  reward_rate         =7; //当前的收益万分比,没被攻击的时候是1W
+    repeated            p_mine_seat             role_list           =8; //正在护矿的人的RoleID列表，自己也包括
+}
+
+// 刷新自己矿坑
+message     cs_mine_refresh[id=14204]{
+    optional            uint64               pos                =1; //要做刷新的矿坑的位置
+}
+
+message     sc_mine_refresh[id=14205]{
+    optional            uint64               result             =1;//刷新结果
+    // 1 := 刷新成功
+    // 2 := 消耗不足
+    // 3 := 矿坑位置还未解锁
+    // 4 := 矿坑不为空（这种错误理论上不会出现所以这种就算报错了还是扣钱了）
+    optional            uint64               pos                =2;//要做刷新的矿坑的位置
+    repeated            uint64               mineTypeIDList     =3;//新矿坑模板ID
+    repeated            p_money              cur_buy_cost       =4;//当前刷新消耗
+}
+
+
+// 选矿
+message     cs_mine_buy[id=14206]{
+    optional            uint64               pos                 =1;//需要购买的矿坑位置
+    optional            uint64               mineTypeID          =2;//需要购买的矿坑模板ID
+}
+
+message     sc_mine_buy[id=14207]{
+    optional            uint64               result              =1;//购买结果
+    // 1 := 购买成功
+    // 2 := 矿位还没解锁
+    // 3 := 类型不存在
+    // 3 := 矿上还有没处理的矿
+    optional            p_mine_car           new_car             =2;//成功后新的矿坑
+}
+
+// 开始挖矿
+message     cs_mine_dig[id=14208]{
+    optional            uint64              pos                 =1;//自己矿坑的位置
+    repeated            p_lineup            linelist            =2;//选择使用的武将列表
+}
+
+message     sc_mine_dig[id=14209]{
+    optional        uint64            result                    =1;//开始挖矿结果
+    // 1 := 开始挖矿成功
+    // 2 := 矿坑还没解锁
+    // 3 := 宝贝列表中有不存在的
+    // 4 := 该矿位木有矿不能采
+    // 5 := 这个矿已经开始挖了
+    optional        p_mine_car        new_car                   =2;//成功后新的矿车信息
+    repeated        uint64            used_gerid_list           =3;//更新后的已使用宝贝ID列表
+}
+
+//查看某个人的某个矿车上的某个位置的玩家的信息
+message cs_mine_view[id=14210]{
+    optional        uint64                  roleid              =1;//要查看的矿的人的roleid
+    optional        uint64                  car_pos             =2;//要查看的他哪个矿车
+    optional        uint64                  seat_pos            =3;//查看的矿车内的具体位置
+}
+
+message sc_mine_view[id=14211]{
+    optional        p_role_public           role_public         =1;//角色的公告信息
+    repeated        p_ger_summary           ger_line            =2;//选择护矿的阵容
+}
+
+
+// 探索矿区,也就是匹配对手去抢别人的矿
+message     cs_mine_explore[id=14212]{
+}
+
+message     sc_mine_explore[id=14213]{
+    optional            uint64              result              =1; //结果
+    // 1  := 成功
+    // 2  := 花费不足
+    // 3  := 一个人都找不到
+    optional            p_mine_detail       tar_mine            =2;//对方的矿坑信息
+    optional            p_mine_atk_info     atk_info            =3;//新的攻击信息
+    repeated            p_money             cur_search_cost     =4;//搜索其他玩家的矿需要的消耗
+}
+
+message     p_mine_detail[id=14214]{
+    optional            uint64              ownerID             =1;//主人角色ID
+    optional            string              ownerName           =2;//主人名字
+    optional            uint64              mineTypeID          =3;//矿坑模板ID
+    optional            uint64              releaseTime         =4;//如果是要攻击这个矿而不是护矿就是自动释放时间
+    optional            uint64              rewardTime          =5;//矿坑生命期
+    repeated            p_mine_seat         seat_list           =6;//位置上的人信息
+    // 有几个就有几条,如果没有就是那个位置没人
+    optional            uint64              pos                 =7;//矿在这个人的那个矿位
+    // 这个字段和显示没关系,主要在要护矿的时候要通过roleid, pos, seatpos三个字段确定唯一的位置
+
+}
+
+message p_mine_seat[id=14215]{
+    optional            uint64              pos                 =1;//位置
+    optional            uint64              roleid              =2;//位置的人
+    optional            p_role_public       role_public         =3;//角色的基本信息
+    optional            bool                is_alive            =4;//状态
+
+}
+
+
+// 攻击矿区 -- 请求具体的宝贝信息
+
+message     cs_mine_attack_request[id=14216]{
+    optional            uint64              seat_pos            =1;//攻击目标的哪个位置上的玩家
+    repeated            p_lineup            line_list           =2;//攻击时使用的阵容
+}
+
+message     sc_mine_attack_request[id=14217]{
+    optional            uint64                result              =1;//攻击结果
+    // 1 := 信息拉取成功可以开始战斗
+    // 2 := 当前没有已经拉搜索到的掠夺目标
+    // 3 := 已经不在对方的挑战列表里了
+    // 4 := 已经超时
+    // 5 := 上阵宝贝不可用
+    // 6 := 目标位置没有防守人员
+    // 7 := 目标玩家已经死亡
+    // 8 := 精力不足
+    optional            p_fight_struct        fight_struct        =2;// 战斗结构
+}
+
+message cs_mine_attack_report[id=14218]{
+    optional            uint64                seat_pos            =1;//攻击目标的哪个位置上的玩家
+    optional            p_fight_struct        fight_struct        =2;// 战斗结构
+}
+message sc_mine_attack_report[id=14219]{
+    optional            uint64                  result            = 1; // 请求结果
+    // 1 := 请求成功，还有其他人要打reward没东西
+    // 2 := 成功，全怼光了后面reward会有内容
+    // 3 := 失败 精力不足
+    // 4 := 信息不一致
+    optional            bool                    attacker_win      = 2; // 是否胜利
+    repeated            p_mine_seat             seat_list         = 3; //位置上的人信息
+    optional            p_reward                reward            = 4; //奖励内容
+    repeated            uint64                  dead_gerid_list   = 5; //总共死亡的宝贝id列表
+}
+
+
+message cs_mine_hist[id=14220]{
+    optional            uint64                  type              = 1; //战报类型
+    // 1 := 进攻战报
+    // 2 := 防守战报
+}
+
+message sc_mine_hist[id=14221]{
+    optional            uint64                  type              = 1; //战报类型
+    repeated            p_mine_hist             hist_list         = 2; //战报列表
+}
+
+message     p_mine_hist[id=14222]{
+    optional        uint64              histType                =1;//战报类型
+    // 1 => 战报所有者为攻击者
+    // 2 => 战报所有者为矿主
+    optional        string              attackerName            =2;//攻击者名字
+    optional        string              ownerName               =3;//矿主名字
+    optional        uint64              mineTypeID              =4;//矿的类型
+    optional        uint64              fightTime               =5;//战斗时间(UNIX时间)
+    optional        uint64              icon                    =6;//头像
+    optional        uint64              viplv                   =7;//头像对应的vip等级
+    optional        bool                is_win                  =8;//进攻者是否赢了
+}
+
+
+
+// 邀请小伙伴护卫,只是在公会发条特殊的消息
+message     cs_mine_invite[id=14223]{
+    optional        uint64            mine_pos            = 1; //矿坑的位置也就是 car_pos
+}
+
+message     sc_mine_invite[id=14224]{
+    optional        uint64            result              =1;//邀请结果
+    // 1 := 成功
+    // 2 := 目标位置没有矿
+    // 3 := 自己没在联盟中
+    // 4 := 邀请消息发送cd
+    // 5 := 矿已经挖完了
+}
+
+
+// 对应聊天窗口那个点击加入的操作
+message cs_mine_join_view[id=14225]{
+    optional        uint64            msg_id             =1; // 消息ID
+}
+message sc_mine_join_view[id=14226]{
+    optional        uint64            result             =1; // 结果
+    // 1 := 还没满可以看一哈
+    // 2 := 队伍已经满了不用看了
+    // 3 := 自己没在联盟里
+    // 4 := 消息不存在了
+    // 5 := 消息过期了
+    // 6 := 矿已经挖完了
+    optional        p_mine_detail     mine               =2; // 具体的矿坑信息
+}
+//后面点击护矿的操作和前面的cs_mine_dig 是一个 就是选择去挖别人的矿
+
+message cs_mine_guard[id=14230]{
+    optional        uint64              tar_roleid          =1;//目标角色RoleID
+    optional        uint64              tar_pos             =2;//目标矿坑位置
+    optional        uint64              seat_pos            =3;//要坐到哪个位置
+    repeated        p_lineup            line                =4;//要使用的阵容
+}
+
+message sc_mine_guard[id=14231]{
+    optional        uint64              result              =1;//操作结果
+    // 1 := 成功
+    // 2 := 自己没空位了
+    // 3 := 目标矿没在开采
+    // 4 := 已经挖完了
+    // 5 := 没空位了
+    // 6 := 你已经在护这个矿了
+    // 7 := 使用的宝贝中有已经使用的宝贝
+    // 8 := 这个位置上有人了
+    optional        p_mine_car          new_car             =2;//护卫完成后自己新的矿坑信息
+    repeated        uint64              used_geridList      =3;//当前已经使用宝贝
+}
+
+
+message cs_mine_open[id=14227]{
+    optional        uint64              car_pos          =1;//要开矿坑的位置
+}
+
+message sc_mine_open[id=14228]{
+    optional        uint64              result           =1;//操作结果
+    // 1 := 成功
+    // 2 := 消耗不足
+    // 3 := 该位置已解锁
+    optional        p_mine_car          new_car          =2;//新开成功的矿车
+}
+
+message cs_mine_draw[id=14232]{
+    optional        uint64              car_pos             =1;//自己的矿车的位置
+}
+
+message sc_mine_draw[id=14233]{
+    optional        uint64              result              =1;//操作结果
+    // 1 := 成功
+    // 2 := 目标位置是空的
+    // 3 := 还没挖结束
+    optional        p_reward            reward              =2;//具体奖励
+    optional        p_mine_car          new_car             =3;//领奖成功后空的矿车
+    repeated        uint64              used_gerid_list     =4;//已经使用的宝贝列表
+
+
+}
+
+message sc_mine_notify[id=14234]{
+    repeated        p_mine_car          new_car             =1;//新的矿车信息
+}
+
+message cs_mine_view_reward[id=14235]{
+    repeated        p_lineup            line_list           =1;//阵容
+
+}
+
+message sc_mine_view_reward[id=14236]{
+    optional        uint64              add_rate            =2;//阵容提供的加成万分比
+}

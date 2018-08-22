@@ -15,11 +15,11 @@ local MAIL_SERVICE = SERVICE.mail_service
 function role_mail.init()
     local mail_info = smbb_mongo.get(DATABASE_TABLES.rmail_info, role_data.get_role_id())
     if mail_info and mail_info._t == "rmail_info" then
-        return { val = mail_info, is_dirty = false }
+        return { val = mail_info,is_dirty = false }
     else
         mail_info = RECORD.rmail_info_t()
         mail_info.roleid = role_data.get_role_id()
-        return { val = mail_info, is_dirty = false }
+        return { val = mail_info,is_dirty = false }
     end
 end
 
@@ -60,7 +60,8 @@ function role_mail.draw_mails(reward, readmailids)
     local reward_return = reward_lib.reward(reward)
     reward_lib.log(role_data.get_role_id(), reward_return, 1, 0, "")
     reward_lib.notify(reward_return)
-    smbb_misc.send_client(SC_MAIL_DRAW, { result = 1, mailidlist = readmailids, reward = { reward_lib.p_reward(reward) } })
+    smbb_misc.send_client(SC_MAIL_DRAW,
+            { result = 1,mailidlist = readmailids,reward = { reward_lib.p_reward(reward) } })
 end
 
 return role_mail

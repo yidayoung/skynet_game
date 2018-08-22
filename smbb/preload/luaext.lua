@@ -1,4 +1,13 @@
 --lua基础库扩展
+local math = math
+local table = table
+local os = os
+local string = string
+local tonumber = tonumber
+local tostring = tostring
+local setmetatable = setmetatable
+local getmetatable = getmetatable
+
 function math.round(num)
     return math.floor(num + 0.5)
 end
@@ -185,6 +194,15 @@ end
 function table.walk(t, fn)
     for k,v in pairs(t) do
         fn(v, k)
+    end
+end
+
+function table.walk2(dic, fun)
+    local keys = table.keys(dic)
+    table.sort(keys)
+    for _,key in ipairs(keys) do
+        local r = fun(dic[key], key)
+        if r then return table.unpack(r) end
     end
 end
 

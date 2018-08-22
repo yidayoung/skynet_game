@@ -1,0 +1,313 @@
+// 精灵协议
+// 编号=104
+
+
+// 请求所有精灵列表
+message cs_ger_list[id=10401] {
+}
+message sc_ger_list[id=10402] {
+    repeated        p_ger                gerlist             =1; // 所有的精灵信息
+    repeated        p_lineup             atklist             =2; // 攻击阵容
+    repeated        p_lineup             deflist             =3; // 防守阵容
+    // 阵容只会发送已经解锁的的格子
+}
+message p_ger[id=10403] {
+    optional        uint64               gerid               =1; // 精灵ID
+    optional        uint64               typeid              =2; // 模版ID
+    optional        uint64               star                =3; // 精灵星级
+    optional        uint64               rank                =4; // 精灵品阶
+    optional        uint64               level               =5; // 精灵等级
+    optional        uint64               exp                 =6; // 精灵经验
+    repeated        p_evolve             evolve              =7; // 精灵进化信息
+    optional        uint64               pos                 =8; // 精灵站位
+    optional        p_attr               attr                =9; // 精灵属性
+    repeated        p_skill              skill               =10; // 技能等级信息
+    optional        uint64               fightpower          =11; // 战斗力
+    optional        uint64               show_stage          =12; // 装逼阶段
+}
+
+
+// 精灵更新通知
+message sc_ger_notify[id=10404] {
+    repeated        p_ger               newlist                 =1; // 新增列表
+    repeated        p_ger               updatelist              =2; // 更新列表
+    repeated        p_ger               deletelist              =3; // 删除列表
+}
+
+
+// 使用宝贝碎片合成宝贝
+message cs_ger_unlock[id=10405] {
+    optional        uint64               itemTypeID              =1; // 要解锁的武将的TypeID
+}
+message sc_ger_unlock[id=10406] {
+    optional        uint64               result                 =1; // 操作结果
+    // 1 := 成功
+    // 2 := 失败-材料精灵不足或非法
+    // 3 := 失败-精灵已经解锁
+    // 4 := 失败-该精灵禁止合成
+    // 0 := 失败-未知错误
+    optional        p_ger                ger                    =2; // 如果成功了这里就是这个新宝贝的信息
+}
+
+
+// 请求背包精灵上阵(成为主将)
+message cs_ger_standup[id=10407] {
+    optional        uint64               gerid                   =1; // 精灵ID
+    optional        uint64               pos                     =2; // 上阵位置
+    optional        uint64               type                    =3; // 1 -> 操作的是进攻阵容， 2 -> 操作的是防守阵容
+}
+message sc_ger_standup[id=10408] {
+    optional        uint64                result                  =1; // 上阵结果
+    // 1 := 成功
+    // 2 := 失败-上阵位置非法
+    // 3 := 失败-无该背包精灵
+    // 4 := 失败-已有相同精灵上阵
+    // 5 := 失败-上阵数量限制
+    // 0 := 失败-未知错误
+}
+
+
+// 请求主将移位
+message cs_ger_movpos[id=10409] {
+    optional        uint64               gerid                   =1; // 精灵ID
+    optional        uint64               pos                     =2; // 目标位置
+    optional        uint64               type                    =3; // 1 -> 操作的是进攻阵容， 2 -> 操作的是防守阵容
+}
+message sc_ger_movpos[id=10410] {
+    optional        uint64                result                  =1; // 移位结果
+    // 1 := 成功
+    // 2 := 失败-移动精灵非法
+    // 3 := 失败-移动位置非法
+    // 0 := 失败-未知错误
+}
+
+
+// 请求主将下阵(可能不开放)
+//message cs_ger_gooff[id=10411] {
+//    optional        uint64               gerid                   =1; // 精灵ID
+//}
+//message sc_ger_gooff[id=10412] {
+//    optional        uint64               result                  =1; // 下阵结果
+    // 1 := 成功
+    // 2 := 失败-下阵精灵非法
+    // 0 := 失败-未知错误
+//}
+
+
+// 请求精灵升级(任意精灵)(吞噬经验卡)
+message cs_ger_uplevel[id=10413] {
+    optional        uint64               gerid                   =1; // 升级精灵
+    repeated        p_money              foodlist                =2; // 吞噬列表
+}
+message sc_ger_uplevel[id=10414] {
+    optional        uint64               result                  =1; // 升级结果
+    // 1 := 成功-升级
+    // 2 := 成功-未升级
+    // 3 := 失败-消耗列表中有物品不是经验卡
+    // 4 := 失败-消耗列表有物品不足
+    // 5 := 失败-武将不存在
+    // 6 := 失败-等级不能超过战队等级
+    // 0 := 失败-未知错误
+}
+
+
+// 请求精灵进阶(任意精灵)
+message     cs_ger_uprank[id=10415]{
+    optional        uint64               gerid                   =1; // 进阶精灵ID
+}
+message     sc_ger_uprank[id=10416]{
+    optional        uint64               result                  =1; // 进阶结果
+    // 1 := 成功
+    // 2 := 失败-进阶精灵不存在
+    // 3 := 失败-配置错误
+    // 4 := 失败-武将等级不足
+    // 5 := 失败-材料货币不足
+    // 6 := 失败-武将已经达到最高阶
+    // 0 := 失败-未知错误
+}
+
+
+// 请求精灵升星
+message cs_ger_upstar[id=10419] {
+    optional        uint64               gerid                   =1; // 升级精灵
+}
+message sc_ger_upstar[id=10420] {
+    optional        uint64                result                 =1; // 合成结果
+    // 1 := 成功
+    // 2 := 失败-材料货币不足
+    // 3 := 失败-配置错误
+    // 4 := 失败-武将等级不足
+    // 5 := 失败-需要的货币不足
+    // 6 := 失败-已经到达了最高星级
+    // 7 := 失败-升星后的武将配置错误
+    // 0 := 失败-未知错误
+
+}
+
+
+// 请求精灵技能升级
+message cs_ger_upskill[id=10421] {
+    optional        uint64               gerid                   =1; // 洗练精灵
+    optional        uint64               skillpos                =2; // 要升级的技能所在的位置
+    optional        bool                 onekeyup                =3; // 是否为一键升级
+}
+message sc_ger_upskill[id=10422] {
+    optional        uint64                result                 =1; // 技能升级结果
+    // 1 := 成功
+    // 2 := 失败-该精灵不存在
+    // 3 := 失败-位置不合法
+    // 4 := 失败-需要的精灵星级不够
+    // 5 := 失败-需要的货币不足
+    // 6 := 失败-技能等级不能大于精灵等级
+    // 7 := 失败-技能点不足
+    // 0 := 失败-未知错误
+}
+
+// 进化阶段分为 1 -> 成熟期  2-> 完全体 3 -> 究极体
+
+// 请求精灵进化阶段的升阶或者解锁
+message cs_ger_stage_uprank[id=10423] {
+    optional        uint64                gerid                   =1; // 洗练精灵
+    optional        uint64                stage                   =2; // 进化的阶段
+    optional        uint64                itemtypeid              =3; // 使用的碎片TypeID
+}
+message sc_ger_stage_uprank[id=10424] {
+    optional        uint64                result                  =1; // 进化阶段升阶结果
+    // 1 := 成功
+    // 2 := 失败-该精灵不存在
+    // 3 := 失败-阶段值不合法
+    // 4 := 失败-所需货币不足
+    // 5 := 失败-已经升到了顶级
+    // 6 := 失败-角色等级不足
+    // 7 := 失败-宝贝星级不足
+    // 0 := 失败-未知错误
+}
+
+// 选用宝贝的某个阶段为技能使用后的形态
+message cs_ger_stage_chose[id=10425]{
+    optional        uint64                gerid                   =1; // 选择的精灵gerid
+    optional        uint64                stage                   =2; // 要选择的进化阶段
+}
+message sc_ger_stage_chose[id=10426]{
+    optional        uint64                result                  =1; // 选择的结果
+    // 1 := 成功
+    // 2 := 失败-该精灵不存在
+    // 3 := 失败-阶段值不合法
+    // 4 := 失败-这个阶段还没有激活
+    // 0 := 失败-未知错误
+}
+
+
+message p_lineup[id=10430]{
+    optional        uint64                pos                     =1; // 在阵上的位置
+    optional        uint64                gerid                   =2; // 宝贝ID
+    // 如果 某个位置gerid是0则表示这个位置已经解锁了 但是没有上宝贝
+}
+
+message sc_ger_line_notify[id=10431]{
+    optional        uint64                type                    =1; // 更新的是攻击阵容还是防守阵容 1 -> 攻击阵容 2 -> 防守阵容
+    repeated        p_lineup              lineup                  =2; // 最新的阵容，本身也很短，所以全部发送
+}
+
+// 万能将魂兑换成宝贝将魂
+message cs_ger_piece_exchange[id=10432]{
+    optional        uint64                tarItemTypeID           =1; //要兑换的将魂碎片ID
+    optional        uint64                num                     =2; //要兑换的个数
+    optional        uint64                type                    =3; //兑换的类型
+    // 1 := 兑换的宝贝碎片
+    // 2 := 兑换的皮肤碎片
+}
+
+message sc_ger_piece_exchange[id=10433]{
+    optional        uint64                result                  =1; //操作结果
+    // 1 := 成功
+    // 2 := 目标将魂不可兑换
+    // 3 := 需要的万能将魂不足
+    // 4 := 宝贝未解锁不能兑换宝贝碎片
+    // 5 := 形态未解锁不能兑换皮肤碎片
+    // 0 := 失败-未知错误
+}
+
+message p_ger_summary[id=10434]{
+    optional        uint64               typeid              =1; // 模版ID
+    optional        uint64               star                =2; // 精灵星级
+    optional        uint64               rank                =3; // 精灵品阶
+    optional        uint64               level               =4; // 精灵等级
+    optional        uint64               pos                 =5; // 精灵站位
+    optional        uint64               normalstage         =6; // 精灵常驻形态
+    optional        uint64               gerid               =7; // 精灵ID
+    optional        uint64               show_stage          =8; // 装逼等级
+    optional        uint64               clothes             =9; //时装状态
+    optional        sint64               expiresec           =10;//时装的到期时间
+    // -1表示永久，其他和当前时间算差值算过期时间
+}
+
+message p_line_summary[id=10435]{
+    repeated        p_ger_summary        gerlist             =1; // 宝贝列表
+
+}
+
+message p_ger_line_list[id=10436]{
+    optional        uint64              pos             =1;         //阵容保存的位置
+    optional        string              name            =2;         //阵容的名字
+    repeated        p_lineup            line_list       =3;         //选择使用的武将列表
+}
+
+message cs_ger_set_line[id=10437]{
+    optional        p_ger_line_list      line            =1;         //要修改的阵容
+}
+
+message sc_ger_set_line[id=10438]{
+    optional        uint64              result          =1;         //操作结果
+    // 1 => 成功
+    // 2 => 格子没解锁
+    // 3 => 名字和其他位置的名字有冲突
+    // 4 => 位置不合法
+    // 5 => 名字长度超长
+    optional        p_ger_line_list     new_line        =2;         //只有一个用来客户端初始化数据
+
+}
+
+message cs_ger_line_list[id=10439]{
+}
+
+message sc_ger_line_list[id=10440]{
+    repeated        p_ger_line_list      all_line        =1;         //所有的已经使用的阵容列表
+    // 只要格子解锁了就必然会有那个位置的记录，解锁后就会立刻生成
+}
+
+message cs_ger_line_unlock[id=10441]{
+    optional        uint64                  pos             =1;        //要解锁的位置
+}
+
+message sc_ger_line_unlock[id=10442]{
+    optional        uint64                  result          =1;         //操作结果
+    // 1 => 成功
+    // 2 => 这个位置已经解锁了
+    // 3 => 位置不合法
+    // 4 => 解锁消耗不足
+    optional        p_ger_line_list         new_line        =2;         //解锁后的空阵容，只有一个用来客户端初始化数据
+}
+
+message cs_ger_clothe[id=10443]{
+    optional        uint64                  ger_id          =1;         //操作宝贝的gerID
+    optional        uint64                  cloth_id        =2;         //购买的时装ID
+    optional        uint64                  buy_type        =3;         //购买的档位
+    // 1 => 7天
+    // 2 => 1月
+    // 3 => 永久
+}
+
+message sc_ger_clothe[id=10444]{
+    optional        uint64                  result          =1;         //操作结果
+    // 1 => 成功
+    // 2 => 宝贝不存在
+    // 3 => 时装未解锁
+    // 4 => 对应皮肤未解锁
+    // 5 => 时装ID非法
+    // 6 => 时装和宝贝不对应
+    // 7 => 已经购买了永久
+    // 8 => 购买的档位不存在
+    // 9 => vip等级不够
+    // 10 => 货币不足
+}

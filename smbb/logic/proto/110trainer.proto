@@ -1,0 +1,44 @@
+//模块=trainer
+//编号=11000
+
+message cs_trainer_info[id=11001]{
+
+}
+
+message sc_trainer_info[id=11002]{
+    repeated                p_trainer               unlocklist = 1; //已经解锁的训练师的 typeid
+}
+
+message cs_trainer_unlock[id=11003]{
+    optional                uint64                  typeid     = 1; //要解锁的训练师的typeid
+}
+
+message sc_trainer_unlock[id=11004]{
+    optional                uint64                  result     = 1; //操作结果
+    // 1 := 成功
+    // 2 := 需要的材料不足
+    // 3 := typeid不合法
+    // 4 := 已经解锁了该训练师
+    // 0 := 失败-未知错误
+}
+
+message cs_trainer_chose[id=11005]{
+    optional                uint64                  typeid     = 1; //要选择的训练师的typeid
+    optional                uint64                  type       = 2; //对应的是防守阵容还是进攻阵容
+    // 1 := 进攻阵容
+    // 2 := 防守阵容
+}
+
+message sc_trainer_chose[id=11006]{
+    optional                uint64                  result     = 1; //操作结果
+    // 1 := 成功
+    // 2 := type值不合法
+    // 3 := 该训练师未解锁
+    // 0 := 失败-未知错误
+}
+
+message p_trainer[id=11007]{
+    optional                uint64                  typeid     = 1; //训练师的typeid
+    optional                bool                    atkchose   = 2; //是否被选择到了进攻阵容中
+    optional                bool                    defchose   = 3; //是否被选择到了防守阵容中
+}

@@ -1,0 +1,28 @@
+// 113 onlinerwd  在线奖励模块
+
+
+// 请求在线福利信息
+message cs_onlinerwd_info[id=11301]{
+}
+
+// 返回在线福利信息
+message sc_onlinerwd_info[id=11302]{
+    optional        uint64               haverwd         =1; // 当天是否还有奖励
+    // 1 => 有
+    // 2 => 没有
+    optional        uint64               cdown           =2; // 下次领取的时间点
+    optional        uint64               rwdid           =3; // 奖励ID
+    optional        p_reward             reward          =4; // 奖励列表
+}
+
+// 请求领取在线福利
+message	cs_onlinerwd_draw[id=11303]{
+    optional        uint64               rwdid           =1; // 奖励ID
+}
+
+// 返回领取在线福利
+message sc_onlinerwd_draw[id=11304]{
+    optional        uint64                result          =1; // 结果
+    // 1 => 领取成功
+    // 2 => 领取失败
+}

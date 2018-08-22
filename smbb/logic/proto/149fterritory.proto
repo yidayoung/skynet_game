@@ -1,0 +1,227 @@
+// 模块 - 工会领地
+// 编号 - 14900
+
+// 请求工会领地信息
+message cs_fterritory_info[id=14901]{
+}
+
+message sc_fterritory_info[id=14902]{
+	optional      uint64      result   = 1;
+	// 1 := 成功
+	// 2 := 失败-未加入公会
+	// 3 := 失败-工会等级不够
+	// 4 := 失败-功能暂未开放
+	optional      uint64      lv       = 2; // 公会建筑等级 
+	repeated      p_task      tasklist = 3; // 公会建筑任务列表
+	optional      p_shop      shop     = 4; // 公会建筑商店
+	repeated      p_pmansion  pmansion = 5; // 个人建筑列表
+	repeated      p_switch    switchlist= 6; // 申请列表
+	optional      p_reward    ftmoney  = 7; // 商店money
+	repeated      p_fter_buff bufflist = 8; // 加成buff列表
+	repeated      p_hanguptask hanguptasklist = 9; // 公会挂机任务列表
+}
+
+// 个人建筑信息
+message p_pmansion[id=14903]{
+	optional    uint64       manid    = 1; // 建筑ID
+	optional    uint64       roleid   = 2; // 玩家ID
+	optional    string       rolename = 3; // 玩家姓名
+	optional    uint64       title    = 4; // 玩家头衔(0:=成员;1:=副会长;2:=会长)
+	optional    uint64       coolsec  = 5; // 冷却时间
+}
+
+// 领取领地任务奖励
+message cs_fterritory_taskdraw[id=14904]{
+	optional    uint64       taskid   = 1; // 任务ID 
+}
+
+message sc_fterritory_taskdraw[id=14905]{
+	optional    uint64       result   = 1; 
+	// 1 := 成功
+	// 2 := 失败-任务不存在
+	// 3 := 失败-任务未完成
+	// 4 := 失败-奖励已领取
+	optional   p_reward      reward   = 2; // 奖励
+}
+
+// 购买领地商店商品
+message cs_fterritory_shopbuy[id=14906]{
+	optional    uint64       sellid        = 1; // 商品ID
+	optional    uint64       buynum        = 2; // 购买数量
+	optional    uint64       sellpos       = 3; // 商品位置
+	// 1 := 上层商品
+	// 2 := 下层商品
+}
+
+message sc_fterritory_shopbuy[id=14907]{
+	optional     uint64      result        = 1; 
+	// 1 := 成功
+	// 2 := 失败-权限不够(只有会长、副会长可购买)
+	// 3 := 失败-商品不存在
+	// 4 := 失败-购买次数限制
+	// 5 := 失败-货币不足
+}
+
+// 工会领地升级
+message cs_fterritory_uplevel[id=14908]{
+}
+
+message sc_fterritory_uplevel[id=14909]{
+	optional     uint64      result        = 1; 
+	// 1 := 成功
+	// 2 := 失败-权限不够
+	// 3 := 失败-已到最高等级
+	// 4 := 失败-升级材料不足
+	optional     uint64      lv           = 2; // 新等级
+}
+
+// 申请更换领地
+message cs_fterritory_switch[id=14910]{
+	optional     uint64      tarmanid     = 1; // 目标领地mansionid
+}
+
+message sc_fterritory_switch[id=14911]{
+	optional     uint64     result         = 1; 
+	// 1 := 成功
+	// 2 := 失败-未加入工会或已被踢
+	// 3 := 失败-冷却中
+	// 4 := 成功-成功进驻
+	// 5 := 失败-对方冷却中
+	// 6 := 失败-已发送过申请
+}
+
+// 工会个人领地更新
+message sc_fter_pmansion_notify[id=14912]{
+	repeated    p_pmansion  pmansion     = 1; // 个人建筑列表
+}
+
+// 领地任务更新
+message sc_fter_task_notify[id=14913]{
+	repeated    p_task       newlist       = 1; // 新增列表
+    repeated    p_task       updatelist    = 2; // 更新列表
+    repeated    p_task       deletelist    = 3; // 删除列表
+}
+
+// 商店更新(其它信息走sc_shop_notify)
+message sc_ftshop_notify[id=14914]{
+    optional   p_reward      ftmoney       = 1; // 领地商店money 
+}
+
+// 申请信息处理
+message cs_fterritory_switchback[id=14915]{
+	optional   uint64        respond       = 1; // 回应
+	// 1 := 同意
+	// 2 := 拒绝
+	optional   uint64        roleid        = 2; // 申请者ID        
+}
+
+message sc_fterritory_switchback[id=14916]{
+	optional   uint64        result        = 1; 
+	// 1 := 成功
+	// 2 := 失败-未加入工会或已被踢
+	// 3 := 失败-该申请已过期
+	// 4 := 已拒绝
+}
+
+// 申请信息
+message p_switch[id=14917]{
+	optional   uint64        roleid       = 1; // 申请者ID
+	optional   string        rolename     = 2; // 申请者姓名
+	optional   uint64        mansionid    = 3; // 申请者建筑ID
+	optional   uint64        coolsec      = 4; // 申请信息有效时间
+}
+
+// 申请列表更新
+message sc_fter_switch_notify[id=14918]{
+	repeated   p_switch      newlist       = 1; // 新增列表
+    repeated   p_switch      updatelist    = 2; // 更新列表
+    repeated   p_switch      deletelist    = 3; // 删除列表
+}
+
+// 加成buff更新
+message sc_fter_buff_notify[id=14919]{
+	repeated   p_fter_buff   newlist       = 1; // 新增列表
+    repeated   p_fter_buff   updatelist    = 2; // 更新列表
+    repeated   p_fter_buff   deletelist    = 3; // 删除列表
+}
+
+// 加成buff结构
+message p_fter_buff[id=14920]{
+	optional   uint64        buffid       = 1; // buffid
+	optional   uint64        endsec       = 2; // 结束时间
+}
+
+// 已完成任务列表
+message cs_fterritory_htask[id=14921]{
+}
+
+message sc_fterritory_htask[id=14922]{
+	optional   uint64       result        = 1; 
+	// 1 := 成功
+	// 2 := 失败-未加入工会或已被踢
+	repeated   p_htask      htasklist     = 2;
+}
+
+// 已完成任务结构
+message p_htask[id=14923]{
+	optional   uint64       roleid        = 1; // 成员ID
+	optional   string       rolename      = 2; // 成名姓名
+	optional   uint64       ttask         = 3; // 当日已完成数量
+	optional   uint64       htask         = 4; // 累计已完成数量
+	optional   uint64       tftmoney      = 5; // 当日已贡献资源
+	optional   uint64       hftmoney      = 6; // 累计已贡献资源
+}
+
+// 领地挂机任务更新
+message sc_fterritory_fhangup_task_notify[id=14924]{
+	repeated    p_hanguptask       newlist       = 1; // 新增列表
+    repeated    p_hanguptask       updatelist    = 2; // 更新列表
+    repeated    p_hanguptask       deletelist    = 3; // 删除列表
+}
+
+// 激活挂机任务
+message cs_fterritory_fhangup_active[id=14925]{
+	optional    uint64       taskid      = 1; // 任务ID 
+	repeated    p_ger_stand  standlist   = 2; // 上阵宝贝id
+}
+
+message sc_fterritory_fhangup_active[id=14926]{
+	optional    uint64       result   = 1; 
+	// 1 := 成功
+	// 2 := 失败-任务不存在
+	// 3 := 失败-任务已激活
+	// 4 := 失败-条件不满足
+	// 5 := 失败-配置中未找到该ID
+	// 6 := 失败-上阵宝贝数量不足,gerid 重复, pos重复
+	// 7 := 失败-上阵宝贝不存在
+	// 8 := 失败-上阵宝贝类型不符
+	// 9 := 失败-上阵宝贝总战斗力未达到
+	// 10 := 失败-有宝贝在完成其它任务
+}
+
+// 领取领地任务奖励
+message cs_fterritory_fhangup_taskdraw[id=14927]{
+	optional    uint64       taskid   = 1; // 任务ID 
+}
+
+message sc_fterritory_fhangup_taskdraw[id=14928]{
+	optional    uint64       result   = 1; 
+	// 1 := 成功
+	// 2 := 失败-任务不存在
+	// 3 := 失败-任务未完成
+	// 4 := 失败-奖励已领取
+	// 5 := 失败-配置中未找到该ID
+	optional   p_reward      reward   = 2; // 奖励
+}
+
+message p_hanguptask[id=14929]{
+	repeated    p_ger_stand_info       standlist   = 1;
+	optional    p_task                 task        = 2;
+}
+
+message p_ger_stand_info[id=14930]{
+	optional   uint64      gerid   = 1; // gerid
+	optional   uint64      evolve  = 2; // 形态
+	optional   uint64      pos     = 3; // 位置
+
+}

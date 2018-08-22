@@ -1,0 +1,133 @@
+// 模块=boss
+// 编号=13900
+
+
+// 获取世界BOSS相关信息
+message cs_boss_info[id=13901] {
+    optional            int32               open                 =1; // 是否进入界面
+    // 1 := 要进入
+    // 2 := 不进入
+}
+message sc_boss_info[id=13902] {
+    optional            uint32               state               =1; // BOSS 状态
+    // 1 := BOSS 活跃
+    // 2 := BOSS 死亡
+    // 3 := BOSS 休息
+    optional            uint64               cd_time             =2; // 挑战冷却时间
+    optional            p_boss               boss_info           =3; // BOSS信息
+    repeated            uint32               role_draw_inds      =4; // 已领取玩家tops领奖id
+    repeated            uint32               family_draw_inds    =5; // 已领取公会tops领奖id
+    optional            uint64               begin_time          =6; // boss活动时间begin
+    optional            uint64               end_time            =7; // boss活动时间end
+    optional            int32                b_vip_sel           =8; // 是否选择了vip自动打
+    optional            uint64               open_time           =9; // 活动开启时间
+}
+message p_boss[id=13903] {
+    optional            p_ger                base                =1; // BOSS基础信息
+    optional            uint64               hp                  =2; // BOSS血量
+    optional            uint32               boss_index          =3; // BOSS等级
+}
+
+
+// 通知退出世界BOSS界面
+message cs_boss_quit[id=13904] {
+}
+message sc_boss_quit[id=13905] {
+    optional            int32                result              =1; // 退出结果
+    // 1 := 退出成功
+    // 2 := 退出失败
+}
+
+
+message cs_boss_draw[id=13906] {
+    optional            int32                draw_type           =1; // 类型(1:=role;2:=family)
+    repeated            int32                draw_inds           =2; // 当前领奖id
+}
+message sc_boss_draw[id=13907] {
+    optional            int32               result               =1; // 领取结果
+    // 0 = 系统内部错误
+    // 1 = 成功
+    // 2 = draw_type不存在
+    // 3 = 不能领取奖励
+    optional            int32               draw_type            =2; // 类型(1:=role;2:=family)
+    repeated            int32               draw_inds            =3; // 当前已领取领奖id
+    optional            p_reward            reward               =4; // 领取奖励
+}
+
+message cs_boss_fight[id=13908] {
+}
+message sc_boss_fight[id=13909] {
+    optional            int32                result              =1; // 挑战结果
+    // 1 := 成功-未击杀
+    // 2 := 成功-击杀之
+    // 3 := 失败-等级不足
+    // 4 := 失败-挑战次数不足
+    // 5 := 失败-BOSS已被击杀
+    // 6 := 失败-BOSS休息中
+    // 7 := 失败-冷却
+    // 8 := 活动开启时间没到
+    // 9 := boss不处于alive状态
+    optional            p_fight_struct       fight_struct        =2; // 战斗
+    optional            uint64               harm                =3; // 新伤害值 
+    optional            uint64               cd_time             =4; // 冷却时间
+    optional            double               per_harm            =5; // 伤害百分百
+    optional            p_reward             one_fight_reward    =6; // 一次击杀的奖励
+}
+
+
+// 请求BOSS伤害排行榜
+message cs_boss_tops[id=13910] {
+    optional            int32                tops_type            =1; // 类型(1:=role;2:=family;3:=familyrole)
+}
+message sc_boss_tops[id=13911] {
+    optional            int32                 result              =1; // 挑战结果
+    // 0 = 系统内部错误
+    // 1 = 成功
+    // 2 = type不存在
+    // 3 = 玩家不存在公会
+    optional            int32                 tops_type           =2; // 类型(1:=role;2:=family;3:=familyrole)
+    repeated            p_boss_top            tops                =3; // 排行榜数据
+}
+message p_boss_top[id=13912] {
+    optional            uint64                roleid              =1; // 基础信息
+    optional            string                rolename            =2; // 基础信息
+    optional            uint64                familyid            =3; // 基础信息
+    optional            string                familyname          =4; // 基础信息
+    optional            uint64                harm                =5; // 伤害值
+}
+
+// 广播玩家对BOSS伤害
+message sc_player_harm[id=13913] {
+    optional            string               name                  =1; // 玩家名字
+    optional            uint64               roleid                =2; // 玩家roleid
+    optional            uint64               harm                  =3; // 伤害值
+    optional            uint64               icon                  =4; // 头像ID
+    optional            uint64               hp                    =5; // 
+}
+
+// vip勾选
+message cs_boss_selvip[id=13914] {
+    optional            int32                 bselect            =1; // 
+}
+
+message sc_boss_selvip[id=13915] {
+    optional            int32                 result             =1; // 
+    // 0 = 系统内部错误
+    // 2 = vip等级不足
+    // 3 = 人物等级不足
+    // 4 = 勾选成功
+    // 5 = 取消勾选成功
+    // 6 = 重复勾选
+    // 7 = 重复取消勾选
+}
+
+message cs_boss_harm[id=13916] {
+}
+message sc_boss_harm[id=13917] {
+    optional            uint64              role_harm            =1; // 玩家伤害
+    optional            uint64              family_harm          =2; // 玩家所在公会伤害
+}
+
+message sc_boss_state_update[id=13918] {
+    optional            uint32               state               =1; // BOSS 状态
+}

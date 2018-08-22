@@ -1,0 +1,261 @@
+// 模块 - 天梯赛
+// 编号 - 编号 15100
+
+// 请求天梯赛信息
+message cs_extreme_info[id=15101]{
+}
+
+message sc_extreme_info[id=15102]{
+	optional    uint64   			result		=	1;//是否开启 1：开启成功 2:等级不够 3:开服时间不够，4：休赛时间 5:活动还未开始 6:主服挂了 7:配置错误
+	optional	uint64				curscore	=	2;//当前积分
+	optional	uint64				division	=	3;//段位 eg：最强王者
+	optional	uint64				seasonbegin	=	4;//开始时间
+	repeated	p_extreme_boxbattle	boxbattle	=	6;//战斗宝箱(胜负为不同的宝箱)
+	optional	p_extreme_boxfree   boxfree  	=	7;//免费箱子
+	optional	p_extreme_boxwin	boxwin	    =	8;//(战功宝箱信息,即累积胜利场次的箱子)
+	repeated    p_extreme_standup   standuplist =   9;//当前阵容列表
+	optional    uint64              quickopennum =  10;//快速开启次数
+	optional    string              challengetm  =  11;//可挑战时间段
+}
+
+message p_extreme_boxbattle[id=15103]{
+	optional	uint64		boxid	 	=	1;//id 
+	optional	uint64		boxtype		=	2;//类型 胜负
+	optional	uint64		boxpos		=	3;//位置
+	optional	uint64		boxtime		=	4;//宝箱解锁后的开启时间 unix_time，0表示未解锁
+	optional    uint64      quicknum    =   5;//激活时的快速开启次数
+}
+
+message p_extreme_boxfree[id=15104]{
+	optional	uint64		boxid	    =	1;//可以开启宝箱id
+	optional	uint64		boxtime		=	2;//可以开启时间 -1表示已经满了
+}
+
+message p_extreme_boxwin[id=15105]{
+	optional	uint64		boxid       =   1;
+	optional	uint64		isdraw		=	2;//是否领取过 0 可领取 1 不能在领取 
+	optional	uint64		wincount	=	3;//胜利次数
+	optional	uint64		boxtime		=	4;//刷新时间
+	optional	uint64		openneed	=	5;//需要胜利次数
+}
+
+//匹配对手
+message cs_extreme_match[id=15106]{
+}
+
+message sc_extreme_match[id=15107]{
+	optional	uint64		result		=	1;//结果 
+	//1匹配成功
+	//2不在匹配时间 
+	//3阵容与段位不符
+	//4休赛时间段不在匹配时间 
+	//5活动已关闭
+
+	repeated   p_fight_list	      fight_structs =	2;//战斗结构  
+	optional   p_extreme_record   fight_result  =   3;//匹配成功后返回的战报，战斗数据及结果全在里面
+}
+
+message p_extreme_record[id=15108]{
+	optional	uint64		     replayid   =	1;//战报id
+	optional	uint64		     fightsec	=	2;//战斗时间	
+	repeated    p_result_list    players    =   3;//对战玩家信息
+}
+
+message  p_result_list[id=15109]{
+	optional   uint64     roleid = 1;
+	optional   string     rolename =2;
+	optional   string     familyname =3;
+	optional   uint64     serverid =4;
+	optional   uint64     curscore = 5;
+	optional   int64      getscore = 6;
+	optional   uint64     winnum = 7;
+	repeated   p_ger_list gerlist = 8;
+	optional   uint64     rank = 9;
+	optional   uint64     icon = 10;
+	optional   uint64     viplv = 11;
+}
+
+//废掉
+message  p_ger_list[id=15110]{
+	optional   uint64 place = 1;
+	optional   bool iswin   = 2;
+//	repeated   p_ger_summary summarylist = 3; 
+}
+
+// 取消匹配
+message cs_extreme_matchcancel[id=15111]{
+}
+message sc_extreme_matchcancel[id=15112]{
+	optional	uint64		result		=	1;//1成功  2失败 3:赛季结束
+}
+
+// 排行榜
+message cs_extreme_rank[id=15113]{
+}
+
+message sc_extreme_rank[id=15114]{
+	optional	uint64			result		=	1;//1成功 2失败
+	repeated	p_extreme_rank	rankinfo	=	2;//排名信息
+	repeated    p_extreme_rank  ownrank     =   3;//自己的排行信息 若为空表，则未找到自己的排行
+}
+
+message p_extreme_rank[id=15115]{
+	optional	uint64		rank		=	1;//排名
+	optional	uint64		roleid		=	2;//roleid
+	optional	uint64		serverid	=	3;//所在服务器id
+	optional	string		rolename    =	4;//名字
+	optional	string		familyname	=	5;//公会
+	optional	uint64		curscore	=	6;//积分
+	optional	uint64		division	=	7;//段位
+}
+
+// 巅峰战报
+message cs_extreme_total_record[id=15116]{
+}
+
+message sc_extreme_total_record[id=15117]{
+	optional	uint64				result		=	1;//1成功 2失败
+	repeated	p_extreme_record	records		=	2;//战报列表
+}
+
+// 自己的战报
+message cs_extreme_my_record[id=15118]{
+}
+
+message sc_extreme_my_record[id=15119]{
+	optional	uint64				result		=	1;//1成功 2失败
+	repeated	p_extreme_record	records	    =	2;//战报列表
+}
+
+// 查看战报回放
+message cs_extreme_replayview[id=15120]{
+	optional    uint64      isowner    =   1; 
+	//1:自己的战报
+	//2：巅峰战报
+	optional	uint64		replayid   =	2;//replayid
+}
+
+message sc_extreme_replayview[id=15121]{
+	optional	uint64			  result	   =	1;//1成功，2失败(该战报已过期)
+	repeated	p_fight_list	  fight_structs =	2;//战斗结构  
+	optional	p_extreme_record  fight_result =	3;//战斗结算
+}
+
+message  p_fight_list[id=15122]{
+	optional   uint64         place = 1; //第几场
+	optional   p_fight_struct struct = 2; // 战斗结构
+}
+
+// 布阵
+message cs_extreme_standup[id=15123]{
+  repeated  p_extreme_standup standuplist = 1; //布阵列表
+}
+
+message sc_extreme_standup[id=15124]{
+	optional	uint64			     result		  =	1;
+	//1成功，
+	//2失败-阵容数据重复
+	//3阵容不全
+	//4上阵精灵与段位不符
+	repeated    p_extreme_standup    standuplist      = 2;//布阵
+}
+
+message p_extreme_standup[id=15125]{
+	optional        uint64               place       = 1; // 第几场
+	repeated        p_ger_stand          ger_stand   = 2; //精灵战位
+}
+
+// 开宝箱
+message cs_extreme_boxopen[id=15126]{
+	optional	uint64		boxtype		=	1;
+	//1:免费宝箱
+	//2:战功宝箱
+	//3:战斗宝箱
+	optional	uint64		boxpos		=	2;
+	//战斗宝箱位置::1|2|3|4 ；0表示：免费宝箱或战功宝箱
+}
+
+message sc_extreme_boxopen[id=15127]{
+	optional	uint64			result		=	1;
+	//1:成功
+	//2:失败-未激活
+	//3:失败-未找到对应宝箱类型
+	//4:失败-未到领取时间
+	//5:失败-今日已领取
+	//6:失败-未找到该位置的宝箱
+	optional	p_reward   reward		=	2;//奖励
+}
+
+// 快速度打开战斗宝箱
+message cs_extreme_quickopen[id=15128]{
+	optional	uint64		boxtype		=	1; // 此处传战斗宝箱type=3
+	optional	uint64		boxpos		=	2;
+	//战斗宝箱位置::1|2|3|4 
+}
+
+message sc_extreme_quickopen[id=15129]{
+	optional	uint64		result		=	1; 
+	//1:成功
+	//2:失败-消耗不足
+	//3:失败-暂时只有战斗宝箱可消耗快速打开
+	//4:失败-在该位置处未找到对应宝箱
+	//5:失败-请先激活
+	optional	p_reward	reward		=	2;//奖励
+	
+}
+
+message sc_extreme_notify_freebox[id=15130]{
+	optional	p_extreme_boxfree	boxfree	 =	1;
+	//更新免费宝箱可开启时间	
+}
+
+message sc_extreme_notify_boxwin[id=15131]{
+	optional	p_extreme_boxwin	boxwin	=	1;
+}
+
+message sc_extreme_notify_boxbattle[id=15132]{
+	optional	uint64		boxid	 	=	1;//id  0：表示该位置为空
+	optional	uint64		boxtype		=	2;//类型 1:失败宝箱， 2：胜利宝箱
+	optional	uint64		boxpos		=	3;//位置
+	optional	uint64		boxtime		=	4;//宝箱解锁后的可领取时间 unix_time，0表示未解锁
+}
+
+message  p_ger_stand[id=15133]{
+	optional        uint64               gerid    = 1; // 精灵id
+    optional        uint64               pos      = 2; // 上阵位置
+}
+
+message sc_extreme_notify_info[id=15134]{
+	optional    uint64             quickopennum =  1; //快速开启次数
+	optional	uint64	           curscore	    =  2;//当前积分
+	optional	uint64	           division	    =  3;//段位 eg：最强王者
+	optional	uint64			   seasonbegin	=  4;//开始时间	
+	optional    uint64   		   result		=  5;//是否开启 1：开启成功 2:等级不够 3:开服时间不够，4：休赛时间 5:活动还未开始
+	optional    uint64   		   cleanstandup	=  6;//是否将阵型清空 1：清空
+}
+
+
+message cs_extreme_battlebox_unlock[id=15135]{
+	optional	uint64		boxpos		=	1;//胜利宝箱的位置::1|2|3|4
+}
+
+message sc_extreme_battlebox_unlock[id=15136]{
+	optional	uint64		result		=	1;
+	//1:成功
+	//2:失败-未找到对应宝箱
+	//3:失败-该宝箱已激活
+	//4:失败-有激活的宝箱未领取
+	optional	uint64		boxpos      =   2;//宝箱位置
+	optional	uint64		boxtime	    =	3;//可以开启的时间
+	optional    uint64      quicknum    =   4;//解锁时的快速开启次数
+}
+
+// 战报分享观看
+message sc_hist_watch_extreme[id=15137]{
+	optional      uint64          result  =1; // 结果
+	// 1 := 成功
+	// 2 := 失败-战报已过期
+	repeated	p_fight_list	  fight_structs =	2;//战斗结构  
+	optional	p_extreme_record  fight_result =	3;//战斗结算
+}
+

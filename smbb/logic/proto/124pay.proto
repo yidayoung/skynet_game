@@ -1,0 +1,57 @@
+// 模块=pay
+// 编号=12400
+
+
+// 请求充值相关信息
+message cs_pay_info[id=12401] {
+}
+message sc_pay_info[id=12402] {
+    optional uint64 first_pay_state = 1; // 首充相关状态
+    // 0 := 还未首充
+    // 1 := 已充可领
+    // 2 := 不可领奖
+    repeated uint64 paid_case_list = 2; // 已充档位列表
+}
+
+
+// 测试模拟充值(只在测试时开启)
+message cs_pay_test[id=12403] {
+    optional uint64 pay_type = 1; // 充值类型
+    // 1 := 普通充值
+    // 2 := 购买rmb礼包
+    optional uint64 amount_rmbfen = 2; // 充值额度(分)
+    optional uint64 giftTypeID = 3; // 礼包的TypeID
+}
+
+// 充值结果推送
+message sc_pay_notify[id=12404] {
+    optional uint64 result = 1; // 充值结果
+    // 1 := 成功
+    // 2 := 失败
+    optional p_reward reward = 2; // 充值奖励
+    optional uint64 pay_type = 3; // 充值类型
+    // 1 := 普通充值
+    // 2 := 激活VIP
+    optional uint64 pay_case = 4; // 充值档位(非定档为0)
+    optional uint64 amount_rmbfen = 5; // 充值额度(分)
+}
+
+
+// 请求领取首充大礼包
+message cs_pay_first_draw[id=12405] {
+}
+message sc_pay_first_draw[id=12406] {
+    optional uint64 result = 1; // 充值结果
+    // 1 := 成功
+    // 2 := 失败-并未首充
+    // 3 := 失败-已经领奖
+    // 4 := 失败-状态不存在
+    // 0 := 系统内部错误
+    repeated p_reward rewards = 2; // 充值奖励
+}
+
+
+// 前端请求确保离线充值账单
+message cs_pay_offline_ensure[id=12407] {
+}
+

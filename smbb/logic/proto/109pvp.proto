@@ -1,0 +1,286 @@
+// PVP协议
+// 编号=109
+
+// 请求挑战列表
+message cs_pvp_get_list[id=10901]{
+}
+
+message sc_pvp_get_list[id=10902]{
+	optional        uint64       rank      = 1; // 当前排名
+	repeated        p_pvp        pvplist   = 2; // 挑战列表
+	optional        uint64       pvptimes  = 3; // 已挑战次数
+	optional        uint64       buytimes  = 4; // 购买次数
+	optional        uint64       cooltime  = 5; // 挑战冷却倒计时
+	repeated        uint64       worshipids= 6; // 膜拜的玩家ID列表
+	optional        p_showicon   showicon  = 7; // 展示icon
+	optional        p_money      refcost   = 8; // 刷新消耗
+	optional        p_money      eracost   = 9; // 冷却清除消耗  
+}
+
+// 挑战单位结构
+message p_pvp[id=10903]{
+	optional        uint64       roleid    = 1; // 角色ID
+	optional        uint64       icon      = 2; // 角色头像ID
+	optional        string       rolename  = 3; // 角色名
+	optional        uint64       rank      = 4; // 角色排名
+	optional        uint64       defpower  = 5; // 防御战斗力
+	optional        string       familyname= 6; // 工会名字
+	optional        uint64       beworship = 7; // 被膜拜次数
+	optional        uint64       ischa     = 8; // 是否已挑战过(0:=未挑战,1:=已挑战)
+	optional        p_showicon   showicon  = 9; // 展示icon   
+	optional        uint64       viplv     =10; // 角色viplv   
+}
+
+// 请求挑战
+message cs_pvp_fight[id=10904]{
+	optional        uint64        roleid   = 1; // 目标玩家ID
+	optional        uint64        rank     = 2; // 目标玩家排名
+}
+
+message sc_pvp_fight[id=10905]{
+	optional        uint64          result       = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-可挑战次数不足
+	// 3 := 失败-钻石不足,无法清除冷却时间
+	// 4 := 失败-目标玩家排名出现变动
+	// 5 := 失败-上次挑战还在进行中
+	// 6 := 失败-对方正在被挑战中
+	// 7 := 失败-不能挑战自己
+	// 8 := 失败-对方不在可挑战范围内
+	optional        uint64          newrank      = 2; // 新排名
+	optional        p_reward        dropreward   = 3; // 掉落奖励
+	optional        p_fight_struct  fight_struct = 4; // 战斗结构
+	optional        uint64          pvptimes     = 5; // PVP可挑战次数
+	repeated        p_pvp           pvplist      = 6; // 新挑战列表
+	optional        p_pvp           atkpvp       = 7; // 本方PVP
+	optional        p_pvp           defpvp       = 8; // 对方PVP
+	optional        uint64          cooltime     = 9; // 挑战冷却倒计时
+	optional        p_money         eracost      =10; // 清除消耗
+}
+
+// 刷新对手
+message cs_pvp_refresh[id=10906]{
+}
+
+message sc_pvp_refresh[id=10907]{
+	optional        uint64         result     = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-刷新次数不足
+	// 3 := 失败-钻石不足
+	repeated        p_pvp          pvplist    = 2; // 新挑战列表
+	optional        p_money        refcost    = 3; // 刷新消耗
+}
+
+// 排行榜
+message cs_pvp_top_list[id=10908]{
+}
+
+message sc_pvp_top_list[id=10909]{
+	repeated       p_pvp            pvplist   = 1;
+}
+
+// 购买挑战次数
+message cs_pvp_fight_buy[id=10910]{
+}
+
+message sc_pvp_fight_buy[id=10911]{
+	optional       uint64            result   = 1;
+	// 1 := 成功
+	// 2 := 失败-钻石不足
+	// 3 := 失败-购买次数不足
+	optional       uint64            pvptimes = 2;
+	optional       uint64            buytimes = 3;
+	optional       uint64            cooltime = 4; // 更新冷却时间
+}
+
+// 清除挑战冷却
+message cs_pvp_cool_erase[id=10912]{
+}
+
+message sc_pvp_cool_erase[id=10913]{
+	optional        uint64           result  = 1;
+	// 1 := 成功
+	// 2 := 失败-钻石不足
+	// 3 := 失败-今日清除次数已用完
+	optional        p_money          eracost  = 2; // 冷却清除消耗
+}
+
+// PVP战报结构
+message p_pvp_hist[id=10914]{
+	optional         uint64         type        = 1;
+	// 1 := 进攻战报
+	// 2 := 防守战报
+	optional         uint64         tarroleid   = 2; // 对方玩家ID
+	optional         string         tarname     = 3; // 对方玩家姓名
+	optional         uint64         tarlv       = 4; // 对方等级
+	optional         uint64         firstatk    = 5; // 先手值
+	optional         uint64         fightsec    = 6; // 战斗时间
+	optional         uint64         result      = 7; // 战斗结果
+	// 1 := 成功
+	// 2 := 失败
+	optional         uint64         replayid    = 8; // 战斗录像ID
+	optional         uint64         icon        = 9; // 对方头像ID
+	optional         uint64         fightpower  = 10;// 对方战斗力
+	optional         sint64         rankdelta   = 11;// 排名变化 
+	optional         uint64         tarviplv    = 12;// 对方vip等级     
+}
+
+// 请求战报列表
+message cs_pvp_hist_list[id=10915]{
+}
+
+message sc_pvp_hist_list[id=10916]{
+	repeated        p_pvp_hist       atkhist     = 1; // 进攻战报
+	repeated        p_pvp_hist       defhist     = 2; // 防守战报
+}
+
+// 请求播放战斗录像
+message cs_pvp_fight_replay[id=10917]{
+	optional        uint64            replayid   = 1;
+}
+
+message sc_pvp_fight_replay[id=10918]{
+	optional        p_fight_struct  fight_struct = 1; // 战斗结构
+	optional        p_pvp           atkpvp       = 2; // 本方PVP
+	optional        p_pvp           defpvp       = 3; // 对方PVP
+}
+
+// 排行榜奖励(首次进入某一阶段)
+message cs_pvp_rank_reward[id=10919]{
+}
+
+message sc_pvp_rank_reward[id=10920]{
+	optional        uint64          history_rank = 1; // 历史最高排名
+	optional        p_reward        reward_acc   = 2; // 累计获得奖励
+	repeated        p_rank_reward   rank_reward  = 3; // 排行奖励       
+}
+
+message p_rank_reward[id=10921]{
+	optional         uint64         rankid       = 1; // 排行ID
+	optional         p_reward       reward       = 2; // 奖励
+	optional         uint64         state        = 3; // 奖励领取状态
+	// 0 := 不可领取-未激活
+	// 1 := 可领取
+	// 2 := 已领取
+	optional         uint64          need_rank   = 4; // 排行档位
+}
+
+// 领取排行榜奖励
+message cs_pvp_rank_draw[id=10922]{
+	optional         uint64          rankid      = 1; // 排行ID
+}
+
+message sc_pvp_rank_draw[id=10923]{
+	optional         uint64          result      = 1; 
+	// 1 := 成功
+	// 2 := 失败-未激活
+	// 3 := 失败-已领取
+	optional         uint64          rankid      = 2;
+	optional         p_reward        reward      = 3; // 领取的奖励 
+	optional         p_reward        reward_acc  = 4;
+	optional         p_rank_reward   rank_reward = 5; // 排行奖励状态更新 
+}
+
+// 活跃点奖励
+message cs_pvp_actpoint_reward[id=10924]{
+}
+
+message sc_pvp_actpoint_reward[id=10925]{
+	optional         uint64             actpoint        = 1; // 当前活跃点
+	repeated         p_actpoint_reward  actpoint_reward = 2;  
+}
+
+message p_actpoint_reward[id=10926]{
+	optional         uint64              pointid         = 1;
+	optional         uint64              need_point      = 2; 
+	optional         p_reward            reward          = 3;
+	optional         uint64              state           = 4;
+	// 0 := 不可领取-未激活
+	// 1 := 可领取
+	// 2 := 已领取
+}
+
+// 活跃点奖励领取
+message cs_pvp_actpoint_draw[id=10927]{
+	optional          uint64             pointid         = 1;
+}
+
+message sc_pvp_actpoint_draw[id=10928]{
+	optional         uint64              result          = 1; 
+	// 1 := 成功
+	// 2 := 失败-未激活
+	// 3 := 失败-已领取
+	optional         uint64              pointid         = 2;
+	optional         p_reward            reward          = 3; // 领取的奖励
+	optional         p_actpoint_reward   actpoint_reward = 4; // 活跃点奖励更新
+}
+
+// 一键领取活跃点奖励
+message cs_pvp_actpoint_onekey[id=10929]{
+}
+
+message sc_pvp_actpoint_onekey[id=10930]{
+	optional         p_reward            reward          = 1; // 领取的奖励
+	repeated         p_actpoint_reward   actpoint_reward = 2; // 活跃点奖励更新
+	optional         uint64              result          = 3; // 结果
+	// 1 := 成功
+	// 2 := 失败-没有可领取的奖励
+}
+
+// 膜拜
+message cs_pvp_worship[id=10931]{
+	optional         uint64              rank            = 1; // 膜拜的玩家排名
+}
+
+message sc_pvp_worship[id=10932]{
+	optional         uint64               result         = 1; 
+	// 1 := 成功
+	// 2 := 失败-对方不在膜拜范围
+	// 3 := 失败-今日膜拜次数已用完
+	// 4 := 失败-已膜拜过对方
+	// 5 := 失败-不能膜拜自己
+	optional         p_reward             reward         = 2;
+	optional         p_worship_update     worshipupdate  = 3; // 被膜拜的玩家信息更新
+	repeated         uint64               worshipids     = 4; // 膜拜的玩家ID列表
+}
+
+// 一键膜拜
+message cs_pvp_onekey_worship[id=10933]{
+}
+
+message sc_pvp_onekey_worship[id=10934]{
+	optional          uint64              result         = 1;
+	// 1 := 成功
+	// 2 := 失败-今日膜拜次数已用完
+	optional          p_reward            reward         = 2;
+	repeated          p_worship_update    worshipupdate  = 3; // 被膜拜的玩家信息更新
+	repeated          uint64              worshipids     = 4; // 膜拜的玩家ID列表
+}
+
+// 膜拜次数更新结构
+message p_worship_update[id=10935]{
+	optional           uint64              rank          = 1; // 被膜拜玩家排名
+	optional           uint64              beworship     = 2; // 新的膜拜次数
+}
+
+// 选择展示icon
+message cs_pvp_show_icon[id=10936]{
+	optional           uint64              typeid       = 1; // 选中的宝贝typeid
+	optional           uint64              stage        = 2; // 展示某进化阶段的形象 
+}
+
+message sc_pvp_show_icon[id=10937]{
+	optional           uint64              result        = 1; // 结果
+	// 1 := 成功
+	// 2 := 失败-宝贝不存在
+	// 3 := 失败-宝贝未达到该进化阶段(星级不够/还未获得该阶段皮肤)
+	optional           p_showicon          showicon      = 2; // 选中的展示icon
+}
+
+// 展示icon结构
+message p_showicon[id=10938]{
+	optional           uint64              typeid        = 1; // 选中的宝贝typeid
+	optional           uint64              stage         = 2; // 进化阶段
+	optional           uint64              clothid       = 3; // 时装ID
+	optional           sint64              expiresec     = 4; //时装的到期时间
+}

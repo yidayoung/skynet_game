@@ -7,8 +7,9 @@
 -- Created : 05. 七月 2018 19:18
 ---------------------------------------------------------------------
 local role_data = require("logic.role.role_data")
----@type data_money[]
+
 local data_money = require("config.data_money")
+data_money[1].name = 1
 local pairs = pairs
 local ipairs = ipairs
 local table = table

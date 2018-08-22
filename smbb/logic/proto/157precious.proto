@@ -1,0 +1,73 @@
+// 刻印 15700
+
+// 获取所有刻印信息
+message cs_precious_info[id=15701] {
+}
+
+message sc_precious_info[id=15702] {
+    repeated        p_precious              preciouslist               =1; // 刻印列表
+}
+
+message p_precious[id=15703] {
+    optional        uint64               preciousid              =1; // 宝石id
+    optional        uint64               tmpid                  =2; // 模板ID
+    optional        uint64               exp                     =4; // 宝石的经验值
+    optional        uint64               level                   =5; // 宝石等级
+    optional        uint64               equipid                 =6; // 宝石被镶嵌的gerid  0则未被镶嵌
+    optional        uint64               pos                     =7; // 宝石被镶嵌到装备的某个槽位 0则未被镶嵌
+}
+
+// 镶嵌 
+message cs_precious_imbue[id=15704] {
+	optional        uint64               equipid                =1; // 镶嵌到具体的gerid上
+	optional        uint64               pos                    =2; // 刻印所在对应装备的某个位置              
+	optional        uint64               preciousid             =3; // 被镶嵌的刻印id
+}
+
+message sc_precious_imbue[id=15705] {
+	optional        uint64               result                 =1;
+	// 1 := 成功
+	// 2 := 失败 - equipid 不成在
+	// 3 := 失败 - pos不合法或未解锁
+	// 4 := 失败 - 该刻印不存在
+	// 5 := 失败 - 替换刻印消耗不足
+	// 6 := 失败 - 经验刻印不能镶嵌
+}
+
+// 卸载
+message cs_precious_unload[id=15706] {
+	optional        uint64               preciousid                =1;// 刻印id
+}
+
+message sc_precious_unload[id=15707] {
+	optional        uint64               result                 =1;
+	// 1 := 成功
+	// 2 := 失败 - 刻印不成在
+	// 3 := 失败 - 未找到对应装备
+	// 4 := 失败 - 消耗不足
+}
+
+// 升级
+message cs_precious_uprank[id=15708] {
+	optional        uint64               preciousid             =1; //需要升级的刻印id
+	repeated        uint64               cost_ids               =2; //消耗刻印的id列表
+}
+
+message sc_precious_uprank[id=15709] {
+	optional        uint64               result                 =1;
+	// 1 := 成功
+	// 2 := 失败 - 不存在升级的刻印
+	// 3 := 失败 - 已是最大等级，无需升级
+	// 4 := 失败 - 被吞噬的刻印有不存在
+	// 5 := 失败 - 不能吞噬已装备的刻印
+	// 6 := 失败 - 未找到对应对应等级ID
+	// 7 := 失败 - 经验刻印不能升级
+}
+
+// 刻印更新通知
+message sc_precious_notify[id=15710] {
+    repeated        p_precious             newlist                 =1; // 新增列表
+    repeated        p_precious             updatelist              =2; // 更新列表
+    repeated        p_precious             deletelist              =3; // 删除列表
+}
+

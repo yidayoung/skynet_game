@@ -1,0 +1,37 @@
+// 模块=rmb_gift
+// 编号=14100
+
+
+message cs_rmbgift_info[id=14101]{
+
+}
+
+message sc_rmbgift_info[id=14102]{
+    repeated                p_rmbgift              gift_list            = 1; //礼包列表
+    repeated                p_rmbgift              vip_gift_list        = 2; //vip礼包列表
+    // 上面两个字段废弃，留着用来做版本兼容
+    repeated                p_rmbgift              all_gift_list        = 3; //vip礼包列表
+}
+
+message p_rmbgift[id=14103]{
+    optional                uint64                  typeid          = 1; //礼包ID
+    optional                uint64                  sellID          = 2; //充值的时候给appstore发的sellid
+    optional                uint64                  start_sec       = 3; //开启时间   0表示永久
+    optional                uint64                  end_sec         = 4; //结束时间   0表示永久
+    optional                uint64                  now_price       = 5; //当前价格RMB
+    optional                uint64                  old_price       = 6; //原价
+    optional                uint64                  need_vip_lv     = 7; //需要的vip等级
+    optional                p_reward                reward          = 8; //礼包的内容
+    optional                string                  name            = 9; //礼包的名字
+    optional                string                  icon            = 10;//icon资源的名称
+    optional                uint64                  draw_times      = 11;//已经购买的次数
+    optional                uint64                  can_draw_times  = 12;//可购买的次数
+    optional                uint64                  refresh_type    = 13;//购买次数刷新方式
+    // 0 := 永不刷新
+    // 1 := 按天刷新, 下面的参数表示每几天刷新一次
+    // 2 := 一周刷新一次，下面的字段无用
+    // 3 := 一个月刷新一次，下面的字段无用
+    optional                uint64                  refresh_day     = 14;//购买次数刷新时间
+    optional                string                  desc            = 15;//礼包描述
+    optional                uint64                  show_state           = 16;//礼包默认显示状态
+}

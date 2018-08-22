@@ -9,6 +9,10 @@
 local zlib = require("zlib")
 local skynet = require("smbb_skynet")
 local md5 = require "md5"
+local math = math
+local os = os
+
+local ONE_DAY_SEC = 86400
 
 local smbb_util = {}
 
@@ -66,6 +70,93 @@ end
 
 function smbb_util.nowsec()
     return toint(skynet.time())
+end
+
+---@class time
+---@field year number
+---@field month number
+---@field day number
+---@field hour number
+---@field min number
+---@field sec number
+---@field wday number
+---@field yday number
+---@field isdst boolean
+
+---unixtime_to_datetime 时间戳转换成一个time table
+---@param unixtime number
+---@return time
+function smbb_util.unixtime_to_datetime(unixtime)
+    local time_tbl = os.date("*t", unixtime)
+    return time_tbl
+end
+
+function smbb_util.datetime_to_unixtime(time)
+    assert(#time == 2, "wrong time")
+    local date, daytime = time[1], time[2]
+    assert(#date == 3 and #daytime == 3, "wrong date")
+    return os.time({ year = date[1], month = date[2], day = date[3], hour = daytime[1], min = daytime[2], sec = daytime[3] })
+end
+
+---config_time_to_sec
+---@param config_time {hour:number,min:number,sec:number}
+---@return number
+function smbb_util.time_to_sec(config_time)
+    assert(#config_time == 3)
+    return config_time[1] * 3600 + config_time[2] * 600 + config_time[3]
+end
+
+---is_same_day 根据配置时间，返回两个时间点是否是同一天
+---@param refsec number @上次刷新时间
+---@param cursec number @现在的时间
+---@param config_time table @配置的刷新时间
+---@return boolean @是否是同一天
+function smbb_util.is_same_day(refsec, cursec, config_time)
+    local reftime, curtime
+    if config_time then
+        local config_sec = smbb_util.time_to_sec(config_time)
+        reftime = smbb_util.unixtime_to_datetime(refsec - config_sec)
+        curtime = smbb_util.unixtime_to_datetime(cursec - config_sec)
+    else
+        reftime = smbb_util.unixtime_to_datetime(refsec)
+        curtime = smbb_util.unixtime_to_datetime(cursec)
+    end
+    return reftime.year == curtime.year and reftime.yday == curtime.yday
+end
+
+---week_number 返回当前时间点是那一年的第多少周，每年的第一天如果不是周1会被结算到去年的最后一周
+---@param unixtime number
+---@return year:number, week:number
+function smbb_util.week_number(unixtime)
+    local time_tbl = smbb_util.unixtime_to_datetime(unixtime)
+    if time_tbl.yday <= time_tbl.wday then
+        return smbb_util.week_number(os.time({ year = time_tbl.year - 1, month = 12, day = 31, hour = 0, min = 0, sec = 0 }))
+    else
+        local last_sunday = time_tbl.yday - time_tbl.wday
+        return time_tbl.year, math.round(last_sunday / 7)
+    end
+end
+
+---is_same_week 两个时间点根据配置的刷新时间判断是否是同一周
+---@param refsec number @上次刷新时间
+---@param cursec number @当前时间
+---@param config_time table{wday:number, {hour:number, min:number, sec:number}} @配置的刷新时间
+---@return boolean @根据配置时间是否是同一周
+function smbb_util.is_same_week(refsec, cursec, config_time)
+    local refyear, refweek, curyear, curweek
+    if config_time then
+        local config_sec = ONE_DAY_SEC * (config_time[1] - 1) + smbb_util.time_to_sec(config_time[2])
+        refyear, refweek = smbb_util.week_number(refsec - config_sec)
+        curyear, curweek = smbb_util.week_number(cursec - config_sec)
+    else
+        refyear, refweek = smbb_util.week_number(refsec)
+        curyear, curweek = smbb_util.week_number(cursec)
+    end
+    return refyear == curyear and refweek == curweek
+end
+
+function smbb_util.is_same_month()
+    return true
 end
 
 function smbb_util.init_ranom_seed()

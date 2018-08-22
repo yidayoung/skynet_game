@@ -1,0 +1,108 @@
+/*
+ * 商店模块
+ * ID = 10300
+ */
+
+
+// 请求商店列表
+message cs_shop_list[id=10301] {
+}
+message sc_shop_list[id=10302] {
+    repeated        p_shop       shoplist    = 1; // 商店列表
+    optional        uint64       freesec     = 2; // 觉醒商店免费单抽倒计时
+    // 0  := 免费
+    // >0 := 免费倒计时
+    optional        uint64       bide_times  = 3; // X次后必得觉醒石
+    optional        uint64       one_gold    = 4; // 觉醒商店单抽价格
+    optional        uint64       one_gold_dis= 5; // 觉醒商店单抽折扣
+    optional        uint64       ten_gold    = 6; // 觉醒商店十连抽价格
+    optional        uint64       ten_gold_dis= 7; // 觉醒商店十连抽折扣
+    optional        uint64       one_dis_start= 8;// 单抽打折起始时间
+    optional        uint64       one_dis_end  = 9;// 单抽打折结束时间
+    optional        uint64       ten_dis_start= 10;// 十连抽打折起始时间
+    optional        uint64       ten_dis_end  = 11;// 十连抽打折结束时间        
+}
+message p_shop[id=10303] {
+    optional        uint64       shopid      = 1; // 商店ID
+    optional        uint64       nextref     = 2; // 下次刷新时间
+    optional        uint64       refneed     = 3; // 刷新消耗
+    optional        uint64       endtime     = 4; // 关闭时间
+    repeated        p_sell       sells1      = 5; // 商品列表(上排)
+    repeated        p_sell       sells2      = 6; // 商品列表(下排)
+    optional        uint64       reftype     = 7; // 商店刷新消耗类型
+    optional        uint64       shopmoney   = 8; // 商店对应的货币类型
+}
+message p_sell[id=10304] {
+    optional        uint64       sellid      = 1; // 商品ID
+    optional        uint64       buyneed     = 2; // 购买消耗 
+    optional        uint64       buynum      = 3; // 已购次数
+}
+
+
+// 商店更新通知
+message sc_shop_notify[id=10305] {
+    repeated       p_shop        newlist     = 1; // 新增列表
+    repeated       p_shop        updatelist  = 2; // 更新列表
+    repeated       p_shop        deletelist  = 3; // 删除列表
+}
+
+
+// 请求购买商品
+message cs_shop_buy[id=10306] {
+    optional      uint64        shopid       = 1; // 商店ID
+    optional      uint64        sellid       = 2; // 商品ID
+    optional      uint64        neednum      = 3; // 购买数量
+    optional      uint64        sellpos      = 4; // 商品位置
+    // 1 := 上层商品
+    // 2 := 下层商品
+}
+message sc_shop_buy[id=10307] {
+    optional uint64 result = 1; // 购买结果
+    // 1 := 成功
+    // 2 := 失败-商店不存在
+    // 3 := 失败-商品不存在
+    // 4 := 失败-VIP等级限制
+    // 5 := 失败-购买次数限制
+    // 6 := 失败-货币不足
+    // 7 := 失败-权限不够
+    // 0 := 未知错误
+}
+
+
+// 请求刷新商店
+message cs_shop_refresh[id=10308] {
+    optional      uint64        shopid      = 1; // 商店ID
+}
+message sc_shop_refresh[id=10309] {
+    optional      uint64        result      = 1; // 刷新结果
+    // 1 := 成功
+    // 2 := 失败-商店不存在
+    // 3 := 失败-不允许刷新
+    // 4 := 失败-货币不足
+    // 5 := 失败-权限不够
+    // 0 := 未知错误
+}
+
+// 觉醒商店单抽
+message cs_shop_wake_onedraw[id=10310] {
+}
+
+message sc_shop_wake_onedraw[id=10311] {
+    optional     uint64        result       = 1; // 结果
+    // 1 := 成功
+    // 2 := 失败-钻石不足
+    optional     p_reward      reward       = 2; // 奖励
+    optional     uint64        bide_times   = 3; // X次后必得觉醒石
+    optional     uint64        freesec      = 4; // 觉醒商店免费单抽倒计时
+}
+
+// 觉醒商店十连抽
+message cs_shop_wake_tendraw[id=10312] {
+}
+
+message sc_shop_wake_tendraw[id=10313] {
+    optional     uint64         result       = 1; // 结果
+    // 1 := 成功
+    // 2 := 失败-钻石不足
+    optional     p_reward       reward       = 2; // 奖励
+}

@@ -1,0 +1,142 @@
+// 抉择之战
+// 编号：=162
+
+// 请求基本信息
+message cs_choicefight_info[id=16201]{
+}
+message sc_choicefight_info[id=16202]{
+	optional 				bool 				is_normal_act          		=1; //普通模式-是否已激活
+    optional 				uint64 				curn_chapterid         		=2; //---------当前章节ID
+    optional 				uint64 				curn_buffid            		=3; //---------当前buffID
+    repeated 				uint64 				normal_dungeonid_list    	=4; //---------完成关卡ID列表
+    optional 				uint64 				choice_energy          		=5; //---------当前拥有充能点
+    optional 				uint64 				next_add               		=6; //---------下次恢复充能点时间戳
+    optional 				uint64 				hard_times             		=7; //困难模式-已重置次数
+    optional 				bool 				is_hard_act            		=8; //---------是否已激活
+    optional 				uint64 				curh_chapterid         		=9; //---------当前章节ID
+    optional 				uint64 				curh_buffid            		=10; //---------当前buffID
+    optional 				uint64 				boss_fight             		=11; //---------BOSS已挑战次数
+    optional 				uint64 				boss_buy              		=12; //---------BOSS已购买次数
+    repeated 				uint64 				hard_dungeonid_list    		=13; //---------完成关卡ID列表	
+    optional 				uint64 				hard_buy 					=14; //---------副本购买次数
+}
+
+// 激活副本
+message cs_choicefight_active[id=16203] {
+	optional 				uint64 				type 						=1; // 激活类型(1:普通模式,2:困难模式)
+}
+message sc_choicefight_active[id=16204] {
+	optional 				uint64 				result 						=1; // 结果
+	//1:=成功
+	//2:=失败-次数不足(困难模式)
+	//3:=失败-重复激活
+	//4:=失败-充能点不足(普通模式)
+	optional 				uint64 				chapterid  					=2; // 章节ID
+	optional 				uint64 				buffid 						=3; // buffID
+	optional 				uint64 				type 						=4; // 类型
+}
+
+// 通知前端充能点恢复
+message sc_choicefight_recover[id=16205] {
+	optional 				uint64 				choice_energy 				=1; // 充能点
+	optional 				uint64 				next_add 					=2; // 下次恢复充能点时间戳
+}
+
+// 设置阵容
+message cs_choicefight_set_line[id=16206]{
+	optional 				uint64 				type 						=1; // 类型
+    repeated        		p_lineup            line               		 	=2; // 要设置的阵容
+}
+message sc_choicefight_set_line[id=16207]{
+	optional 				uint64 				result 						=1; // 结果
+	//1:=成功
+	//2:=失败-类型错误
+	optional 				uint64 				type 						=2; // 类型
+    repeated        		p_lineup            line                		=3; // 当前阵容
+}
+
+// 请求阵容
+message cs_choicefight_line[id=16208] {
+	optional 				uint64 				type 						=1; // 类型
+}
+message sc_choicefight_line[id=16209] {
+	optional 				uint64 				type 						=1; // 类型
+	repeated 				p_lineup 			line 						=2; // 当前阵容
+}
+
+// 请求战斗
+message cs_choicefight_fight_request[id=16210] {
+	optional 				uint64 				type 						=1; // 类型
+	optional 				uint64 				dungeonid 					=2; // 关卡ID
+}
+message sc_choicefight_fight_request[id=16211] {
+	optional 				uint64 				result 						=1; // 结果
+	//1:=成功
+	//2:=失败-关卡ID错误
+	//3:=失败-已过关
+	//4:=失败-次数不足
+	//5:=失败-无宝贝上阵
+	//6:=失败-未激活
+	optional 				uint64 				type 						=2; // 类型
+    optional 				uint64			 	dungeonid 					=3; // 关卡ID
+    optional 				p_fight_struct	 	fight_struct 				=4; // 战斗结构
+    optional 				p_reward			reward 						=5; // 掉落奖励预览
+}
+
+// 上报战斗结果
+message cs_choicefight_report[id=16212] {
+	optional 				uint64 				type 						=1; // 类型
+	optional 				uint64 				dungeonid 					=2; // 关卡ID
+	optional 				p_fight_struct 		fight_struct 				=3; // 战斗结构
+}
+message sc_choicefight_report[id=16213] {
+	optional 				uint64 				result 						=1; // 请求结果
+	//1:=成功
+	//2:=失败-关卡ID错误
+	//3:=失败-已过关
+	//4:=失败-次数不足
+	//5:=失败-无宝贝上阵
+	//6:=失败-未激活
+	//7:=失败-校验不通过
+	optional 				uint64 				type 						=2; // 类型
+    optional 				uint64			 	dungeonid 					=3; // 关卡ID
+    optional 				bool 				is_win 						=4; // 是否胜利
+    optional 				bool 				is_pass 					=5; // 是否通关
+    optional 				p_reward 			reward 						=6; // 关卡奖励
+    optional 				p_reward 			pass_reward 				=7; // 通关奖励
+    optional 				p_reward 			extra_reward 				=8; // 额外奖励
+}
+
+// 主动重置副本
+message cs_choicefight_reset[id=16214] {
+	optional 				uint64 				type 						=1; // 类型
+}
+message sc_choicefight_reset[id=16215] {
+	optional 				uint64 				result 						=1; // 结果
+	//1:=成功
+	//2:=失败-无需重置
+	optional 				uint64 				type 						=2; // 类型
+}
+
+// 困难模式-购买BOSS次数
+message cs_choicefight_buy[id=16216] {
+}
+message sc_choicefight_buy[id=16217] {
+	optional 				uint64 				result 						=1; // 结果
+	//1:=成功
+	//2:=失败-未激活
+	//3:=失败-货币不足
+	//4:=失败-仅能购买一次
+	optional 				uint64 				boss_buy 					=2; // BOSS已购买次数
+}
+
+// 困难模式激活-购买副本激活次数
+message cs_choicefight_hard_buy[id=16218] {
+}
+message sc_choicefight_hard_buy[id=16219] {
+	optional 				uint64 				result 						=1; // 结果
+	//1:=成功
+	//2:=失败-货币不足
+	//3:=失败-次数不足
+	optional 				uint64 				hard_buy 					=2; // 副本已购买次数
+}
