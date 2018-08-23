@@ -33,9 +33,9 @@ local function run_func (handle, check_fun, ...)
     local state, check_state, return_ = CATCH(check_fun, ...)
     if state then
         if check_state then
-            local do_state = CATCH(handle.success_handle,table2args(return_))
+            local do_state = CATCH(handle.success_handle, table2args(return_))
             if not do_state then
-                ---@todo rollback
+                --@todo rollback
                 handle.exception_handle(table2args(return_))
             end
         else
@@ -53,7 +53,7 @@ local function server_fun_func(handle, check_fun, roleid, ...)
         if check_state then
             local do_state = CATCH(handle.success_handle, roleid, table2args(return_))
             if not do_state then
-                ---@todo rollback
+                --@todo rollback
                 handle.exception_handle(roleid, table2args(return_))
             end
         else
