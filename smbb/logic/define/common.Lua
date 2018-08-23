@@ -19,7 +19,6 @@ function LCATCH(func, ...)
     return pcall(func, ...)
 end
 
-
 local function table2args(tbl)
     if tbl then
         return table.unpack(tbl)
@@ -30,11 +29,15 @@ end
 ---@param handle cs_handle
 ---@param check_fun function
 local function run_func (handle, check_fun, ...)
-    assertex(type(check_fun) == "function", "check_fun error")
+    assert(type(check_fun) == "function", "check_fun error")
     local state, check_state, return_ = CATCH(check_fun, ...)
     if state then
         if check_state then
-            handle.success_handle(table2args(return_))
+            local do_state = CATCH(handle.success_handle,table2args(return_))
+            if not do_state then
+                ---@todo rollback
+                handle.exception_handle(table2args(return_))
+            end
         else
             handle.error_handle(table2args(return_))
         end
@@ -44,11 +47,15 @@ local function run_func (handle, check_fun, ...)
 end
 
 local function server_fun_func(handle, check_fun, roleid, ...)
-    assertex(type(check_fun) == "function", "check_fun error")
+    assert(type(check_fun) == "function", "check_fun error")
     local state, check_state, return_ = CATCH(check_fun, roleid, ...)
     if state then
         if check_state then
-            handle.success_handle(roleid, table2args(return_))
+            local do_state = CATCH(handle.success_handle, roleid, table2args(return_))
+            if not do_state then
+                ---@todo rollback
+                handle.exception_handle(roleid, table2args(return_))
+            end
         else
             handle.error_handle(roleid, table2args(return_))
         end
@@ -61,11 +68,11 @@ end
 ---@field success_handle function @ 成功回调
 ---@field error_handle function @ 失败回调
 local handle = {
-    success_handle = nil,
-    error_handle = nil,
+    success_handle   = nil,
+    error_handle     = nil,
     exception_handle = nil,
-    run = run_func,
-    server_run = server_fun_func,
+    run              = run_func,
+    server_run       = server_fun_func,
 }
 
 CS_HANDLE = function()
@@ -80,17 +87,6 @@ end
 
 function success_return(...)
     return true, table.pack(...)
-end
-
-function assertex(v, message)
-    if not v then
-        --这里有点危险，使用的时候loggerd必须在不然就gg
-        if message then
-            pcall(require("lualib.logger").error, message)
-            error(message)
-        end
-        pcall(require("lualib.logger").error, debug.traceback())
-    end
 end
 
 LOGIN_TICKET = "f4308922987464dbacc42558f8221696"

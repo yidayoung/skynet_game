@@ -12,6 +12,8 @@ local data_money = require("config.data_money")
 local smbb_misc = smbb_misc
 local money_lib = require("logic.lib.money_lib")
 local role_lib = require("logic.lib.role_lib")
+local assert = assert
+
 local role_gm = {}
 
 local function decode_spec(Spec)
@@ -34,7 +36,7 @@ local cheat_handle = {}
 
 function role_gm.extra_handle(word, commond)
     local money_typeid = maybe_money(word)
-    assertex(money_typeid ~= nil, "cheat unkonw money " .. word)
+    assert(money_typeid ~= nil, "cheat unkonw money " .. word)
     if money_typeid then
         cheat_handle.money(money_typeid .. commond)
     end
@@ -92,7 +94,7 @@ local function cs_gm_test_error(errno)
 end
 
 local function cs_gm_test_exception()
-    smbb_misc.send_client(SC_GM_TEST, {result = 0})
+    smbb_misc.send_client(SC_GM_TEST, { result = 0 })
 end
 
 ---@param  cs_gm_test  cs_gm_test
@@ -103,7 +105,5 @@ function role_gm.cs_gm_test(cs_gm_test)
     cs_handle.exception_handle = cs_gm_test_exception
     cs_handle:run(cs_gm_test_check, cs_gm_test)
 end
-
-
 
 return role_gm

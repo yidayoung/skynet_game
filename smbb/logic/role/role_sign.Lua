@@ -45,16 +45,15 @@ local function calc_new(sign_info)
         cur_month_sign = 0
     end
     local cur_month_reward_list = data_sign.reward_list[curtime.month]
-
-    local have_reward = (cur_month_reward_list[cur_month_sign] ~= nil) and (not is_same_day)
+    local have_reward = (cur_month_reward_list[cur_month_sign+1] ~= nil) and (not is_same_day)
     return curtime.month, have_reward, cur_month_sign
 end
 
 local function get_add_reward(drawdsigndays)
-    local sign_add_reward_list = clone(data_sign.sign_add_reward)
+    local sign_add_reward_list = (data_sign.sign_add_reward)
     return table.walk2(sign_add_reward_list, function(reward, needdays)
         if needdays > drawdsigndays then
-            return {needdays, reward}
+            return { needdays, reward }
         end
     end)
 end
@@ -95,6 +94,99 @@ function role_sign.cs_sign_info(cs_sign_info)
     local RewardList = get_rewardList(Month)
     smbb_misc.send_client(SC_SIGN_INFO,
             { month = Month, can_sign = CanSign, month_sign_times = SignDays, rewardlist = RewardList, add_reward = AddRewardInfo })
+end
+
+---cs_sign_draw_check
+---@param cs_sign_draw cs_sign_draw
+local function cs_sign_draw_check(cs_sign_draw)
+    local sign_info = role_data.get_sign_info()
+    local month, cansign, cur_month_sign = calc_new(sign_info)
+    if not cansign then
+        return error_return(2)
+    end
+    local oneday_sign = data_sign.reward_list[month][cur_month_sign + 1]
+    local need_vip, reward = oneday_sign.need_vip, oneday_sign.reward
+    sign_info.lastrefsec = smbb_util.nowsec()
+    sign_info.signdays = sign_info.signdays + 1
+    sign_info.cur_month_sign = cur_month_sign + 1
+    local role_info = role_data.get_role_info()
+    if need_vip <= role_info.viplv then
+        reward = reward_lib.merge(reward, reward)
+    end
+    return success_return(reward, sign_info)
+end
+
+local function cs_sign_draw_success(reward, sign_info)
+    role_data.set_sign_info(sign_info)
+    local reward_return = reward_lib.reward(reward)
+    reward_lib.log(role_data.get_role_id(), reward_return, 1, 0, "")
+    reward_lib.notify(reward_return)
+    --- @type sc_sign_draw
+    local sc_sign_draw = { result = 1, reward = reward_lib.p_reward(reward) }
+    smbb_misc.send_client(SC_SIGN_DRAW, sc_sign_draw)
+end
+
+---cs_sign_draw_error
+---@param errno number
+local function cs_sign_draw_error(errno)
+    smbb_misc.send_client(SC_SIGN_DRAW, { result = errno })
+end
+
+local function cs_sign_draw_exception()
+    smbb_misc.send_client(SC_SIGN_DRAW, { result = ERR_CODE.SYS_ERR })
+end
+
+---@param  cs_sign_draw  cs_sign_draw
+function role_sign.cs_sign_draw(cs_sign_draw)
+    local cs_handle = CS_HANDLE()
+    cs_handle.success_handle = cs_sign_draw_success
+    cs_handle.error_handle = cs_sign_draw_error
+    cs_handle.exception_handle = cs_sign_draw_exception
+    cs_handle:run(cs_sign_draw_check, cs_sign_draw)
+end
+
+---cs_sign_draw_add_check
+---@param cs_sign_draw_add cs_sign_draw_add
+local function cs_sign_draw_add_check(cs_sign_draw_add)
+    local sign_info = role_data.get_sign_info()
+    local needdays, reward = get_add_reward(sign_info.draw_sign_times)
+    if not needdays then
+        return error_return(2)
+    end
+    if sign_info.signdays < needdays then
+        return error_return(3)
+    end
+    sign_info.draw_sign_times = needdays
+    return success_return(reward, sign_info)
+end
+
+local function cs_sign_draw_add_success(reward, sign_info)
+    role_data.set_sign_info(sign_info)
+    local reward_return = reward_lib.reward(reward)
+    reward_lib.log(role_data.get_role_id(), reward_return, 1, 0, "")
+    reward_lib.notify(reward_return)
+    --- @type sc_sign_draw_add
+    local sc_sign_draw_add = {result = 1, reward = reward_lib.p_reward(reward)}
+    smbb_misc.send_client(SC_SIGN_DRAW_ADD, sc_sign_draw_add)
+end
+
+---cs_sign_draw_add_error
+---@param errno number
+local function cs_sign_draw_add_error(errno)
+    smbb_misc.send_client(SC_SIGN_DRAW_ADD, {result = errno})
+end
+
+local function cs_sign_draw_add_exception()
+    smbb_misc.send_client(SC_SIGN_DRAW_ADD, {result = ERR_CODE.SYS_ERR})
+end
+
+---@param  cs_sign_draw_add  cs_sign_draw_add
+function role_sign.cs_sign_draw_add(cs_sign_draw_add)
+    local cs_handle = CS_HANDLE()
+    cs_handle.success_handle =  cs_sign_draw_add_success
+    cs_handle.error_handle =  cs_sign_draw_add_error
+    cs_handle.exception_handle = cs_sign_draw_add_exception
+    cs_handle:run(cs_sign_draw_add_check, cs_sign_draw_add)
 end
 
 return role_sign
