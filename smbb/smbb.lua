@@ -13,7 +13,8 @@ skynet.start(function()
     skynet.uniqueservice("clusterd")
     skynet.uniqueservice("loggerd")
 
-    skynet.uniqueservice("config_share")
+    local config_service = skynet.uniqueservice("config_share")
+    skynet.call(config_service, "lua", "start")
 
     local db_service = skynet.uniqueservice("db_service")
     skynet.call(db_service, "lua", "start")

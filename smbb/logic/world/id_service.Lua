@@ -6,11 +6,11 @@
 -- @end
 -- Created : 27. 七月 2018 18:04
 ---------------------------------------------------------------------
-local skynet = require "skynet"
-local service = require "lualib.service"
+local skynet = require "smbb_skynet"
+local service = require "lualib.smbb_sevice"
 local logger = require "lualib.logger"
 local smbb_mongo = require "logic.db.smbb_mongo"
-local config_lib = require("logic.lib.config_lib")
+--local config_lib = require("logic.lib.config_lib")
 
 local CAPACITY = 10000000000
 

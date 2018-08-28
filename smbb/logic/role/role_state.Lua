@@ -16,7 +16,7 @@ local role_state = {}
 
 
 function role_state.init()
-    return {val = {}, is_dirty = false}
+    return {}
 end
 
 return role_state

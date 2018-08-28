@@ -20,15 +20,11 @@ local role_sign = {}
 function role_sign.init()
     local roleid = role_data.get_role_id()
     local sign_info = smbb_mongo.get(DATABASE_TABLES.sign_info, roleid)
-    local sign_info_r
-    if is_record(sign_info, RECORD.sign_info_t) then
-        sign_info_r = { val = sign_info, is_dirty = false }
-    else
+    if not is_record(sign_info, RECORD.sign_info_t) then
         sign_info = RECORD.sign_info_t()
         sign_info.roleid = role_data.get_role_id()
-        sign_info_r = { val = sign_info, is_dirty = false }
     end
-    return sign_info_r
+    return sign_info
 end
 
 ---calc_new
@@ -188,5 +184,37 @@ function role_sign.cs_sign_draw_add(cs_sign_draw_add)
     cs_handle.exception_handle = cs_sign_draw_add_exception
     cs_handle:run(cs_sign_draw_add_check, cs_sign_draw_add)
 end
+
+---cs_sign_draw_check
+---@param cs_sign_draw cs_sign_draw
+local function cs_sign_draw_check(cs_sign_draw)
+    
+end
+
+local function cs_sign_draw_success()
+    --- @type sc_sign_draw
+    local sc_sign_draw = {}
+    smbb_misc.send_client(SC_SIGN_DRAW, sc_sign_draw)
+end
+
+---cs_sign_draw_error
+---@param errno number
+local function cs_sign_draw_error(errno)
+    smbb_misc.send_client(SC_SIGN_DRAW, {result = errno})
+end
+
+local function cs_sign_draw_exception()
+    smbb_misc.send_client(SC_SIGN_DRAW, {result = ERR_CODE.SYS_ERR})
+end
+
+---@param  cs_sign_draw  cs_sign_draw
+function role_sign.cs_sign_draw(cs_sign_draw)
+    local cs_handle = CS_HANDLE()
+    cs_handle.success_handle =  cs_sign_draw_success
+    cs_handle.error_handle =  cs_sign_draw_error
+    cs_handle.exception_handle = cs_sign_draw_exception
+    cs_handle:run(cs_sign_draw_check, cs_sign_draw)
+end
+
 
 return role_sign

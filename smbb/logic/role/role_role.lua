@@ -11,7 +11,7 @@ local role_role = {}
 
 -- 这里理论上都走不到，因为role_account在登陆阶段就会完成role_info
 function role_role.init()
-    return { val = {}, is_dirty = false }
+    return {}
 end
 
 function role_role.cs_role_info()

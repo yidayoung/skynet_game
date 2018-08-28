@@ -11,6 +11,7 @@ CONFIG = {
     data_notice = "data_notice",
     data_money = "data_money",
     data_route = "data_route",
+    data_sign = "data_sign",
 }
 
 SETTING = {

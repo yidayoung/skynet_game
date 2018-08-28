@@ -7,16 +7,23 @@
 -- Created : 27. 七月 2018 17:59
 ---------------------------------------------------------------------
 local skynet = require "skynet"
-local service = require "lualib.service"
+local service = require "lualib.smbb_sevice"
 local logger = require "lualib.logger"
 local mongo = require "skynet.db.mongo"
 local sys = require "lualib.sys"
+local setting = require("config.setting.setting")
 
 local db
 
 local server_func = {}
 
+local function connect(conf)
+    local data_base = conf.database
+    db = mongo.client(conf)[data_base]
+end
+
 function server_func.start()
+    connect(setting.mongo_database)
     sys.reg_uniqueservice("id_service")
 end
 
@@ -62,18 +69,10 @@ function server_func.get(collection, id)
     return server_func.findOne(collection, { _id = id })
 end
 
-local function connect(conf)
-    local data_base = conf.database
-    db = mongo.client(conf)[data_base]
-end
-
 local skynet_handle = skynet.handle
 
 -- 调用skynet.init
 skynet_handle.init = function()
-    local setting = require("config.setting.setting")
-    connect(setting.mongo_database)
-    skynet.register(SERVICE.db_service)
 end
 
 -- 服务关闭时的回调函数

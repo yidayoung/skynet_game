@@ -27,7 +27,12 @@ local data_meta = {
                 -- init 函数千万不能调用role_data.set 否则会死循环
                 rawset(table, index, {})
                 --@todo 这里加不加这个保护？加了可能识别不出来
-                local val = require("logic.role." .. ROLE_DATA_LIST[index].module).init()
+                local val, is_dirty = require("logic.role." .. ROLE_DATA_LIST[index].module).init()
+                if is_dirty then
+                    val = { val = val, is_dirty = true }
+                else
+                    val = { val = val, is_dirty = false }
+                end
                 rawset(table, index, val)
                 return val
             end
@@ -50,11 +55,11 @@ setmetatable(data_set, data_meta)
 
 local function dirty(old_is_dirty, is_dirty)
     local new_is_dirty
+    old_is_dirty = old_is_dirty or false
     if is_dirty ~= nil then
-        old_is_dirty = old_is_dirty or false
         new_is_dirty = (old_is_dirty and is_dirty)
     else
-        new_is_dirty = true
+        new_is_dirty = old_is_dirty
     end
     return new_is_dirty
 end
@@ -137,6 +142,18 @@ end
 ---@param is_dirty boolean
 function role_data.set_role_extra(info, is_dirty)
     set_info(ROLE_DATA_LIST.role_extra.key, info, is_dirty)
+end
+
+---@return sign_info
+function role_data.get_sign_info()
+    return get_info(ROLE_DATA_LIST.sign_info.key)
+end
+
+---set_sign_info
+---@param info sign_info
+---@param is_dirty boolean
+function role_data.set_sign_info(info, is_dirty)
+    set_info(ROLE_DATA_LIST.sign_info.key, info, is_dirty)
 end
 
 ---@return sign_info

@@ -7,7 +7,6 @@
 -- Created : 24. 七月 2018 11:06
 ---------------------------------------------------------------------
 local skynet = require("skynet")
-skynet.error = require("lualib.logger").error
 
 local _exit_cb
 function skynet.set_exit_cb(func)

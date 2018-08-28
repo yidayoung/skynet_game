@@ -1,11 +1,11 @@
 local skynet = require "skynet"
-local service = require("lualib.service")
+local service = require("lualib.smbb_sevice")
 
 local queue = require "skynet.queue"
 local cs = queue()
 
 -- config_lib 里有share_data 必须在启动之前就注册, 而且很多模块依赖config_lib,所以必须在前
-config_lib = require("logic.lib.config_lib")
+--config_lib = require("logic.lib.config_lib")
 requester = require("lualib.requester")
 role_data = require "logic.role.role_data"
 smbb_misc = require "logic.tool.smbb_misc"

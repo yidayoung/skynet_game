@@ -7,8 +7,8 @@
 -- Created : 27. 七月 2018 17:48
 ---------------------------------------------------------------------
 
-local skynet = require "skynet"
-local service = require "lualib.service"
+local skynet = require "smbb_skynet"
+local service = require "lualib.smbb_sevice"
 local logger = require "lualib.logger"
 
 local server_func = {}
@@ -31,7 +31,7 @@ end
 
 skynet_handle.command = server_func
 
-skynet_handle.register = module_name
+skynet_handle.register = SERVICE_NAME
 
 skynet_handle.info = function()
     return

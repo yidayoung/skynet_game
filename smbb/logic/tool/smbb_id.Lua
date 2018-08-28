@@ -17,7 +17,7 @@ local setting
 local ServerID
 skynet.init(function()
     setting = require("config.setting.setting")
-    ServerID = setting.server_id
+    --ServerID = setting.server_id
 end)
 
 function smbb_id.gen_roleid()
@@ -41,7 +41,7 @@ function smbb_id.accid(RAccID)
 end
 
 function smbb_id.raccid(AccID)
-    return ((1 + ServerID) * CAPACITY) + AccID
+    return ((1 + setting.server_id) * CAPACITY) + AccID
 end
 
 return smbb_id

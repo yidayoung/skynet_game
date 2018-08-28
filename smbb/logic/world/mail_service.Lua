@@ -10,9 +10,9 @@ local queue = require "skynet.queue"
 local cs = queue()
 
 local skynet = require "skynet"
-local service = require("lualib.service")
+local service = require("lualib.smbb_sevice")
 
-config_lib = require("logic.lib.config_lib")
+
 requester = require "lualib.requester"
 local smbb_util = require "logic.tool.smbb_util"
 local smbb_misc = require "logic.tool.smbb_misc"

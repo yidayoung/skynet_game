@@ -8,8 +8,11 @@
 ---------------------------------------------------------------------
 local table = table
 
+local key_list = {}
 local function add_key(key)
     assert(DATABASE_TABLES[key])
+    assert(not table.member(key_list, key))
+    table.insert(key_list, key)
     return key
 end
 -- 所有的个人数据都必须在这里定义

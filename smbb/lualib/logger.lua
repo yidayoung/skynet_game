@@ -75,10 +75,15 @@ end
 local function init()
     addr = skynet.uniqueservice("loggerd")
     logger.set_module(skynet.address(skynet.self()))
-    old_error = error
+    local old_error = error
     error = function(message, level)
         logger.error(message)
         return old_error(message, level)
+    end
+    local skyneterr = skynet.error
+    skynet.error = function(...)
+        skyneterr(...)
+        logger.error(...)
     end
 end
 

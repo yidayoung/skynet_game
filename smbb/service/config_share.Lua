@@ -6,15 +6,23 @@
 -- @end
 -- Created : 11. 七月 2018 18:08
 ---------------------------------------------------------------------
-local service = require("lualib.service")
+-- configh_share比较特殊
+-- 因为smbb_service 会初始化config_lib，而config_lib的初始化必须依赖config_share启动完成，所以这里只调用基础版本
+-- 也就是依赖的宏定义必须自己主动的require
+local service = require("lualib.base_service")
 local skynet = require "smbb_skynet"
 local sharedata = require "skynet.sharedata"
-
+require("logic.define.service_define")
+require("logic.define.config_define")
 local last_config = {}
 
 local function load_one_config(config_name, configh_path)
     if CONFIG[config_name] or SETTING[config_name] then
-        local temdata = old_require(configh_path)
+        local cur_require = require
+        if old_require then
+            cur_require = old_require
+        end
+        local temdata = cur_require(configh_path)
         if last_config[config_name] then
             sharedata.update(config_name, temdata)
         else
@@ -49,11 +57,14 @@ function CMD.reload(config_name)
     end
 end
 
+function CMD.start()
+    load_setting()
+    load_all_config()
+end
+
 local skynet_handle = skynet.handle
 
 skynet_handle.init = function()
-    load_setting()
-    load_all_config()
 end
 
 skynet_handle.on_exit = function()
@@ -62,7 +73,7 @@ skynet_handle.on_exit = function()
 end
 
 skynet_handle.command = CMD
-
+require("logic.define.service_define")
 skynet_handle.register = SERVICE.config_service
 
 skynet_handle.info = function()

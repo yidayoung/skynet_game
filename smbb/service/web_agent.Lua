@@ -7,7 +7,7 @@
 -- Created : 27. 七月 2018 20:31
 ---------------------------------------------------------------------
 local skynet = require "skynet"
-local service = require "lualib.service"
+local service = require "lualib.smbb_sevice"
 local logger = require "lualib.logger"
 local httpd = require "http.httpd"
 local sockethelper = require "http.sockethelper"
@@ -15,7 +15,6 @@ local socket = require "skynet.socket"
 local urllib = require "http.url"
 local table = table
 local string = string
-local config_lib = require("logic.lib.config_lib")
 local data_route
 
 local function response(id, ...)

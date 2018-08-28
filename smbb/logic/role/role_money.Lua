@@ -30,12 +30,12 @@ function role_money.init()
     local money_info = smbb_mongo.get(DATABASE_TABLES.money_info, role_data.get_role_id())
     money_info = role_money.fulsh_from_db(money_info)
     if money_info and money_info._t == "money_info" then
-        return { val = money_info, is_dirty = false }
+        return money_info
     else
         --@todo 建立角色时可能要给一些基础货币
         money_info = RECORD.money_info_t()
         money_info.roleid = role_data.get_role_id()
-        return { val = money_info, is_dirty = true }
+        return money_info, true
     end
 end
 

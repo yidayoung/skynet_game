@@ -21,6 +21,12 @@ function M.reg_uniqueservice(service)
     return s
 end
 
+function M.reg_newservice(service)
+    local s = Skynet.newservice(service)
+    table.insert(service_list, 1, s)
+    return s
+end
+
 local command = {}
 
 function command.EXIT()

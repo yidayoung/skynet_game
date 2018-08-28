@@ -7,7 +7,7 @@
 -- Created : 09. 八月 2018 10:22
 ---------------------------------------------------------------------
 local skynet = require "skynet"
-local service = require "lualib.service"
+local service = require "lualib.smbb_sevice"
 local logger = require "lualib.logger"
 local sys = require("lualib.sys")
 

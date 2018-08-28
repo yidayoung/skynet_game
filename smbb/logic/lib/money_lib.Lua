@@ -9,7 +9,6 @@
 local role_data = require("logic.role.role_data")
 
 local data_money = require("config.data_money")
-data_money[1].name = 1
 local pairs = pairs
 local ipairs = ipairs
 local table = table
@@ -88,7 +87,7 @@ function money_lib.add_moneylist(reward, old_money_list)
     local dirty = false
     for _, r in ipairs(reward) do
         local typeid, number = r[1], r[2]
-        assert(data_money[typeid], "add_unkonw money "..typeid)
+        assert(data_money[typeid], "add_unkonw money " .. typeid)
         local limit = data_money[typeid].limit or 0
         local old_num = moneylist[typeid] or 0
         local new_num = math.min(old_num + number, limit)
@@ -127,11 +126,12 @@ function money_lib.dec_moneylist(dec_moneylist, old_money_list)
                 else
                     local extra_need_num = number - old_num
                     local pay_gold_num = money_list[MONEY_TYPEID_PAIDGOLD] or 0
-                    assert(pay_gold_num >= extra_need_num, "not enough money need:%d, have:%d",extra_need_num, pay_gold_num)
+                    assert(pay_gold_num >= extra_need_num, "not enough money need:%d, have:%d", extra_need_num,
+                            pay_gold_num)
                     money_list[MONEY_TYPEID_PAIDGOLD] = pay_gold_num - extra_need_num
                 end
             else
-                assert(old_num >= number,"not enough money need:%d, have:%d",old_num, number)
+                assert(old_num >= number, "not enough money need:%d, have:%d", old_num, number)
                 local new_num = math.max(0, old_num - number)
                 money_list[typeid] = new_num
             end
@@ -177,6 +177,5 @@ function money_lib.check_money_list(need_list, old_money_list)
     end
     return true
 end
-
 
 return money_lib

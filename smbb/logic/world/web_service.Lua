@@ -7,10 +7,10 @@
 -- Created : 27. 七月 2018 20:21
 ---------------------------------------------------------------------
 local skynet = require "skynet"
-local service = require "lualib.service"
+local service = require "lualib.smbb_sevice"
 local logger = require "lualib.logger"
-local config_lib = require("logic.lib.config_lib")
 local socket = require("skynet.socket")
+local sys = require("lualib.sys")
 local table = table
 
 local agent_pay = {}
@@ -19,7 +19,7 @@ local agent_ctrl = {}
 local function bind_port(agent, port)
     for i = 1, 2 do
         -- 启动 20 个代理服务用于处理 http 请求
-        agent[i] = skynet.newservice("web_agent")
+        agent[i] = sys.reg_newservice("web_agent")
     end
     local balance = 1
     -- 监听一个 web 端口

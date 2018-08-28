@@ -1,12 +1,12 @@
 local skynet = require "smbb_skynet"
-local service = require("lualib.service")
+local service = require("lualib.smbb_sevice")
 local logger = require("lualib.logger")
 local CMD = {}
 local SOCKET = {}
 local gate
 local agent = {}
 local is_open = false
-
+local setting = require("config.setting.setting")
 
 function SOCKET.open(fd, addr)
     if is_open then
@@ -48,7 +48,6 @@ function SOCKET.data(fd, msg)
 end
 
 function CMD.start()
-    local setting = require("config.setting.setting")
     conf = {
         port = setting.game_port,
         maxclient = setting.max_online_num,
