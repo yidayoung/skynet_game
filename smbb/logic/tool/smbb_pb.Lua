@@ -9,8 +9,6 @@
 local protobuf = require "lualib.protobuf"
 local smbb_proto = require("skymoons.proto")
 local skynet = require("smbb_skynet")
---require("logic.tool.smbb_misc")
-local logger = require("lualib.logger")
 local smbb_util = smbb_util
 local string = string
 
@@ -55,5 +53,7 @@ end
 function smbb_pb.registe()
     protobuf.register_file("smbb_skynet/smbb/proto/smbb.pb")
 end
+
+skynet.init(smbb_pb.registe)
 
 return smbb_pb

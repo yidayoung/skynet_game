@@ -12,6 +12,8 @@ CONFIG = {
     data_money = "data_money",
     data_route = "data_route",
     data_sign = "data_sign",
+    data_common = "data_common",
+    data_role_uplevel = "data_role_uplevel",
 }
 
 SETTING = {

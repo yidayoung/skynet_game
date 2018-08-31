@@ -4,6 +4,10 @@ thread = 8
 
 logpath = "./log"
 logfile = "smbb.log"
+--高于log_level的都会被直接记录
+log_level = 10
+--当有高于dump_level的日志发生时，前100条的低于log_level的日志也会打印，帮助分析问题
+dump_level = 40
 harbor = 0
 address = "127.0.0.1:2526"
 master = "127.0.0.1:2013"

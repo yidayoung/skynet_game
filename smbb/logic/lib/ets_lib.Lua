@@ -10,26 +10,6 @@ local datacenter = require "skynet.datacenter"
 
 local ets_lib = {}
 
---function ets_lib.insert(tbl, index, val)
---    skynet.call(service, "lua", "insert", tbl, index, val)
---end
---
---function ets_lib.delete(tbl, index)
---    skynet.call(service, "lua", "delete", tbl, index)
---end
---
---function ets_lib.delete_all_objects(tbl)
---    skynet.call(service, "lua", "delete_all_objects", tbl)
---end
---
---function ets_lib.lookup(tbl, key)
---    return skynet.call(service, "lua", "lookup", tbl, key)
---end
---
---function ets_lib.new(tbl)
---    return skynet.call(service, "lua", "new", tbl)
---end
-
 function ets_lib.insert(tbl, index, val)
     datacenter.set(tbl, index, val)
 end

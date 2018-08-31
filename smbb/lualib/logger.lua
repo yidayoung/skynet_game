@@ -32,10 +32,10 @@ logger.FATAL = 60  --致命错误
 local _default_module_name = "skynet"
 local _logger_name = nil
 local _module_name = nil
-local _to_screen = true
-local _log_level = logger.DEBUG
+local tonumber = tonumber
+local _log_level = tonumber(skynet.getenv("log_level")) or logger.WARNING
 local _log_src = true
-local _dump_level = logger.NOLOG
+local _dump_level = tonumber(skynet.getenv("dump_level")) or logger.ERROR
 local _dum_num = 100
 local _dump_list = { tail = 1, len = _dum_num }
 local _tag_table = {}
@@ -82,8 +82,8 @@ local function init()
     end
     local skyneterr = skynet.error
     skynet.error = function(...)
-        skyneterr(...)
         logger.error(...)
+        return skyneterr(...)
     end
 end
 

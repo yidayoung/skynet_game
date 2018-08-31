@@ -134,6 +134,8 @@ end
 
 ---@param  cs_sign_draw  cs_sign_draw
 function role_sign.cs_sign_draw(cs_sign_draw)
+    logger.error("do_err shoule see more")
+    print("do_err shoule see more")
     local cs_handle = CS_HANDLE()
     cs_handle.success_handle = cs_sign_draw_success
     cs_handle.error_handle = cs_sign_draw_error
