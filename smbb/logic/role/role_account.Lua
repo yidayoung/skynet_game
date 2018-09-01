@@ -13,7 +13,10 @@ local role_data = role_data
 local smbb_id = smbb_id
 local smbb_util = smbb_util
 local smbb_misc = smbb_misc
-
+local time_wheel = time_wheel
+local string = string
+local math = math
+local table = table
 local skynet = require "smbb_skynet"
 local logger = require("lualib.logger")
 local ets_lib = require("logic.lib.ets_lib")
@@ -23,6 +26,12 @@ local setting = require("config.setting.setting")
 local state = role_data.get_state()
 -- ccd_spec 因为agent调用了多次role_account，所以定义成全局的确保唯一
 local ccd_spec
+local TICK_INTERVAL = 5
+local HEART_TIMEOUT = 300
+local heart = 0
+local last_msg_sec = 0
+local MSG_TIMEOUT = 7200 ---超过7200s没有除过CS_HEART的消息来就认为是在挂机，T掉当前用户
+local _stopReason
 
 local function format_state(cs_account_login, RAccID)
     state.raccid = RAccID
@@ -62,7 +71,7 @@ local function check_version(cs_version)
 end
 
 local function offline(reason)
-    --role_lib.offline(role_data.get_role_id())
+    _stopReason = reason
     skynet.call(state.gate, "lua", "kick", state.fd, reason)
 end
 
@@ -78,7 +87,7 @@ end
 local function mix_handshake(ArgA, ArgB, ArgM, ArgX)
     local Mix1, Mix2, Mix3, Mix4, Mix5 = math.floor(math.random() * 10000), math.floor(math.random() * 10000), math.floor(math.random() * 10000), math.floor(math.random() * 10000), math.floor(math.random() * 10000)
     return { mix_1 = { Mix1 }, arg_a = ArgA, mix_2 = { Mix2 }, arg_b = ArgB
-    , mix_3 = { Mix3 }, arg_m = ArgM, mix_4 = { Mix4 }, arg_x = ArgX, mix_5 = { Mix5 } }
+    , mix_3        = { Mix3 }, arg_m = ArgM, mix_4 = { Mix4 }, arg_x = ArgX, mix_5 = { Mix5 } }
 end
 
 ---is_ban
@@ -86,6 +95,36 @@ end
 ---@return boolean
 local function is_ban(AccIDorRAccID)
     return is_number(AccIDorRAccID) and ets_lib.member(SHARE_TABLES.ban_list, AccIDorRAccID)
+end
+
+local function do_tick()
+    if heart + HEART_TIMEOUT < time_wheel.nowsec() then
+        offline("heart timeout")
+    else
+        local nowsec = time_wheel.init()
+        heart = nowsec
+        time_wheel.add_plan(nowsec + TICK_INTERVAL, do_tick)
+    end
+    if last_msg_sec + MSG_TIMEOUT < time_wheel.nowsec() then
+        offline("hang on long time")
+    end
+end
+
+function role_account.stop_reason()
+    return _stopReason
+end
+
+function role_account.offline(reason)
+    offline(reason)
+end
+
+function role_account.update_last_msg_sec(sec)
+    last_msg_sec = sec
+end
+
+function role_account.do_tick(nowsec)
+    heart = nowsec
+    time_wheel.add_plan(nowsec + TICK_INTERVAL, do_tick)
 end
 
 function role_account.next_ccd_spec()
@@ -121,7 +160,8 @@ local function check_account_login(cs_account_login)
         return error_return(4)
     end
     local cur_serverid = cs_account_login.svrid
-    if not (cur_serverid == setting.server_id or table.member(setting.merge_server_id_list, cs_account_login.svrid)) then
+    if not (cur_serverid == setting.server_id or table.member(setting.merge_server_id_list,
+            cs_account_login.svrid)) then
         return error_return(5)
     end
     local RAccID = smbb_id.raccid(accid)
@@ -249,11 +289,13 @@ end
 
 function role_account.cs_heart()
     if is_ban(state.raccid) then
-        smbb_misc.gw_send(state.fd, SC_ACCOUNT_KICK, {result = 2})
+        smbb_misc.gw_send(state.fd, SC_ACCOUNT_KICK, { result = 2 })
         offline("ban")
         return
     end
-    smbb_misc.gw_send(state.fd, SC_HEART, { unixtime = smbb_util.nowsec() })
+    local nowsec = smbb_util.nowsec()
+    heart = nowsec
+    smbb_misc.gw_send(state.fd, SC_HEART, { unixtime = nowsec })
 end
 
 function role_account.cs_version(cs_version)

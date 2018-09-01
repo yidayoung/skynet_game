@@ -7,6 +7,7 @@
 -- Created : 13. 七月 2018 20:58
 ---------------------------------------------------------------------
 local skynet =require("smbb_skynet")
+local time_wheel = time_wheel
 local role_pereist = {}
 
 function role_pereist.pereist_all()
@@ -29,10 +30,9 @@ function role_pereist.pereist_all()
 end
 
 function role_pereist.hook_pereist()
-    skynet.timeout(6 * 100, function()
-        role_pereist.hook_pereist()
-        role_pereist.pereist_all()
-    end)
+    local currsec = time_wheel.nowsec()
+    time_wheel.add_plan(currsec+6, role_pereist.hook_pereist)
+    role_pereist.pereist_all()
 end
 
 return role_pereist

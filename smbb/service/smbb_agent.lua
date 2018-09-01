@@ -14,19 +14,19 @@ smbb_id = require "logic.tool.smbb_id"
 reward_lib = require("logic.lib.reward_lib")
 smbb_mongo = require("logic.db.smbb_mongo")
 logger = require("lualib.logger")
+time_wheel = require("logic.tool.time_wheel")
+
+local role_data = role_data
+local smbb_util = smbb_util
+local table =table
+local logger = logger
+local time_wheel = time_wheel
 
 require("logic.define.roledata_define")
 
-
 local smbb_pb = require("logic.tool.smbb_pb")
 local role_account = require("logic.role.role_account")
-
-
-skynet.init(function()
-    smbb_util.init_ranom_seed()
-end)
-
-local CMD = {}
+local agent_lib = require("logic.lib.agent_lib")
 
 local function do_dispatch(protoName, msg, ccd)
     local local_ccd = role_account.next_ccd_spec()
@@ -34,15 +34,18 @@ local function do_dispatch(protoName, msg, ccd)
     if not ((local_ccd and ccd == local_ccd) or
             ((not local_ccd) and protoName == PROTO_MAP[CS_HANDSHAKE])) then
         -- @todo offline
-        logger.error("ccd err")
+        role_account.offline("ccd err")
         return
     end
-    logger.debugf("%d receive msg %s\n%s",role_data.get_role_id(), protoName, spent(msg))
+    if protoName ~= PROTO_MAP[CS_HEART] then
+        role_account.update_last_msg_sec(smbb_util.nowsec())
+    end
+    logger.debugf("%d receive msg %s\n%s", role_data.get_role_id(), protoName, spent(msg))
     local route_service = PROTO_ROUTE[protoName]
     if route_service then
-        local state = role_data.get_state()
-        if state.roleid then
-            skynet.send(route_service, "lua", "dispatch_client_msg", protoName, state.roleid, msg)
+        local roleid = role_data.get_role_id()
+        if roleid > 0 then
+            skynet.send(route_service, "lua", "dispatch_client_msg", protoName, roleid, msg)
         else
             skynet.error("recv msg but agent not init ok!")
         end
@@ -53,9 +56,9 @@ local function do_dispatch(protoName, msg, ccd)
 end
 
 skynet.register_protocol {
-    name = "client",
-    id = skynet.PTYPE_CLIENT,
-    unpack = function(msg, sz)
+    name     = "client",
+    id       = skynet.PTYPE_CLIENT,
+    unpack   = function(msg, sz)
         return smbb_pb.decode(msg, sz)
     end,
     dispatch = function(fd, _, protoName, msg, ccd)
@@ -72,52 +75,17 @@ skynet.register_protocol {
     end
 }
 
--- 由gateway_listener直接调用，smbb_game的connect触发
--- 初始化完成后通知smbb_gate开始接收消息
-function CMD.start(conf)
-    smbb_util.init_ranom_seed()
-    local fd = conf.client
-    local state = role_data.get_state()
-    state.gate = conf.gate
-    state.watchdog = conf.watchdog
-    state.addr = conf.addr
-    state.fd = conf.client
-    logger.debug("smbb_agent start addr", conf.addr)
-    skynet.call(state.gate, "lua", "forward", fd)
-end
-
-function CMD.send_client(protouumber, protodata)
-    smbb_misc.send_client(protouumber, protodata)
-end
-
-function CMD.send_client2(protodata)
-    smbb_misc.send_client2(protodata)
-end
-
-function CMD.route(modulename, funcname, ...)
-    return require("logic.role." .. modulename)[funcname](...)
-end
-
-function CMD.disconnect()
-    -- todo: do something before exit
-    local state = role_data.get_state()
-    logger.debug("smbb_agent close, RoleID :", state.roleid)
-    -- @todo 异常结束的处理应该不需要这些怎么标记是否异常退出
-    local currsec = smbb_util.nowsec()
-    require("logic.role.role_sync").offline_sync(currsec)
-    require("logic.role.role_pereist").pereist_all()
-    skynet.exit()
-end
 
 local skynet_handle = skynet.handle
 
-skynet_handle.command = CMD
 
 skynet_handle.handle_lua_msg = function(_, _, command, ...)
     --skynet.trace()
-    local f = CMD[command]
+    local f = agent_lib[command]
     local args = table.pack(...)
-    local func = function() skynet.ret(skynet.pack(f(table.unpack(args)))) end
+    local func = function()
+        skynet.retpack(f(table.unpack(args)))
+    end
     cs(func)
 end
 
@@ -131,6 +99,12 @@ skynet_handle.info = function(key)
     else
         return spent(role_data.get_dataset())
     end
+end
+
+skynet_handle.init = function()
+    smbb_util.init_ranom_seed()
+    local nowsec = time_wheel.init()
+    role_account.do_tick(nowsec)
 end
 
 service.init(skynet_handle)

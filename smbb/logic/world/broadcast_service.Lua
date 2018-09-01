@@ -17,9 +17,12 @@ local server_func = {}
 
 function server_func.send_all(protodata, protonumber)
     local onlines = smbb_misc.onlines()
+    if table.empty(onlines) then
+        return
+    end
     local package
     if protonumber then
-        logger.debug("broadcast msg ",PROTO_MAP[protonumber], spent(protodata))
+        logger.debug("broadcast msg ", PROTO_MAP[protonumber], spent(protodata))
         package = smbb_pb.encode(protonumber, protodata)
     else
         package = protodata
@@ -28,8 +31,6 @@ function server_func.send_all(protodata, protonumber)
         smbb_misc.ex_send2(roleid, package)
     end)
 end
-
-
 
 local skynet_handle = skynet.handle
 
