@@ -18,7 +18,7 @@ time_wheel = require("logic.tool.time_wheel")
 
 local role_data = role_data
 local smbb_util = smbb_util
-local table =table
+local table = table
 local logger = logger
 local time_wheel = time_wheel
 
@@ -30,10 +30,11 @@ local agent_lib = require("logic.lib.agent_lib")
 
 local function do_dispatch(protoName, msg, ccd)
     local local_ccd = role_account.next_ccd_spec()
-    -- local_ccd 为空的时候 只允许握手消息，如果不为空则必须校验
+    --local_ccd 为空的时候 只允许握手消息，如果不为空则必须校验
     if not ((local_ccd and ccd == local_ccd) or
             ((not local_ccd) and protoName == PROTO_MAP[CS_HANDSHAKE])) then
         -- @todo offline
+        logger.error("ccd err", role_data.get_role_id())
         role_account.offline("ccd err")
         return
     end
@@ -75,9 +76,7 @@ skynet.register_protocol {
     end
 }
 
-
 local skynet_handle = skynet.handle
-
 
 skynet_handle.handle_lua_msg = function(_, _, command, ...)
     --skynet.trace()
@@ -104,7 +103,7 @@ end
 skynet_handle.init = function()
     smbb_util.init_ranom_seed()
     local nowsec = time_wheel.init()
-    role_account.do_tick(nowsec)
+    role_account.start_tick(nowsec)
 end
 
 service.init(skynet_handle)

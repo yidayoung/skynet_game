@@ -17,8 +17,8 @@ local role_lib = {}
 
 ---join_online_table
 ---@param roleid number
-function role_lib.join_online_table(roleid)
-    ets_lib.insert(SHARE_TABLES.role_online, roleid, skynet.self())
+function role_lib.join_online_table(roleid, fd)
+    ets_lib.insert(SHARE_TABLES.role_online, roleid, { address = skynet.self(), fd = fd })
 end
 
 ---leave_online_table
@@ -40,26 +40,26 @@ end
 function role_lib.p_role_info(role_info)
     ---@type p_role_info
     local p_role_info = {
-        roleid = role_info.roleid,
-        rolename = role_info.rolename,
-        raccid = role_info.raccid,
-        accname = role_info.accname,
-        familyid = role_info.familyid,
+        roleid     = role_info.roleid,
+        rolename   = role_info.rolename,
+        raccid     = role_info.raccid,
+        accname    = role_info.accname,
+        familyid   = role_info.familyid,
         familyname = role_info.familyname,
-        icon = role_info.icon,
-        frame = role_info.frame,
-        rolelv = role_info.rolelv,
-        roleexp = role_info.roleexp,
-        viplv = role_info.viplv,
-        vipexp = role_info.vipexp,
-        atkpower = role_info.atkpower,
-        defpower = role_info.defpower,
-        lastlogin = role_info.lastlogin,
+        icon       = role_info.icon,
+        frame      = role_info.frame,
+        rolelv     = role_info.rolelv,
+        roleexp    = role_info.roleexp,
+        viplv      = role_info.viplv,
+        vipexp     = role_info.vipexp,
+        atkpower   = role_info.atkpower,
+        defpower   = role_info.defpower,
+        lastlogin  = role_info.lastlogin,
         lastlogout = role_info.lastlogout,
-        srctype = role_info.srctype,
-        subtype = role_info.subtype,
-        totalpaid = role_info.totalpaid,
-        regtime = role_info.regtime,
+        srctype    = role_info.srctype,
+        subtype    = role_info.subtype,
+        totalpaid  = role_info.totalpaid,
+        regtime    = role_info.regtime,
     }
     return p_role_info
 end
@@ -112,8 +112,6 @@ function role_lib.get_role_public(roleid)
     role_public.roleid = roleid
     return role_public
 end
-
-
 
 local function hook_levelup(old_role_info, role_info, reason)
 

@@ -9,10 +9,14 @@ local logger = require("lualib.logger")
 
 local role_data = {}
 
-local state = {}
+local _state = {}
 
 function role_data.get_state()
-    return state
+    return _state
+end
+
+function role_data.set_state(state)
+    _state = state
 end
 
 local data_set = {}

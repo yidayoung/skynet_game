@@ -15,11 +15,12 @@ local role_sync = {}
 function role_sync.online_sync(currsec)
     local role_info = role_data.get_role_info()
     local roleid = role_info.roleid
+    local state = role_data.get_state()
     role_info.lastlogin = currsec
     role_info.lastlogout = 0
     role_data.set_role_info(role_info)
     role_lib.update_role_public(role_info)
-    role_lib.join_online_table(roleid)
+    role_lib.join_online_table(roleid, state.fd)
     role_mail.online(roleid)
 end
 

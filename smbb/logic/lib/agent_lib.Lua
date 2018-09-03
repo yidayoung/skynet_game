@@ -54,4 +54,9 @@ function CMD.disconnect()
 end
 
 
+function CMD.rest_state(state, ccd_spec)
+    role_data.set_state(state)
+    role_account.set_ccd_spec(ccd_spec)
+end
+
 return CMD

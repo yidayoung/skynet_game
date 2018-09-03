@@ -20,6 +20,7 @@ local table = table
 local skynet = require "smbb_skynet"
 local logger = require("lualib.logger")
 local ets_lib = require("logic.lib.ets_lib")
+local requester = requester
 
 local setting = require("config.setting.setting")
 
@@ -45,6 +46,24 @@ local function format_state(cs_account_login, RAccID)
     state.subtype = cs_account_login.subtype
     state.ip_info = cs_account_login.ip_info
     state.fc_type = cs_account_login.fc_type
+end
+
+local function check_login_again(roleid)
+    local agent = smbb_misc.agent(roleid)
+    if agent.fd then
+        --- 如果已经存在这个角色对应的agent，则首先必须确保对方下线
+        --- 1.关闭old_fd,但是要确保old_agent不会被关闭
+        --- 2.将当前fd指向old_agent
+        --- 3.将old_agent的state更新为当前的state,ccd同时也要做次对齐，让old_agent可的ccd和当前的ccd对齐
+        --- 4.结束当前的agent，后续的消息处理会由老的agent来接手
+        requester.call(state.watchdog, "reset_fd", agent.fd, state.fd, agent.address)
+        --@todo 如果过程中老的address在这突然死亡了，这个call不是gg了吗
+        requester.call(agent.address, "rest_state", state, role_account.get_ccd_spec())
+        requester.call(state.gate, "reset", agent.fd, agent.address, state.fd, state.addr)
+        return true
+    else
+        return false
+    end
 end
 
 local function do_enter_game(role_info)
@@ -122,7 +141,7 @@ function role_account.update_last_msg_sec(sec)
     last_msg_sec = sec
 end
 
-function role_account.do_tick(nowsec)
+function role_account.start_tick(nowsec)
     heart = nowsec
     time_wheel.add_plan(nowsec + TICK_INTERVAL, do_tick)
 end
@@ -137,12 +156,20 @@ function role_account.next_ccd_spec()
     return ArgY
 end
 
+function role_account.get_ccd_spec()
+    return ccd_spec
+end
+
+function role_account.set_ccd_spec(new_ccd_spec)
+    ccd_spec = new_ccd_spec
+end
+
 ---check_account_login
 ---@param cs_account_login cs_account_login
 local function check_account_login(cs_account_login)
     if state.login_state == true then
         --关闭对应的agent，清除smbb_gate的监控
-        --同一客户端的登陆请求 @todo 不同客户端的登陆请求处理
+        --同一客户端的登陆请求
         return error_return(2)
     end
     local ticket = cs_account_login.ticket
@@ -181,9 +208,13 @@ local function cs_account_login_succes(cs_account_login, rstate, raccid, roleinf
     logger.debug("do_account_login, RAccID is", raccid)
     format_state(cs_account_login, raccid)
     if rstate == 1 then
+        if check_login_again(roleinfo.roleid) then
+            smbb_misc.gw_send(state.fd, SC_ACCOUNT_LOGIN, { result = 1, rstate = rstate })
+            skynet.exit()
+        end
         do_enter_game(roleinfo)
+        smbb_misc.gw_send(state.fd, SC_ACCOUNT_LOGIN, { result = 1, rstate = rstate })
     end
-    smbb_misc.gw_send(state.fd, SC_ACCOUNT_LOGIN, { result = 1, rstate = rstate })
 end
 
 ---cs_account_login_err

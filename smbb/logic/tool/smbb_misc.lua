@@ -68,11 +68,26 @@ function smbb_misc.onlines()
     end
 end
 
+function smbb_misc.agent(roleid)
+    local tmp = ets_lib.lookup(SHARE_TABLES.role_online, roleid)
+    if type(tmp) == "table" then
+        return tmp
+    else
+        return {}
+    end
+end
+
 ---agent_address
 ---@param roleid number
 ---@return number
 function smbb_misc.agent_address(roleid)
-    return ets_lib.lookup(SHARE_TABLES.role_online, roleid)
+    local tmp = smbb_misc.agent(roleid)
+    return tmp.address
+end
+
+function smbb_misc.agent_fd(roleid)
+    local tmp = smbb_misc.agent(roleid)
+    return tmp.fd
 end
 
 return smbb_misc

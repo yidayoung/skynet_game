@@ -45,10 +45,17 @@ end
 
 -- socket接收到消息但是没有agent处理
 function SOCKET.data(fd, msg)
+    print("receive no handle msg from fd", fd)
+end
+
+function CMD.reset_fd(old_fd, new_fd, old_agent)
+    agent[old_fd] = nil
+    skynet.call(gate, "lua", "kick", old_fd)
+    agent[new_fd] = old_agent
 end
 
 function CMD.start()
-    conf = {
+    local conf = {
         port = setting.game_port,
         maxclient = setting.max_online_num,
         nodelay = true,

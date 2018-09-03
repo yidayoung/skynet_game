@@ -3,14 +3,13 @@ local gateserver = require "snax.gateserver"
 local netpack = require "skynet.netpack"
 require "logic.define.proto_define"
 
-
 local watchdog
-local connection = {}	-- fd -> connection : { fd , client, agent , ip, mode }
-local forwarding = {}	-- agent -> connection
+local connection = {}    -- fd -> connection : { fd , client, agent , ip, mode }
+local forwarding = {}    -- agent -> connection
 
 skynet.register_protocol {
     name = "client",
-    id = skynet.PTYPE_CLIENT,
+    id   = skynet.PTYPE_CLIENT,
 }
 
 local handler = {}
@@ -77,8 +76,21 @@ function CMD.forward(source, fd, client, address)
     c.client = client or 0
     c.agent = address or source
     forwarding[c.agent] = c
-    print("gateserver.openclient",fd, address)
+    print("gateserver.openclient", fd, address)
     gateserver.openclient(fd)
+end
+
+function CMD.reset(source, old_fd, old_agent, new_fd, addr)
+    print(string.format("gateserver.reset from%d->%d", old_agent, source))
+    local c = {
+        fd = new_fd,
+        ip = addr,
+    }
+    c.client = 0
+    c.agent = old_agent
+    forwarding[c.agent] = c
+    connection[new_fd] = c
+    print(string.format("gateserver.reset from%d->%d", old_fd, new_fd))
 end
 
 function CMD.accept(source, fd)
@@ -90,7 +102,6 @@ end
 function CMD.kick(source, fd)
     gateserver.closeclient(fd)
 end
-
 
 function handler.command(cmd, source, ...)
     local f = assert(CMD[cmd])
