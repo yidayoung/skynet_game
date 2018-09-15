@@ -21,6 +21,7 @@ SHARE_TABLES = {
     role_online = "role_online",
     role_public = "role_public",
     ban_list    = "ban_list",
+    ndinfo      = "nd_info"
 }
 
 ID_TYPE_LIST = {

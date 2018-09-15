@@ -1,9 +1,11 @@
 local skynet = require "smbb_skynet"
-local log = require "lualib.logger"
 local sys = require("lualib.sys")
+require("skynet.manager")
 
 local service = {}
 
+---init
+---@param mod skynet_handle
 function service.init(mod)
     local funcs = mod.command
     if mod.info then
@@ -13,6 +15,10 @@ function service.init(mod)
         skynet.set_exit_cb(mod.on_exit)
     end
 
+    if mod.bef_on_exit then
+        skynet.set_bef_exit_cb(mod.bef_on_exit)
+    end
+
     sys.REG(skynet)
 
     if mod.init then
@@ -20,21 +26,26 @@ function service.init(mod)
     end
 
     if mod.register then
-        require("skynet.manager")
         skynet.register(mod.register)
     end
 
+    --if mod.supervisor then
+    --    skynet.monitor(mod.supervisor, true)
+    --end
+
+    local service_name = mod.register or SERVICE_NAME
     skynet.start(function()
         if mod.handle_lua_msg then
             skynet.dispatch("lua", mod.handle_lua_msg)
         else
-            skynet.dispatch("lua", function(_, _, cmd, ...)
-                local f = funcs[cmd]
-                if f then
-                    skynet.ret(skynet.pack(f(...)))
+            skynet.dispatch("lua", function(session, address, cmd, ...)
+                local func = assert(funcs[cmd],
+                        string.format("%s receive Unknown command : [%s] from [%s]", service_name, tostring(cmd),
+                                skynet.address(address)))
+                if session > 0 then
+                    skynet.retpack(func(...))
                 else
-                    log.error("Unknown command : [%s]", cmd)
-                    skynet.response()(false)
+                    func(...)
                 end
             end)
         end

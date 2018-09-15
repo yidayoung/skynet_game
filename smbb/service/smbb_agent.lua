@@ -1,4 +1,4 @@
-local skynet = require "skynet"
+local skynet = require "smbb_skynet"
 local service = require("lualib.smbb_sevice")
 
 local queue = require "skynet.queue"
@@ -33,7 +33,6 @@ local function do_dispatch(protoName, msg, ccd)
     --local_ccd 为空的时候 只允许握手消息，如果不为空则必须校验
     if not ((local_ccd and ccd == local_ccd) or
             ((not local_ccd) and protoName == PROTO_MAP[CS_HANDSHAKE])) then
-        -- @todo offline
         logger.error("ccd err", role_data.get_role_id())
         role_account.offline("ccd err")
         return
@@ -41,6 +40,7 @@ local function do_dispatch(protoName, msg, ccd)
     if protoName ~= PROTO_MAP[CS_HEART] then
         role_account.update_last_msg_sec(smbb_util.nowsec())
     end
+    -- @todo 这里要展开所有消息，会不会引起性能问题
     logger.debugf("%d receive msg %s\n%s", role_data.get_role_id(), protoName, spent(msg))
     local route_service = PROTO_ROUTE[protoName]
     if route_service then
@@ -58,7 +58,7 @@ end
 
 skynet.register_protocol {
     name     = "client",
-    id       = skynet.PTYPE_CLIENT,
+    id       = skynet.PTYPE_CS_CLIENT,
     unpack   = function(msg, sz)
         return smbb_pb.decode(msg, sz)
     end,
@@ -90,6 +90,7 @@ end
 
 --agent的退出不用sys.EXIT来做，用原生的消息来做，可以保证退出操作也入cs队列，最起码可以确保退出动作前的消息肯定会被处理
 skynet_handle.on_exit = function()
+    agent_lib.offline()
 end
 
 skynet_handle.info = function(key)

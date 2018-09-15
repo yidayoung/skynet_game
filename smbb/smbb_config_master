@@ -1,0 +1,17 @@
+include "config.path"
+
+thread = 8
+
+logpath = "./log"
+logfile = "smbb.log"
+--高于log_level的都会被直接记录
+log_level = 10
+--当有高于dump_level的日志发生时，前100条的低于log_level的日志也会打印，帮助分析问题
+dump_level = 40
+harbor = 0
+start = "smbb_master"	-- main script
+bootstrap = "snlua bootstrap"	-- The service for bootstrap
+-- standalone = "0.0.0.0:2013"
+-- snax_interface_g = "snax_g"
+cpath = root.."cservice/?.so"
+-- daemon = "./skynet.pid"

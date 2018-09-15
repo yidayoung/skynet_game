@@ -51,19 +51,24 @@ end
 local function check_login_again(roleid)
     local agent = smbb_misc.agent(roleid)
     if agent.fd then
-        --- 如果已经存在这个角色对应的agent，则首先必须确保对方下线
-        --- 1.关闭old_fd,但是要确保old_agent不会被关闭
-        --- 2.将当前fd指向old_agent
-        --- 3.将old_agent的state更新为当前的state,ccd同时也要做次对齐，让old_agent可的ccd和当前的ccd对齐
-        --- 4.结束当前的agent，后续的消息处理会由老的agent来接手
-        requester.call(state.watchdog, "reset_fd", agent.fd, state.fd, agent.address)
-        --@todo 如果过程中老的address在这突然死亡了，这个call不是gg了吗
-        requester.call(agent.address, "rest_state", state, role_account.get_ccd_spec())
-        requester.call(state.gate, "reset", agent.fd, agent.address, state.fd, state.addr)
-        return true
+        return true, agent
     else
         return false
     end
+end
+
+local function do_login_again(agent)
+    --- 如果已经存在这个角色对应的agent，则首先必须确保对方下线
+    --- 1.先给已经登陆的客户端发送一条被冲下线的消息
+    --- 2.关闭old_fd,但是要确保old_agent不会被关闭
+    --- 3.将当前fd指向old_agent
+    --- 4.将old_agent的state更新为当前的state,ccd同时也要做次对齐，让old_agent可的ccd和当前的ccd对齐
+    --- 5.结束当前的agent，后续的消息处理会由老的agent来接手
+    smbb_misc.gw_send(agent.fd, SC_ACCOUNT_KICK, {result = 1})
+    requester.call(state.watchdog, "reset_fd", agent.fd, state.fd, agent.address)
+    --- 暂时采取鸵鸟做法。当做无事发生，就让用户进程卡住然后让他重登好了
+    requester.call(agent.address, "rest_state", state, role_account.get_ccd_spec())
+    requester.call(state.gate, "reset", agent.fd, agent.address, state.fd, state.addr)
 end
 
 local function do_enter_game(role_info)
@@ -143,6 +148,7 @@ end
 
 function role_account.start_tick(nowsec)
     heart = nowsec
+    last_msg_sec = nowsec
     time_wheel.add_plan(nowsec + TICK_INTERVAL, do_tick)
 end
 
@@ -208,11 +214,15 @@ local function cs_account_login_succes(cs_account_login, rstate, raccid, roleinf
     logger.debug("do_account_login, RAccID is", raccid)
     format_state(cs_account_login, raccid)
     if rstate == 1 then
-        if check_login_again(roleinfo.roleid) then
+        local is_login, agent = check_login_again(roleinfo.roleid)
+        if is_login then
+            do_login_again(agent)
             smbb_misc.gw_send(state.fd, SC_ACCOUNT_LOGIN, { result = 1, rstate = rstate })
-            skynet.exit()
+            offline("new login")
         end
         do_enter_game(roleinfo)
+        smbb_misc.gw_send(state.fd, SC_ACCOUNT_LOGIN, { result = 1, rstate = rstate })
+    else
         smbb_misc.gw_send(state.fd, SC_ACCOUNT_LOGIN, { result = 1, rstate = rstate })
     end
 end

@@ -48,6 +48,7 @@ end
 
 -- 服务关闭时的回调函数
 skynet_handle.on_exit = function()
+    --@todo kill是不是会破坏或者丢弃处理到一半或者在消息队列中但是还没有处理的消息，如果是需要做正常退出逻辑
     table.walk(agent_pay, function(service)
         skynet.kill(service)
     end)

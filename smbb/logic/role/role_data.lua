@@ -73,7 +73,7 @@ local function get_info(index)
 end
 
 local function set_info(index, info, is_dirty)
-    data_set[index].val = info
+    data_set[index].val = copy(info)
     data_set[index].is_dirty = dirty(data_set[index].is_dirty, is_dirty)
 end
 

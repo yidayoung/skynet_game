@@ -1,6 +1,7 @@
 local skynet = require "smbb_skynet"
 local service = require("lualib.smbb_sevice")
 local logger = require("lualib.logger")
+local sys = require("lualib.sys")
 local CMD = {}
 local SOCKET = {}
 local gate
@@ -11,7 +12,8 @@ local setting = require("config.setting.setting")
 function SOCKET.open(fd, addr)
     if is_open then
         logger.debug("New client from : " .. addr)
-        agent[fd] = skynet.newservice("smbb_agent")
+        --agent[fd] = skynet.newservice("smbb_agent")
+        agent[fd] = sys.reg_newservice("smbb_agent")
         skynet.call(agent[fd], "lua", "start", { gate = gate, client = fd, watchdog = skynet.self(), addr = addr })
         return
     end
@@ -71,15 +73,19 @@ end
 local skynet_handle = skynet.handle
 
 skynet_handle.init = function()
-    gate = skynet.newservice("smbb_gate")
+    gate = skynet.uniqueservice("smbb_gate")
+end
+
+skynet_handle.bef_on_exit = function()
+    is_open = false
 end
 
 skynet_handle.on_exit = function()
-    is_open = false
-    table.walk(agent, function(_, fd)
-        close_agent(fd)
-    end)
-    --@todo wait close
+
+    --table.walk(agent, function(_, fd)
+    --    close_agent(fd)
+    --end)
+    ----@todo wait close
     skynet.call(gate, "lua", "close")
     skynet.kill(gate)
 end

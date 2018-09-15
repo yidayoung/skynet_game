@@ -1,4 +1,4 @@
-local skynet = require "skynet"
+local skynet = require "smbb_skynet"
 local gateserver = require "snax.gateserver"
 local netpack = require "skynet.netpack"
 require "logic.define.proto_define"
@@ -9,7 +9,7 @@ local forwarding = {}    -- agent -> connection
 
 skynet.register_protocol {
     name = "client",
-    id   = skynet.PTYPE_CLIENT,
+    id   = skynet.PTYPE_CS_CLIENT,
 }
 
 local handler = {}

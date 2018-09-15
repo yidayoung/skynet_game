@@ -34,7 +34,6 @@ local CMD = {}
 
 local role_lib = require("logic.lib.role_lib")
 
-
 function CMD.test()
     local shard = skynet.uniqueservice "sharedatad"
     spent_print("shard:", skynet.address(shard))
@@ -112,11 +111,23 @@ skynet.start(function()
     --role_info.roleid = 1
     --spent_print("roleinfo:",role_info)
     --logger.error("do_test, should see more than error")
-    require("logic.lib.broadcast_lib").send_all(SC_GM_TEST, {result=0})
+    --require("logic.lib.broadcast_lib").send_all(SC_GM_TEST, {result=0})
+    --local time_wheel = require("logic.tool.time_wheel")
+    --time_wheel.init()
+    --print("add_plan")
+    --local plan = time_wheel.add_plan(smbb_util.nowsec() + 3, print, "123", "456")
+    ----time_wheel.cancle_plan(plan)
+    --skynet.timeout(400, function()
+    --    spent_print("plans:", time_wheel.plans())
+    --end)
+
+    local cross_lib = require "logic.lib.cross_lib"
+    cross_lib.send_slave(1, SERVICE.broadcast_service, "error")
+    cross_lib.send_slave()
     skynet.exit()
 end)
 require("logic.tool.smbb_misc")
 --local role_lib = require("logic.lib.role_lib")
-skynet.info_func(function (modulename, funcname, ...)
+skynet.info_func(function(modulename, funcname, ...)
     return require(modulename)[funcname](...)
 end)

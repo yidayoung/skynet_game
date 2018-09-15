@@ -34,7 +34,7 @@ end
 
 -- 服务关闭时的回调函数
 skynet_handle.on_exit = function()
-    logger.info(SERVICE_NAME .. "stop")
+    logger.info(SERVICE_NAME .. " stop")
 end
 
 --handle_lua_msg和command参数互相冲突，如果有handle_lua_msg则command不会生效
