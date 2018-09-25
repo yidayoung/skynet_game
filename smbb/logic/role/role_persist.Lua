@@ -30,9 +30,9 @@ function role_pereist.pereist_all()
     end
 end
 
-function role_pereist.hook_pereist()
+function role_pereist.hook_persist()
     local currsec = time_wheel.nowsec()
-    time_wheel.add_plan(currsec + 6, role_pereist.hook_pereist)
+    time_wheel.add_plan(currsec + 6, role_pereist.hook_persist)
     role_pereist.pereist_all()
 end
 

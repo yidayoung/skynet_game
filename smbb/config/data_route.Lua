@@ -10,5 +10,6 @@ return {
 
     POST = {
         send_mail = "mod_send_mail",
+        reload_config = "mod_reload_config"
     }
 }

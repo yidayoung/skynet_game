@@ -9,7 +9,7 @@
 
 local skynet = require "skynet"
 require("skynet.manager")
-config_lib = require("logic.lib.config_lib")
+require("lualib.smbb_sevice")
 local logger = require("lualib.logger")
 require("logic.tool.smbb_misc")
 require("logic.db.smbb_mongo")
@@ -27,6 +27,7 @@ require "logic.define.error_code"
 require "logic.define.money_define"
 require "logic.define.common"
 requester = require("lualib.requester")
+
 --local role_money = require("logic.role.role_money")
 local lz = require("zlib")
 
@@ -39,6 +40,7 @@ function CMD.test()
     spent_print("shard:", skynet.address(shard))
     local sharedata = require "skynet.sharedata"
 end
+
 
 skynet.start(function()
     --skynet.register("test")
@@ -121,10 +123,23 @@ skynet.start(function()
     --    spent_print("plans:", time_wheel.plans())
     --end)
 
-    local cross_lib = require "logic.lib.cross_lib"
-    cross_lib.send_slave(1, SERVICE.broadcast_service, "error")
-    cross_lib.send_slave()
-    skynet.exit()
+    --local cross_lib = require "logic.lib.cross_lib"
+    --cross_lib.send_slave(1, SERVICE.broadcast_service, "error")
+    --cross_lib.send_slave()
+    skynet.timeout(300, function()
+        local setting = require("config.setting.setting")
+        spent_print("setting:",setting)
+        local i = setting.is_release
+        print(i)
+        require("logic.lib.config_lib").reload("setting")
+        skynet.sleep(500)
+
+
+        print(i)
+        i = setting.is_release
+        print(i)
+    end)
+    --skynet.exit()
 end)
 require("logic.tool.smbb_misc")
 --local role_lib = require("logic.lib.role_lib")

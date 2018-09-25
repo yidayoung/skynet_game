@@ -79,7 +79,7 @@ local function do_enter_game(role_info)
     local currsec = smbb_util.nowsec()
     require("logic.role.role_sync").online_sync(currsec)
     -- init_base_data
-    require("logic.role.role_pereist").hook_pereist()
+    require("logic.role.role_persist").hook_persist()
 
 end
 
@@ -125,7 +125,7 @@ local function do_tick()
     if heart + HEART_TIMEOUT < time_wheel.nowsec() then
         offline("heart timeout")
     else
-        local nowsec = time_wheel.init()
+        local nowsec = time_wheel.nowsec()
         heart = nowsec
         time_wheel.add_plan(nowsec + TICK_INTERVAL, do_tick)
     end

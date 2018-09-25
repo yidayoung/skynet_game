@@ -9,6 +9,7 @@
 -- configh_share比较特殊
 -- 因为smbb_service 会初始化config_lib，而config_lib的初始化必须依赖config_share启动完成，所以这里只调用基础版本
 -- 也就是依赖的宏定义必须自己主动的require
+local require = require
 local service = require("lualib.base_service")
 local skynet = require "smbb_skynet"
 local sharedata = require "skynet.sharedata"
@@ -18,17 +19,15 @@ local last_config = {}
 
 local function load_one_config(config_name, configh_path)
     if CONFIG[config_name] or SETTING[config_name] then
-        local cur_require = require
-        if old_require then
-            cur_require = old_require
-        end
-        local temdata = cur_require(configh_path)
-        if last_config[config_name] then
-            sharedata.update(config_name, temdata)
-        else
-            sharedata.new(config_name, temdata)
-            last_config[config_name] = true
-        end
+        local temdata = require(configh_path)
+        print("setting", temdata.is_release)
+        last_config[config_name] = temdata
+        --if last_config[config_name] then
+        --    sharedata.update(config_name, temdata)
+        --else
+        --    sharedata.new(config_name, temdata)
+        --    last_config[config_name] = true
+        --end
         package.loaded[configh_path] = nil
     else
         print("load unkonw config:", config_name)
@@ -47,19 +46,53 @@ local function load_setting()
     end
 end
 
-local CMD = {}
+local function sharedata_init()
+    sharedata.new("config", last_config)
+end
 
-function CMD.reload(config_name)
+local function sharedata_reload(config_name)
+    sharedata.update("config", last_config, config_name)
+end
+
+local function reload_config(config_name)
     if config_name then
-        load_one_config(config_name, "config." .. config_name)
+        if CONFIG[config_name] then
+            load_one_config(config_name, "config." .. config_name)
+        elseif SETTING[config_name] then
+            load_setting()
+        else
+            return ("unkonw config " .. config_name)
+        end
+        sharedata_reload(config_name)
     else
         load_all_config()
+        sharedata_reload()
     end
+    return "success " .. config_name
+end
+
+local CMD = {}
+
+function CMD.reload(config)
+    print("reload config", config)
+    local ret = {}
+    if type(config) == "string" then
+        table.insert(ret, reload_config(config))
+    elseif type(config) == "table" then
+        ret = {}
+        for _, config_name in ipairs(config) do
+            table.insert(ret, reload_config(config_name))
+        end
+    else
+        ret = {"config str err"}
+    end
+    return ret
 end
 
 function CMD.start()
     load_setting()
     load_all_config()
+    sharedata_init()
 end
 
 local skynet_handle = skynet.handle

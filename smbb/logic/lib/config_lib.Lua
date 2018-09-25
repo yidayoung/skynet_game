@@ -13,16 +13,17 @@ local config_lib = {}
 local config_cache = {}
 
 local function init()
-    for _, config_name in pairs(CONFIG) do
-        if not config_cache[config_name] then
-            config_cache[config_name] = sharedata.query(config_name)
-        end
-    end
-    for _, config_name in pairs(SETTING) do
-        if not config_cache[config_name] then
-            config_cache[config_name] = sharedata.query(config_name)
-        end
-    end
+    --for _, config_name in pairs(CONFIG) do
+    --    if not config_cache[config_name] then
+    --        config_cache[config_name] = sharedata.query(config_name)
+    --    end
+    --end
+    --for _, config_name in pairs(SETTING) do
+    --    if not config_cache[config_name] then
+    --        config_cache[config_name] = sharedata.query(config_name)
+    --    end
+    --end
+    config_cache = sharedata.query("config")
 end
 
 local function get(config_name)

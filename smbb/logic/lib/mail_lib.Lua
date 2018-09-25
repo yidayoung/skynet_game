@@ -7,7 +7,7 @@
 -- Created : 06. 七月 2018 17:52
 ---------------------------------------------------------------------
 
-local requester = requester
+local requester = require("lualib.requester")
 local smbb_util = require("logic.tool.smbb_util")
 local smbb_id = require("logic.tool.smbb_id")
 local SERVICE = SERVICE.mail_service

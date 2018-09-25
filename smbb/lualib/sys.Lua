@@ -92,7 +92,7 @@ function command.EXIT()
 end
 
 function command.DIE(address)
-    assert(_is_exit, "unexcept service exit")
+    --assert(_is_exit, "unexcept service exit")
     assert(service_list[address], "child not init?!")
     service_list[address] = nil
     if table.empty(service_list) and die_co then

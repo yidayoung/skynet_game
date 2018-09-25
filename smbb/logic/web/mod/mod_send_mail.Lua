@@ -8,7 +8,6 @@
 ---------------------------------------------------------------------
 local mod_send_mail = {}
 
-local setting = require("config.setting.setting")
 local json = require("lualib.json")
 
 local smbb_mongo = require("logic.db.smbb_mongo")
@@ -16,10 +15,6 @@ local smbb_id = require("logic.tool.smbb_id")
 local web_util = require "logic.web.web_util"
 local smbb_misc = require("logic.tool.smbb_misc")
 
-local function check_auth(pass, message)
-    local key = setting.ctrl_key
-    return pass == require("md5").sumhexa(key .. message)
-end
 
 local function jmoney_to_cmoney(jmoney)
     return { tonumber(jmoney.typeid), tonumber(jmoney.number) }
@@ -65,7 +60,7 @@ local function trans_msg(query)
 end
 
 local function prase_req(query)
-    if check_auth(query.pass, query.message) then
+    if web_util.check_auth(query.pass, query.message) then
         return trans_msg(query)
     else
         return false

@@ -35,9 +35,12 @@ end
 function server_func.find(collection, ...)
     local ret = db[collection]:find(...)
     local result = {}
-    if ret:hasNext() then
-        for index = 1, ret:count() do
+
+    for index = 1, ret:count() do
+        if ret:hasNext() then
             result[index] = ret:next()
+        else
+            return result
         end
     end
     return result

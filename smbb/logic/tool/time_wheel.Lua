@@ -24,7 +24,7 @@ local setmetatable = setmetatable
 local rawset = rawset
 local rawget = rawget
 
-local timer_wheel_nowsec = 0
+local timer_wheel_nowsec
 local timer_wheel_plans = {}
 
 ---@class plan
@@ -93,6 +93,7 @@ end
 ---init 初始化时间轮，所有调用时间轮的逻辑中都必须显式的调用该方法才能后续使用时间轮逻辑
 ---@return number ---时间轮系统中的当前时间
 function time_wheel.init()
+    assert(timer_wheel_nowsec == nil, "time_wheel already init")
     local curr_sec = smbb_util.nowsec()
     timer_wheel_nowsec = curr_sec
     tick(curr_sec)

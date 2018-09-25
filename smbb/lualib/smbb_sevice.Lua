@@ -21,6 +21,7 @@ local function preload()
     require "logic.define.money_define"
     require "logic.define.common"
     require "logic.define.behavior_define"
+    require "lualib.requester"
     local config_lib = require("logic.lib.config_lib")
     old_require = require
     require = function(file)

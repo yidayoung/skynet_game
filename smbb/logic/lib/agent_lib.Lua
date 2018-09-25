@@ -48,7 +48,7 @@ function agent_lib.offline()
     -- @todo 异常结束的处理应该不需要这些怎么标记是否异常退出
     local currsec = smbb_util.nowsec()
     require("logic.role.role_sync").offline_sync(currsec)
-    require("logic.role.role_pereist").pereist_all()
+    require("logic.role.role_persist").pereist_all()
 end
 
 function agent_lib.disconnect()
